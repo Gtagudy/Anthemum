@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62acf95fb1bf94b4585f09f568993886, type: 3}
+  m_Name: Player
+  m_EditorClassIdentifier: 
+  entityName: Thats youuuuuu
+  entityDescription: Kinda the goat, especially if your new to the game
+  Ability:
+  - {fileID: 11400000, guid: 807f82ce30a186b4590706bd4f0391b9, type: 2}
+  Stats: {fileID: 11400000, guid: a20629ccd89c3a74f9e1f540246a6d40, type: 2}
