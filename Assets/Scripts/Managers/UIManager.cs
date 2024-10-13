@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI StateMachine;
     [SerializeField] TextMeshProUGUI EntityTurn;
     [SerializeField] Button SkipButton;
-    void Start()
+    void Awake()
     {
         
     }

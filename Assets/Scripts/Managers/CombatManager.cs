@@ -6,17 +6,21 @@ using UnityEngine;
 public class CombatManager : MonoBehaviour
 {
 
+    TurnManager turnManager;
 	public void StartCombat(EntitySO[] players, EntitySO[] enemies)
 	{
-        TurnManager turnManager = new TurnManager();
+        Debug.Log("We now starting combat!");
         turnManager.QueueEntities(players, enemies);
+
 	}
 
 
 
+
 	// Start is called before the first frame update
-	void Start()
+	void Awake()
     {
+        turnManager = GetComponent<TurnManager>();
         //actionManager = GetComponent<ActionManager>();
         //entityManager = GetComponent<EntityManager>();
     }

@@ -18,12 +18,6 @@ public class Character : MonoBehaviour
 
     public float movementPoints = 50f;
 
-    public int hp = 100;
-
-    public int strength = 20;
-
-    public string Name = "Unnamed";
-
     bool faceRight = true;
 
     void Start()

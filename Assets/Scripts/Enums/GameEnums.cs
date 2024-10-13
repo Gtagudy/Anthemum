@@ -16,17 +16,17 @@ public class GameEnums
 }
     public enum AbilityEffectType
     {
-        None,
         Damage,
         Health,
         Buff,
         Debuff,
         Stun
     }
+    
+    
 
     public enum Targeting
     {
-        None,
         Single,
         Multi,
         Self,

@@ -15,5 +15,5 @@ public class StatSO : ScriptableObject
 
 	public int defense;
 
-	public int speed { get; }
+	[SerializeField] public int speed;
 }

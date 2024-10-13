@@ -22,5 +22,7 @@ public class AbilitySO : ScriptableObject
 
 	public int AOE;
 
+	public Targeting target;
+
 	public AbilityEffectType AbilityEffectType;
 }

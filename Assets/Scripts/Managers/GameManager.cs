@@ -12,18 +12,19 @@ public class GameManager : MonoBehaviour
     as well.
     
     */
-
-
     GameState gameState = GameState.Combat;
 
     [SerializeField] EntitySO[] Players;
     [SerializeField] EntitySO[] Enemies;
-    
+
+    CombatManager combatManager;
+
+    private bool startedCombat = false;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        combatManager = GetComponent<CombatManager>();
     }
 
     // Update is called once per frame
@@ -32,8 +33,12 @@ public class GameManager : MonoBehaviour
         switch(gameState)
         {
             case GameState.Combat:
-                CombatManager combatManager = new CombatManager();
-                combatManager.StartCombat(Players, Enemies);
+                if (!startedCombat)
+                {
+                    startedCombat = true;
+                    Debug.Log("Combat!");
+                    combatManager.StartCombat(Players, Enemies);
+                }
                 break;
         }
     }

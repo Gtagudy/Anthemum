@@ -19,4 +19,5 @@ MonoBehaviour:
   cooldown: 0
   damage: 10
   AOE: 0
-  AbilityEffectType: 2
+  target: 0
+  AbilityEffectType: 1

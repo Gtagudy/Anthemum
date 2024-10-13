@@ -13,8 +13,15 @@ public class EntitySO : IScriptableObject
 
 	[SerializeField] StatSO Stats;
 
+	public bool isPlayer = false;
+
 	public int GetSpeed()
 	{
 		return Stats.speed;
 	}
+	public AbilitySO getAbility(int tempNum)
+	{
+		return Ability[tempNum];
+	}
+
 }

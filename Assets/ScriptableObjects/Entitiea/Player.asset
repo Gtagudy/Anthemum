@@ -17,3 +17,4 @@ MonoBehaviour:
   Ability:
   - {fileID: 11400000, guid: 807f82ce30a186b4590706bd4f0391b9, type: 2}
   Stats: {fileID: 11400000, guid: a20629ccd89c3a74f9e1f540246a6d40, type: 2}
+  isPlayer: 1
