@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
 
 	void Awake()
     {
-        changeHealth.RegisterListeners(this);
+        
     }
 
     // Update is called once per frame
