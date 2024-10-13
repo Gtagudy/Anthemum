@@ -1,23 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class CombatEntity : MonoBehaviour
 {
     [SerializeField] EntitySO entity;
-    public UnityEvent HealthChange;
+    public IntGameEvent healthChange;
+	[SerializeField] Scrollbar Health;
 
-    // Start is called before the first frame update
-    void Awake()
-    {
-        entity = GetComponent<EntitySO>();
-    }
 
-    public void ChangeHealth()
+	// Start is called before the first frame update
+	void Awake()
     {
-        HealthChange.Invoke();
-    }
+
+	}
 
     // Update is called once per frame
     void Update()

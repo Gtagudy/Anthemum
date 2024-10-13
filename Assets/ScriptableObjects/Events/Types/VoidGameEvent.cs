@@ -7,7 +7,7 @@ public class VoidGameEvent : ScriptableObject
 {
     private List<VoidListener> listeners = new List<VoidListener>();
 
-    public void RegisterListeners(VoidListener listener)
+    public void RegisterListener(VoidListener listener)
     {
         listeners.Add(listener);
     }
@@ -17,7 +17,7 @@ public class VoidGameEvent : ScriptableObject
         listeners.Remove(listener);
     }
 
-    public void ClearListeners(VoidListener listener)
+    public void ClearListeners()
     {
         listeners.Clear();
     }

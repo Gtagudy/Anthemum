@@ -7,6 +7,8 @@ public class ActionManager : MonoBehaviour
 {
     System.Random random = new System.Random();
 	int tempNum = 0;
+	UIManager uiManager;
+
 	internal void ResolveEnemy(EntitySO dequeue)
 	{
 		//random.Next(1, 3);
@@ -29,10 +31,10 @@ public class ActionManager : MonoBehaviour
 		{
 			if (abilitySO.AbilityEffectType == AbilityEffectType.Health)
 			{
+				dequeue.ChangeHealth(-abilitySO.damage);
 				
 			}
 
-				
 		}
 	}
 
@@ -42,9 +44,9 @@ public class ActionManager : MonoBehaviour
 	}
 
 	// Start is called before the first frame update
-	void Start()
+	void Awake()
     {
-        
+        uiManager = GetComponent<UIManager>();
     }
 
     // Update is called once per frame

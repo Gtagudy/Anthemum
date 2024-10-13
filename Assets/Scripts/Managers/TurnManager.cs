@@ -9,10 +9,14 @@ public class TurnManager : MonoBehaviour
     Queue queue = new Queue();
     EntityManager entityManager;
     EntitySO[] tempOrder;
+
+    UIManager UIManager;
+
 	// Start is called before the first frame update
 	void Awake()
     {
         entityManager = GetComponent<EntityManager>();
+        UIManager = GetComponent<UIManager>();
     }
 
     // Update is called once per frame
@@ -88,6 +92,7 @@ public class TurnManager : MonoBehaviour
             {
                 Debug.Log("Well well, get QUEUED" + entity.name);
                 queue.Enqueue(entity);
+                UIManager.CreateHealthBars(entity);
             }
         }
 	}
