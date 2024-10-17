@@ -6,6 +6,7 @@ using UnityEngine;
 public class EntityManager : MonoBehaviour
 {
     ActionManager actionManager;
+    UIManager uiManager;
 	public void CheckEntity(EntitySO dequeue)
 	{
 		if(dequeue != null)
@@ -28,6 +29,7 @@ public class EntityManager : MonoBehaviour
 	void Awake()
     {
         actionManager = GetComponent<ActionManager>();
+        uiManager = GetComponent<UIManager>();
     }
 
     // Update is called once per frame

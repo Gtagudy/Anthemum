@@ -10,13 +10,13 @@ public class TurnManager : MonoBehaviour
     EntityManager entityManager;
     EntitySO[] tempOrder;
 
-    UIManager UIManager;
+    UIManager uiManager;
 
 	// Start is called before the first frame update
 	void Awake()
     {
         entityManager = GetComponent<EntityManager>();
-        UIManager = GetComponent<UIManager>();
+        uiManager = GetComponent<UIManager>();
     }
 
     // Update is called once per frame
@@ -25,23 +25,27 @@ public class TurnManager : MonoBehaviour
         if(queue.Count > 0)
         {
             Debug.Log("Oho look whose turn it is " + queue.Peek());
-			NextTurn(queue.Dequeue());
+			NextTurn((EntitySO)queue.Dequeue());
         }
     }
 
-    void TurnStart(object playerTurn)
+    void TurnStart(EntitySO playerTurn)
     {
         Debug.Log("Now, it seems it is " + playerTurn + " turn");
+        Debug.Log("Heres your health" + playerTurn.GetHealth());
+        uiManager.WhoseTurn(playerTurn);
         entityManager.CheckEntity((EntitySO)playerTurn);
         TurnEnd(playerTurn);
+
     }
 
-    void TurnEnd(object playerTurn)
+    void TurnEnd(EntitySO playerTurn)
     {
-
+        Debug.Log("Alright, turn is over for" + playerTurn);
+        Debug.Log("Here is your new health " + playerTurn + ": " + playerTurn.GetHealth());
     }
 
-    void NextTurn(object playerTurn)
+    void NextTurn(EntitySO playerTurn)
     {
         if (entityManager != null)
         {
@@ -92,8 +96,9 @@ public class TurnManager : MonoBehaviour
             {
                 Debug.Log("Well well, get QUEUED" + entity.name);
                 queue.Enqueue(entity);
-                UIManager.CreateHealthBars(entity);
+                //UIManager.CreateHealthBars(entity);
             }
         }
 	}
+
 }

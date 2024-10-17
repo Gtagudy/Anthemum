@@ -10,8 +10,8 @@ public class IntListener : MonoBehaviour
 {
 	public UnityAction<int> intReact;
 
-	public void Raise(int value)
+	public void Raise()
 	{
-		intReact?.Invoke(value);
+		intReact?.DynamicInvoke();
 	}
 }

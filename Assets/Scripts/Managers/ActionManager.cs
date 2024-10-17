@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ActionManager : MonoBehaviour
@@ -8,7 +9,7 @@ public class ActionManager : MonoBehaviour
     System.Random random = new System.Random();
 	int tempNum = 0;
 	UIManager uiManager;
-
+	public event Action clicked;
 	internal void ResolveEnemy(EntitySO dequeue)
 	{
 		//random.Next(1, 3);
@@ -16,6 +17,7 @@ public class ActionManager : MonoBehaviour
 		AbilitySO abilitySO = dequeue.getAbility(tempNum);
 		if (abilitySO != null)
 		{
+			PauseAMoment();
 			ConfirmAbility(dequeue, abilitySO);
 		}
 		Debug.Log("Just a debug here teehee");
@@ -23,7 +25,8 @@ public class ActionManager : MonoBehaviour
 
 	private void ConfirmAbility(EntitySO dequeue, AbilitySO abilitySO)
 	{
-		if(abilitySO.target != Targeting.Self)
+		PauseAMoment();
+		if (abilitySO.target != Targeting.Self)
 		{
 
 		}
@@ -40,6 +43,8 @@ public class ActionManager : MonoBehaviour
 
 	internal void ResolvePlayer(EntitySO dequeue)
 	{
+		clicked?.Invoke();
+
 		Debug.Log("Its the players turn GRAAAAHG");
 	}
 
@@ -54,4 +59,11 @@ public class ActionManager : MonoBehaviour
     {
         
     }
+
+	
+
+	IEnumerator PauseAMoment()
+	{
+		yield return new WaitForSeconds(100);
+	}
 }

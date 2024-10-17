@@ -33,6 +33,10 @@ public class EntitySO : IScriptableObject
 	{
 		return Ability[tempNum];
 	}
+	public List<AbilitySO> GetAbilities()
+	{
+		return Ability;
+	}
 	public int GetHealth()
 	{
 		return Stats.health;

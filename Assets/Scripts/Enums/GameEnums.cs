@@ -21,9 +21,7 @@ public class GameEnums
         Buff,
         Debuff,
         Stun
-    }
-    
-    
+    }    
 
     public enum Targeting
     {

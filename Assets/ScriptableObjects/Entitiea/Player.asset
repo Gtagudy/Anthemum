@@ -16,5 +16,8 @@ MonoBehaviour:
   entityDescription: Kinda the goat, especially if your new to the game
   Ability:
   - {fileID: 11400000, guid: 807f82ce30a186b4590706bd4f0391b9, type: 2}
+  - {fileID: 11400000, guid: 1974c4c79492af148a0821bed2f4869a, type: 2}
+  - {fileID: 11400000, guid: 926e9f2c593704b4aa3e0db8e71d61bf, type: 2}
+  - {fileID: 11400000, guid: bbd36a1e622dd724ba08ac1cd9a1f7e5, type: 2}
   Stats: {fileID: 11400000, guid: a20629ccd89c3a74f9e1f540246a6d40, type: 2}
   isPlayer: 1
