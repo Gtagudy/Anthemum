@@ -9,7 +9,10 @@ public class ActionManager : MonoBehaviour
     System.Random random = new System.Random();
 	int tempNum = 0;
 	UIManager uiManager;
-	public event Action clicked;
+	TurnManager turnManager;
+
+	bool chosenMove = false;
+	//public event Action clicked;
 	internal void ResolveEnemy(EntitySO dequeue)
 	{
 		//random.Next(1, 3);
@@ -34,7 +37,7 @@ public class ActionManager : MonoBehaviour
 		{
 			if (abilitySO.AbilityEffectType == AbilityEffectType.Health)
 			{
-				dequeue.ChangeHealth(-abilitySO.damage);
+				//dequeue.ChangeHealth(-abilitySO.damage);
 				
 			}
 
@@ -43,8 +46,12 @@ public class ActionManager : MonoBehaviour
 
 	internal void ResolvePlayer(EntitySO dequeue)
 	{
-		clicked?.Invoke();
+		
+		if(chosenMove)
+		{
 
+			turnManager.TurnEnd(dequeue);
+		}
 		Debug.Log("Its the players turn GRAAAAHG");
 	}
 
@@ -52,6 +59,7 @@ public class ActionManager : MonoBehaviour
 	void Awake()
     {
         uiManager = GetComponent<UIManager>();
+		turnManager = GetComponent<TurnManager>();
     }
 
     // Update is called once per frame

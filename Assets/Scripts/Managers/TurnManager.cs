@@ -12,6 +12,11 @@ public class TurnManager : MonoBehaviour
 
     UIManager uiManager;
 
+    EntitySO[] players;
+    EntitySO[] enemies;
+
+    
+
 	// Start is called before the first frame update
 	void Awake()
     {
@@ -35,14 +40,14 @@ public class TurnManager : MonoBehaviour
         Debug.Log("Heres your health" + playerTurn.GetHealth());
         uiManager.WhoseTurn(playerTurn);
         entityManager.CheckEntity((EntitySO)playerTurn);
-        TurnEnd(playerTurn);
-
     }
 
-    void TurnEnd(EntitySO playerTurn)
+    public void TurnEnd(EntitySO playerTurn)
     {
         Debug.Log("Alright, turn is over for" + playerTurn);
         Debug.Log("Here is your new health " + playerTurn + ": " + playerTurn.GetHealth());
+        
+
     }
 
     void NextTurn(EntitySO playerTurn)
@@ -96,7 +101,7 @@ public class TurnManager : MonoBehaviour
             {
                 Debug.Log("Well well, get QUEUED" + entity.name);
                 queue.Enqueue(entity);
-                //UIManager.CreateHealthBars(entity);
+                uiManager.CreateHealthBars(entity);
             }
         }
 	}

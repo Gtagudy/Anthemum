@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -27,34 +28,71 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI StateMachine;
     [SerializeField] TextMeshProUGUI EntityTurn;
-    [SerializeField] Button MoveExample;
+    [SerializeField] Button ButtonExample;
     [SerializeField] List<Button> MoveListClick;
 
-    [SerializeField] Scrollbar[] healthBars;
+    //[SerializeField] Scrollbar[] healthBars;
+    [SerializeField] TextMeshProUGUI playerHealth;
+    [SerializeField] TextMeshProUGUI enemyHealth;
 
 	internal void CreateHealthBars(EntitySO entity)
 	{
+        if(entity != null)
+        {
+            if(entity.isPlayer)
+            {
+                playerHealth.text = entity.GetHealth().ToString();
+            } else
+            {
+                enemyHealth.text = entity.GetHealth().ToString();
+            }
+        }
         /*entity.GetTransform();
         Instantiate(healthBars[0]);
         healthBars[]*/
 	}
 
-	internal void DisplayMoves(EntitySO dequeue)
+	public void DisplayMoves(EntitySO dequeue)
 	{
-        for(int i = 0; i < dequeue.GetAbilities().Count; i++)
-        {
-            MoveListClick[i].GetComponentInChildren<TextMeshProUGUI>().text = dequeue.GetAbilities()[i].name;
-        }
+
+        MoveListDisplay.SetActive(true);
+        CommandPanel.SetActive(false);
+     
+		/*MoveListDisplay.SetActive(false);
+		CommandPanel.SetActive(true);*/
 	}
+
+    public void HideMoves()
+    {
+        MoveListDisplay.SetActive(false);
+        CommandPanel.SetActive(true);
+    }
 
 	internal void WhoseTurn(EntitySO playerTurn)
 	{
         EntityTurn.text = playerTurn.entityName;
+        if(playerTurn.isPlayer)
+        {
+            CreateMoves(playerTurn);
+        }
+	}
+
+	private void CreateMoves(EntitySO playerTurn)
+	{
+		for (int i = 0; i < playerTurn.GetAbilities().Count; i++)
+		{
+			ButtonExample.GetComponent<AbilityButton>().UpdateAbility(playerTurn.GetAbilities()[i]);
+			ButtonExample.GetComponentInChildren<TextMeshProUGUI>().text = playerTurn.GetAbilities()[i].name;
+			MoveListClick.Add(ButtonExample);
+			float offset = i * 0.2f;
+			Vector2 position = MoveListDisplay.transform.position + transform.right * offset;
+			Instantiate(ButtonExample.gameObject, MoveListDisplay.transform);
+		}
 	}
 
 	void Awake()
     {
-        MoveListDisplay.RegisterListener(gameEventListener);
+        //MoveListDisplay.RegisterListener(gameEventListener);
         //displayMoves.AddListener(DisplayMoves());
     }
 
