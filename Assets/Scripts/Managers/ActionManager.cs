@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class ActionManager : MonoBehaviour
 {
@@ -10,17 +11,20 @@ public class ActionManager : MonoBehaviour
 	int tempNum = 0;
 	UIManager uiManager;
 	TurnManager turnManager;
+	EntityManager entityManager;
 
 	bool chosenMove = false;
+	AbilitySO chosenAbility;
+
 	//public event Action clicked;
 	internal void ResolveEnemy(EntitySO dequeue)
 	{
 		//random.Next(1, 3);
 
+		PauseAMoment();
 		AbilitySO abilitySO = dequeue.getAbility(tempNum);
 		if (abilitySO != null)
 		{
-			PauseAMoment();
 			ConfirmAbility(dequeue, abilitySO);
 		}
 		Debug.Log("Just a debug here teehee");
@@ -29,19 +33,34 @@ public class ActionManager : MonoBehaviour
 	private void ConfirmAbility(EntitySO dequeue, AbilitySO abilitySO)
 	{
 		PauseAMoment();
-		if (abilitySO.target != Targeting.Self)
+		if (abilitySO.target == Targeting.Self)
 		{
-
+			if(abilitySO.AbilityEffectType == AbilityEffectType.Health)
+			{
+				entityManager.HandleAbility(abilitySO, dequeue);
+			}
 		}
 		else
 		{
-			if (abilitySO.AbilityEffectType == AbilityEffectType.Health)
-			{
-				//dequeue.ChangeHealth(-abilitySO.damage);
-				
-			}
-
+			
 		}
+	}
+	public void ConfirmAbility(AbilityButton button)
+	{
+		if (button != null) 
+		{
+			//Debug.Log(button.GetComponent<AbilityButton>().GetTargeting().ToString());
+			chosenAbility = button.GetAbility();
+			entityManager.GetTargets(button);
+				//}
+		}
+	}
+
+	public void FinalizeAbility(EntityButton entity)
+	{
+		entityManager.HandleAbility(chosenAbility, entity.GetEntity());
+		chosenMove = true;
+		ResolvePlayer(entity.GetEntity());
 	}
 
 	internal void ResolvePlayer(EntitySO dequeue)
@@ -49,7 +68,7 @@ public class ActionManager : MonoBehaviour
 		
 		if(chosenMove)
 		{
-
+			chosenMove = false;
 			turnManager.TurnEnd(dequeue);
 		}
 		Debug.Log("Its the players turn GRAAAAHG");
@@ -60,6 +79,7 @@ public class ActionManager : MonoBehaviour
     {
         uiManager = GetComponent<UIManager>();
 		turnManager = GetComponent<TurnManager>();
+		entityManager = GetComponent<EntityManager>();
     }
 
     // Update is called once per frame
@@ -72,6 +92,6 @@ public class ActionManager : MonoBehaviour
 
 	IEnumerator PauseAMoment()
 	{
-		yield return new WaitForSeconds(100);
+		yield return new WaitForSeconds(500);
 	}
 }

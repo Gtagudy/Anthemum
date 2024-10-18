@@ -10,6 +10,7 @@ using UnityEngine;
 public class StatSO : ScriptableObject
 {
 	public int health;
+	[SerializeField] int originalHealth;
 
 	public int attack;
 

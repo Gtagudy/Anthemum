@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Ability", menuName = "ScriptableObject/CombatScene")]
+[CreateAssetMenu(fileName = "CombatScene", menuName = "ScriptableObject/CombatScene")]
 public class CombatSceneSO : ScriptableObject
 {
 	

@@ -45,7 +45,6 @@ public class EntitySO : IScriptableObject
 	{
 		return this.GetComponent<Transform>();
 	}
-
 	public void ChangeHealth(int v)
 	{
 		Stats.health -= v;

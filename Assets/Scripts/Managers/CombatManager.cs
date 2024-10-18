@@ -7,9 +7,12 @@ public class CombatManager : MonoBehaviour
 {
 
     TurnManager turnManager;
+    EntityManager entityManager;
 	public void StartCombat(EntitySO[] players, EntitySO[] enemies)
 	{
         Debug.Log("We now starting combat!");
+
+        entityManager.NotifyOfAll(players, enemies);
         turnManager.QueueEntities(players, enemies);
 
 	}
@@ -22,7 +25,7 @@ public class CombatManager : MonoBehaviour
     {
         turnManager = GetComponent<TurnManager>();
         //actionManager = GetComponent<ActionManager>();
-        //entityManager = GetComponent<EntityManager>();
+        entityManager = GetComponent<EntityManager>();
     }
 
     // Update is called once per frame

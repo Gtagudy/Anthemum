@@ -10,12 +10,7 @@ public class TurnManager : MonoBehaviour
     EntityManager entityManager;
     EntitySO[] tempOrder;
 
-    UIManager uiManager;
-
-    EntitySO[] players;
-    EntitySO[] enemies;
-
-    
+    UIManager uiManager;    
 
 	// Start is called before the first frame update
 	void Awake()
@@ -46,8 +41,8 @@ public class TurnManager : MonoBehaviour
     {
         Debug.Log("Alright, turn is over for" + playerTurn);
         Debug.Log("Here is your new health " + playerTurn + ": " + playerTurn.GetHealth());
-        
 
+        queue = entityManager.ReqeueuEntities(queue);
     }
 
     void NextTurn(EntitySO playerTurn)
@@ -105,5 +100,4 @@ public class TurnManager : MonoBehaviour
             }
         }
 	}
-
 }

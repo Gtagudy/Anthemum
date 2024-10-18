@@ -25,15 +25,23 @@ public class UIManager : MonoBehaviour
 	[SerializeField] GameObject GamePanel;
     [SerializeField] GameObject CommandPanel;
     [SerializeField] GameObject MoveListDisplay;
+	[SerializeField] GameObject enemyTargetDisplay;
+	[SerializeField] GameObject playerTargetDisplay;
 
-    [SerializeField] TextMeshProUGUI StateMachine;
+
+	[SerializeField] TextMeshProUGUI StateMachine;
     [SerializeField] TextMeshProUGUI EntityTurn;
-    [SerializeField] Button ButtonExample;
+    [SerializeField] Button AbilityButton;
+    [SerializeField] Button EntityButton;
     [SerializeField] List<Button> MoveListClick;
 
     //[SerializeField] Scrollbar[] healthBars;
     [SerializeField] TextMeshProUGUI playerHealth;
     [SerializeField] TextMeshProUGUI enemyHealth;
+
+    private bool movesCreated = false;
+    private bool playerGenerated = false;
+    private bool enemyGenerated = false;
 
 	internal void CreateHealthBars(EntitySO entity)
 	{
@@ -79,15 +87,17 @@ public class UIManager : MonoBehaviour
 
 	private void CreateMoves(EntitySO playerTurn)
 	{
-		for (int i = 0; i < playerTurn.GetAbilities().Count; i++)
-		{
-			ButtonExample.GetComponent<AbilityButton>().UpdateAbility(playerTurn.GetAbilities()[i]);
-			ButtonExample.GetComponentInChildren<TextMeshProUGUI>().text = playerTurn.GetAbilities()[i].name;
-			MoveListClick.Add(ButtonExample);
-			float offset = i * 0.2f;
-			Vector2 position = MoveListDisplay.transform.position + transform.right * offset;
-			Instantiate(ButtonExample.gameObject, MoveListDisplay.transform);
-		}
+        if(!movesCreated)
+        {
+		    for (int i = 0; i < playerTurn.GetAbilities().Count; i++)
+		    {
+                movesCreated = true;
+			    AbilityButton.GetComponent<AbilityButton>().UpdateAbility(playerTurn.GetAbilities()[i]);
+			    AbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = playerTurn.GetAbilities()[i].name;
+			    MoveListClick.Add(AbilityButton);
+			    Instantiate(AbilityButton.gameObject, MoveListDisplay.transform);
+		    }
+        }
 	}
 
 	void Awake()
@@ -101,4 +111,54 @@ public class UIManager : MonoBehaviour
     {
         
     }
+
+	internal void LetPlayerTarget(AbilityButton button, EntitySO[] enemies, EntitySO[] players)
+	{
+        
+        if(button.GetAbility().AbilityEffectType == AbilityEffectType.Damage)
+        {
+            enemyTargetDisplay.SetActive(true);
+            playerTargetDisplay.SetActive(false);
+            if(!enemyGenerated)
+            {
+                enemyGenerated = true;
+		        for (int i = 0; i < enemies.Length; i++)
+		        {
+                    EntityButton.GetComponent<EntityButton>().UpdateEntity(enemies[i]);
+                    EntityButton.GetComponentInChildren<TextMeshProUGUI>().text = enemies[i].name;
+			        Instantiate(EntityButton.gameObject, enemyTargetDisplay.transform);
+		        }
+            }
+        }
+        else if(button.GetAbility().AbilityEffectType == AbilityEffectType.Health)
+        {
+            playerTargetDisplay.SetActive(true);
+            enemyTargetDisplay.SetActive(false);
+            if(!playerGenerated)
+            {
+                playerGenerated = true;
+                if(button.GetAbility().target == Targeting.Self)
+                {
+				    for (int i = 0; i < enemies.Length; i++)
+				    {
+					    EntityButton.GetComponent<EntityButton>().UpdateEntity(players[i]);
+					    EntityButton.GetComponentInChildren<TextMeshProUGUI>().text = players[i].name;
+					    Instantiate(EntityButton.gameObject, playerTargetDisplay.transform);
+				    }
+			    }
+            }
+        }
+	}
+
+	internal void UpdateHealth(EntitySO entity)
+	{
+		if(entity.isPlayer)
+        {
+            playerHealth.text = entity.GetHealth().ToString();
+        }
+        else
+        {
+            enemyHealth.text = entity.GetHealth().ToString();
+        }
+	}
 }

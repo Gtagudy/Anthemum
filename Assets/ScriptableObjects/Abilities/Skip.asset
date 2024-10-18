@@ -17,7 +17,7 @@ MonoBehaviour:
   icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   actionPoints: 0
   cooldown: 0
-  damage: 10
+  damage: -10
   AOE: 0
-  target: 0
+  target: 2
   AbilityEffectType: 1

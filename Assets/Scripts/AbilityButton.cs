@@ -16,5 +16,17 @@ public class AbilityButton : MonoBehaviour
 	{
 		this.AbilitySO = abilitySO;
 	}
+	public AbilitySO GetAbility()
+	{
+		return this.AbilitySO;
+	}
+	public Targeting GetTargeting()
+	{
+		return AbilitySO.target;
+	}
+	public AbilityEffectType GetEffectType()
+	{
+		return AbilitySO.AbilityEffectType;
+	}
 }
 
