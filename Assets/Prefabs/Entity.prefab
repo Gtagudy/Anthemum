@@ -214,6 +214,7 @@ MonoBehaviour:
   entity: {fileID: 11400000, guid: 69092dd618de4cf4fb75af226f2a40a6, type: 2}
   healthChange: {fileID: 11400000, guid: df6b9efec697b7042b6fc7ec32d87649, type: 2}
   Health: {fileID: 0}
+  myTurn: {fileID: 0}
 --- !u!1 &4410404764336659159
 GameObject:
   m_ObjectHideFlags: 0
