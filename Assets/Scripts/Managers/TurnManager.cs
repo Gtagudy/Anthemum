@@ -10,6 +10,8 @@ public class TurnManager : MonoBehaviour
     EntityManager entityManager;
     CombatEntity[] tempOrder;
 
+    CombatEntity CurrentTurn;
+
     UIManager uiManager;    
 
 	// Start is called before the first frame update
@@ -29,9 +31,17 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    public CombatEntity GetCombatEntity()
+    {
+        return CurrentTurn;
+    }
     void TurnStart(CombatEntity playerTurn)
     {
-        playerTurn.GetMovesDisplay().SetActive(true);
+        CurrentTurn = playerTurn;
+        if(playerTurn.GetEntitySO().isPlayer)
+        {
+            playerTurn.GetMovesDisplay().SetActive(true);
+        }
         Debug.Log("Now, it seems it is " + playerTurn + " turn");
         Debug.Log("Heres your health" + playerTurn.GetEntitySO().GetHealth());
         uiManager.WhoseTurn(playerTurn);
@@ -40,8 +50,10 @@ public class TurnManager : MonoBehaviour
 
     public void TurnEnd(CombatEntity playerTurn)
     {
-		playerTurn.GetMovesDisplay().SetActive(false);
-
+        if (playerTurn.GetEntitySO().isPlayer)
+        {
+            playerTurn.GetMovesDisplay().SetActive(false);
+        }
 		Debug.Log("Alright, turn is over for" + playerTurn);
         Debug.Log("Here is your new health " + playerTurn + ": " + playerTurn.GetEntitySO().GetHealth());
 
@@ -91,7 +103,8 @@ public class TurnManager : MonoBehaviour
 		}
 		tempOrder = tempOrder.OrderByDescending(
         (entity) => 
-        entity.GetEntitySO().GetSpeed())
+        entity.GetEntitySO()
+        .GetSpeed())
         .ToArray();
         foreach (CombatEntity entity in tempOrder) 
         {

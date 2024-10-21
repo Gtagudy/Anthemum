@@ -25,8 +25,6 @@ public class CombatEntity : MonoBehaviour
 	void Awake()
     {
         //Health = entity.GetHealthBar();
-
-        MoveListDisplay = GameObject.FindGameObjectWithTag("MovePanel");
 	}
 
     // Update is called once per frame

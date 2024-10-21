@@ -9,14 +9,12 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    TurnManager turnManager;
     public IntGameEvent changeHealth;
 	public UnityAction<int> intReact;
     public GameEventListener gameEventListener;
 
     public UnityEvent displayMoves;
-
-    
-
 	/*
     The UI Manage is a manager made along with the GameManager. The UI will even begin at Title,
     working throughout the game in both the World and the Combat
@@ -39,6 +37,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI playerHealth;
     [SerializeField] TextMeshProUGUI enemyHealth;
 
+    CombatEntity combatEntity;
     private bool movesCreated = false;
     private bool playerGenerated = false;
     private bool enemyGenerated = false;
@@ -60,10 +59,12 @@ public class UIManager : MonoBehaviour
         healthBars[]*/
 	}
 
-	public void DisplayMoves(CombatEntity dequeue)
+	public void DisplayMoves()
 	{
-
-        dequeue.GetMovesDisplay().SetActive(true);
+		combatEntity = turnManager.GetCombatEntity();
+        Debug.Log(combatEntity.GetEntitySO().name + " is the mf whos moves should show");
+		combatEntity.GetMovesDisplay().SetActive(true);
+        //dequeue.GetMovesDisplay().SetActive(true);
         //CommandPanel.SetActive(false);
 
         //dequeue.get
@@ -74,9 +75,12 @@ public class UIManager : MonoBehaviour
 
     public void HideMoves()
     {
-        MoveListDisplay.SetActive(false);
-        CommandPanel.SetActive(true);
-    }
+		combatEntity = turnManager.GetCombatEntity();
+
+		combatEntity.GetMovesDisplay().SetActive(true);
+		//MoveListDisplay.SetActive(false);
+		//CommandPanel.SetActive(true);
+	}
 
 	internal void WhoseTurn(CombatEntity playerTurn)
 	{
@@ -103,6 +107,7 @@ public class UIManager : MonoBehaviour
     {
         //MoveListDisplay.RegisterListener(gameEventListener);
         //displayMoves.AddListener(DisplayMoves());
+        turnManager = GetComponent<TurnManager>();
     }
 
     // Update is called once per frame
