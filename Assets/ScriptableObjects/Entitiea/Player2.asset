@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62acf95fb1bf94b4585f09f568993886, type: 3}
+  m_Name: Player2
+  m_EditorClassIdentifier: 
+  entityName: You two
+  entityDescription: 
+  Ability:
+  - {fileID: 11400000, guid: 926e9f2c593704b4aa3e0db8e71d61bf, type: 2}
+  - {fileID: 11400000, guid: 807f82ce30a186b4590706bd4f0391b9, type: 2}
+  - {fileID: 11400000, guid: 1974c4c79492af148a0821bed2f4869a, type: 2}
+  Stats: {fileID: 11400000, guid: 119ba81da0b78234f8beb24e9a2040d7, type: 2}
+  isPlayer: 1

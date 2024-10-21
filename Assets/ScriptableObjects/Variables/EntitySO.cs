@@ -16,7 +16,6 @@ public class EntitySO : IScriptableObject
 	[SerializeField] List<AbilitySO> Ability;
 
 	[SerializeField] StatSO Stats;
-
 	//[SerializeField] Scrollbar Health;
 
 	public bool isPlayer = false;

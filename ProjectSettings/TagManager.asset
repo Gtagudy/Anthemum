@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Managers
+  - SmallPanel
+  - Healthbar
+  - MovePanel
   layers:
   - Default
   - TransparentFX

@@ -96,7 +96,7 @@ public class TurnManager : MonoBehaviour
             {
                 Debug.Log("Well well, get QUEUED" + entity.name);
                 queue.Enqueue(entity);
-                uiManager.CreateHealthBars(entity);
+                //uiManager.CreateHealthBars(entity);
             }
         }
 	}
