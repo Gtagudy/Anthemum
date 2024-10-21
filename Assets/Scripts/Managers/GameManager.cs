@@ -14,8 +14,8 @@ public class GameManager : MonoBehaviour
     */
     GameState gameState = GameState.Combat;
 
-    [SerializeField] EntitySO[] Players;
-    [SerializeField] EntitySO[] Enemies;
+    [SerializeField] CombatEntity[] Players;
+    [SerializeField] CombatEntity[] Enemies;
 
     CombatManager combatManager;
 

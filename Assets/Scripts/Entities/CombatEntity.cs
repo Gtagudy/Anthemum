@@ -13,7 +13,7 @@ public class CombatEntity : MonoBehaviour
 
     [SerializeField] EntitySO entity;
 	
-    [SerializeField] Scrollbar Health;
+    [SerializeField] Slider Health;
     
     [SerializeField] GameObject myTurn;
 	[SerializeField] GameObject MoveListDisplay;
@@ -46,7 +46,15 @@ public class CombatEntity : MonoBehaviour
     {
         return MoveListDisplay.GetComponent<GameObject>();
     }
-    internal EntitySO GetEntitySO()
+	internal GameObject GetEnemyDisplay()
+	{
+		return enemyTargetDisplay.GetComponent<GameObject>();
+	}
+	internal GameObject GetPlayerDisplay()
+	{
+		return playerTargetDisplay.GetComponent<GameObject>();
+	}
+	public EntitySO GetEntitySO()
     {
         return entity;
     }

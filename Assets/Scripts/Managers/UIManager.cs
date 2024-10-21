@@ -60,11 +60,13 @@ public class UIManager : MonoBehaviour
         healthBars[]*/
 	}
 
-	public void DisplayMoves(EntitySO dequeue)
+	public void DisplayMoves(CombatEntity dequeue)
 	{
 
-        MoveListDisplay.SetActive(true);
-        CommandPanel.SetActive(false);
+        dequeue.GetMovesDisplay().SetActive(true);
+        //CommandPanel.SetActive(false);
+
+        //dequeue.get
      
 		/*MoveListDisplay.SetActive(false);
 		CommandPanel.SetActive(true);*/
@@ -76,28 +78,25 @@ public class UIManager : MonoBehaviour
         CommandPanel.SetActive(true);
     }
 
-	internal void WhoseTurn(EntitySO playerTurn)
+	internal void WhoseTurn(CombatEntity playerTurn)
 	{
-        EntityTurn.text = playerTurn.entityName;
-        if(playerTurn.isPlayer)
+        EntityTurn.text = playerTurn.GetEntitySO().entityName;
+        if(playerTurn.GetEntitySO().isPlayer)
         {
             CreateMoves(playerTurn);
         }
 	}
 
-	private void CreateMoves(EntitySO playerTurn)
+	private void CreateMoves(CombatEntity playerTurn)
 	{
-        if(!movesCreated)
-        {
-		    for (int i = 0; i < playerTurn.GetAbilities().Count; i++)
+		    for (int i = 0; i < playerTurn.GetEntitySO().GetAbilities().Count; i++)
 		    {
                 movesCreated = true;
-			    AbilityButton.GetComponent<AbilityButton>().UpdateAbility(playerTurn.GetAbilities()[i]);
-			    AbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = playerTurn.GetAbilities()[i].name;
+			    AbilityButton.GetComponent<AbilityButton>().UpdateAbility(playerTurn.GetEntitySO().GetAbilities()[i]);
+			    AbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = playerTurn.GetEntitySO().GetAbilities()[i].name;
 			    MoveListClick.Add(AbilityButton);
-			    Instantiate(AbilityButton.gameObject, MoveListDisplay.transform);
+			    Instantiate(AbilityButton.gameObject, playerTurn.GetMovesDisplay().transform);
 		    }
-        }
 	}
 
 	void Awake()
@@ -112,7 +111,7 @@ public class UIManager : MonoBehaviour
         
     }
 
-	internal void LetPlayerTarget(AbilityButton button, EntitySO[] enemies, EntitySO[] players)
+	internal void LetPlayerTarget(AbilityButton button, CombatEntity[] enemies, CombatEntity[] players)
 	{
         
         if(button.GetAbility().AbilityEffectType == AbilityEffectType.Damage)

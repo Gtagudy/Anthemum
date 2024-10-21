@@ -9,14 +9,14 @@ public class EntityManager : MonoBehaviour
 {
     ActionManager actionManager;
     UIManager uiManager;
-    EntitySO[] Players;
-    EntitySO[] Enemies;
+	CombatEntity[] Players;
+	CombatEntity[] Enemies;
 
-	public void CheckEntity(EntitySO dequeue)
+	public void CheckEntity(CombatEntity dequeue)
 	{
 		if(dequeue != null)
         {
-            if (dequeue.isPlayer == true)
+            if (dequeue.GetEntitySO().isPlayer == true)
             {
 
                 Debug.Log("Welcome player!");
@@ -42,7 +42,7 @@ public class EntityManager : MonoBehaviour
 		uiManager.UpdateHealth(entity);
 	}
 
-	internal void NotifyOfAll(EntitySO[] players, EntitySO[] enemies)
+	internal void NotifyOfAll(CombatEntity[] players, CombatEntity[] enemies)
 	{
         Players = players;
         Enemies = enemies;
@@ -58,14 +58,14 @@ public class EntityManager : MonoBehaviour
 
 	internal Queue ReqeueuEntities(Queue queue)
 	{
-		EntitySO[] tempOrder = new EntitySO[Players.Length + Enemies.Length];
+		CombatEntity[] tempOrder = new CombatEntity[Players.Length + Enemies.Length];
 
 		Debug.Log("The game is " + tempOrder.Length + " entities long");
 
 
 		int i = 0;
 
-		foreach (EntitySO entity in Players)
+		foreach (CombatEntity entity in Players)
 		{
 			if (entity != null)
 			{
@@ -74,7 +74,7 @@ public class EntityManager : MonoBehaviour
 				i++;
 			}
 		}
-		foreach (EntitySO entity in Enemies)
+		foreach (CombatEntity entity in Enemies)
 		{
 			if (entity != null)
 			{
@@ -85,9 +85,9 @@ public class EntityManager : MonoBehaviour
 		}
 		tempOrder = tempOrder.OrderByDescending(
 		(entity) =>
-		entity.GetSpeed())
+		entity.GetEntitySO().GetSpeed())
 		.ToArray();
-		foreach (EntitySO entity in tempOrder)
+		foreach (CombatEntity entity in tempOrder)
 		{
 			if (entity != null)
 			{

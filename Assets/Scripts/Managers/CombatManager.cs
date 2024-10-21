@@ -8,7 +8,7 @@ public class CombatManager : MonoBehaviour
 
     TurnManager turnManager;
     EntityManager entityManager;
-	public void StartCombat(EntitySO[] players, EntitySO[] enemies)
+	public void StartCombat(CombatEntity[] players, CombatEntity[] enemies)
 	{
         Debug.Log("We now starting combat!");
 

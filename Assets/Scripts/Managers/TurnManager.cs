@@ -8,7 +8,7 @@ public class TurnManager : MonoBehaviour
 {
     Queue queue = new Queue();
     EntityManager entityManager;
-    EntitySO[] tempOrder;
+    CombatEntity[] tempOrder;
 
     UIManager uiManager;    
 
@@ -25,27 +25,30 @@ public class TurnManager : MonoBehaviour
         if(queue.Count > 0)
         {
             Debug.Log("Oho look whose turn it is " + queue.Peek());
-			NextTurn((EntitySO)queue.Dequeue());
+			NextTurn((CombatEntity)queue.Dequeue());
         }
     }
 
-    void TurnStart(EntitySO playerTurn)
+    void TurnStart(CombatEntity playerTurn)
     {
+        playerTurn.GetMovesDisplay().SetActive(true);
         Debug.Log("Now, it seems it is " + playerTurn + " turn");
-        Debug.Log("Heres your health" + playerTurn.GetHealth());
+        Debug.Log("Heres your health" + playerTurn.GetEntitySO().GetHealth());
         uiManager.WhoseTurn(playerTurn);
-        entityManager.CheckEntity((EntitySO)playerTurn);
+        entityManager.CheckEntity((CombatEntity)playerTurn);
     }
 
-    public void TurnEnd(EntitySO playerTurn)
+    public void TurnEnd(CombatEntity playerTurn)
     {
-        Debug.Log("Alright, turn is over for" + playerTurn);
-        Debug.Log("Here is your new health " + playerTurn + ": " + playerTurn.GetHealth());
+		playerTurn.GetMovesDisplay().SetActive(false);
+
+		Debug.Log("Alright, turn is over for" + playerTurn);
+        Debug.Log("Here is your new health " + playerTurn + ": " + playerTurn.GetEntitySO().GetHealth());
 
         queue = entityManager.ReqeueuEntities(queue);
     }
 
-    void NextTurn(EntitySO playerTurn)
+    void NextTurn(CombatEntity playerTurn)
     {
         if (entityManager != null)
         {
@@ -59,16 +62,16 @@ public class TurnManager : MonoBehaviour
 		
 	}
 
-	public void QueueEntities(EntitySO[] players, EntitySO[] enemies)
+	public void QueueEntities(CombatEntity[] players, CombatEntity[] enemies)
 	{
-        EntitySO[] tempOrder = new EntitySO[players.Length + enemies.Length];
+		tempOrder = new CombatEntity[players.Length + enemies.Length];
 
         Debug.Log("The game is " + tempOrder.Length + " entities long");
 
 
         int i = 0;
 
-        foreach (EntitySO entity in players)
+        foreach (CombatEntity entity in players)
         {
             if (entity != null)
             {
@@ -77,7 +80,7 @@ public class TurnManager : MonoBehaviour
                 i++;
             }
         }
-		foreach (EntitySO entity in enemies)
+		foreach (CombatEntity entity in enemies)
 		{
 			if (entity != null)
 			{
@@ -88,9 +91,9 @@ public class TurnManager : MonoBehaviour
 		}
 		tempOrder = tempOrder.OrderByDescending(
         (entity) => 
-        entity.GetSpeed())
+        entity.GetEntitySO().GetSpeed())
         .ToArray();
-        foreach (EntitySO entity in tempOrder) 
+        foreach (CombatEntity entity in tempOrder) 
         {
             if(entity != null)
             {

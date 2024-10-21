@@ -7,14 +7,14 @@ using UnityEngine;
 
 public class EntityButton : MonoBehaviour
 {
-	[SerializeField] EntitySO entitySO;
+	[SerializeField] CombatEntity combatEntity;
 
-	internal void UpdateEntity(EntitySO entitySO)
+	internal void UpdateEntity(CombatEntity combatEntity)
 	{
-		this.entitySO = entitySO;
+		this.combatEntity = combatEntity;
 	}
-	internal EntitySO GetEntity()
+	public CombatEntity GetEntity()
 	{
-		return entitySO;
+		return combatEntity;
 	}
 }

@@ -17,15 +17,15 @@ public class ActionManager : MonoBehaviour
 	AbilitySO chosenAbility;
 
 	//public event Action clicked;
-	internal void ResolveEnemy(EntitySO dequeue)
+	internal void ResolveEnemy(CombatEntity dequeue)
 	{
 		//random.Next(1, 3);
 
 		PauseAMoment();
-		AbilitySO abilitySO = dequeue.getAbility(tempNum);
+		AbilitySO abilitySO = dequeue.GetEntitySO().getAbility(tempNum);
 		if (abilitySO != null)
 		{
-			ConfirmAbility(dequeue, abilitySO);
+			ConfirmAbility(dequeue.GetEntitySO(), abilitySO);
 		}
 		Debug.Log("Just a debug here teehee");
 	}
@@ -58,12 +58,12 @@ public class ActionManager : MonoBehaviour
 
 	public void FinalizeAbility(EntityButton entity)
 	{
-		entityManager.HandleAbility(chosenAbility, entity.GetEntity());
+		entityManager.HandleAbility(chosenAbility, entity.GetEntity().GetEntitySO());
 		chosenMove = true;
 		ResolvePlayer(entity.GetEntity());
 	}
 
-	internal void ResolvePlayer(EntitySO dequeue)
+	internal void ResolvePlayer(CombatEntity dequeue)
 	{
 		
 		if(chosenMove)
