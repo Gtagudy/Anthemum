@@ -20,7 +20,7 @@ public class EntityManager : MonoBehaviour
             {
 
                 Debug.Log("Welcome player!");
-                actionManager.ResolvePlayer(dequeue);
+                //actionManager.ResolvePlayer(dequeue);
 
             }
             else

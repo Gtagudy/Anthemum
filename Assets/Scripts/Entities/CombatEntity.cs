@@ -42,15 +42,15 @@ public class CombatEntity : MonoBehaviour
 
     internal GameObject GetMovesDisplay()
     {
-        return MoveListDisplay.GetComponent<GameObject>();
+        return MoveListDisplay;
     }
 	internal GameObject GetEnemyDisplay()
 	{
-		return enemyTargetDisplay.GetComponent<GameObject>();
+		return enemyTargetDisplay;
 	}
 	internal GameObject GetPlayerDisplay()
 	{
-		return playerTargetDisplay.GetComponent<GameObject>();
+		return playerTargetDisplay;
 	}
 	public EntitySO GetEntitySO()
     {

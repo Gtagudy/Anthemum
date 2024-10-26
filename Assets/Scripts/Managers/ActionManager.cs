@@ -66,12 +66,12 @@ public class ActionManager : MonoBehaviour
 	internal void ResolvePlayer(CombatEntity dequeue)
 	{
 		
-		if(chosenMove)
+		/*if(chosenMove)
 		{
 			chosenMove = false;
 			turnManager.TurnEnd(dequeue);
 		}
-		Debug.Log("Its the players turn GRAAAAHG");
+		Debug.Log("Its the players turn GRAAAAHG");*/
 	}
 
 	// Start is called before the first frame update

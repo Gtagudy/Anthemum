@@ -26,8 +26,11 @@ public class TurnManager : MonoBehaviour
     {
         if(queue.Count > 0)
         {
-            Debug.Log("Oho look whose turn it is " + queue.Peek());
-			NextTurn((CombatEntity)queue.Dequeue());
+            if(CurrentTurn == null)
+            {
+                Debug.Log("Oho look whose turn it is " + queue.Peek());
+			    NextTurn((CombatEntity)queue.Dequeue());
+            }
         }
     }
 
@@ -38,10 +41,10 @@ public class TurnManager : MonoBehaviour
     void TurnStart(CombatEntity playerTurn)
     {
         CurrentTurn = playerTurn;
-        if(playerTurn.GetEntitySO().isPlayer)
+        /*if(playerTurn.GetEntitySO().isPlayer)
         {
             playerTurn.GetMovesDisplay().SetActive(true);
-        }
+        }*/
         Debug.Log("Now, it seems it is " + playerTurn + " turn");
         Debug.Log("Heres your health" + playerTurn.GetEntitySO().GetHealth());
         uiManager.WhoseTurn(playerTurn);

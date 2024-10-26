@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject MoveListDisplay;
 	[SerializeField] GameObject enemyTargetDisplay;
 	[SerializeField] GameObject playerTargetDisplay;
+    [SerializeField] Button EndTurn;
 
 
 	[SerializeField] TextMeshProUGUI StateMachine;
@@ -58,7 +59,6 @@ public class UIManager : MonoBehaviour
         Instantiate(healthBars[0]);
         healthBars[]*/
 	}
-
 	public void DisplayMoves()
 	{
 		combatEntity = turnManager.GetCombatEntity();
@@ -90,7 +90,6 @@ public class UIManager : MonoBehaviour
             CreateMoves(playerTurn);
         }
 	}
-
 	private void CreateMoves(CombatEntity playerTurn)
 	{
 		    for (int i = 0; i < playerTurn.GetEntitySO().GetAbilities().Count; i++)
