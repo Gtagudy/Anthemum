@@ -40,6 +40,10 @@ public class EntitySO : IScriptableObject
 	{
 		return Stats.health;
 	}
+	public int GetMaxHealth()
+	{
+		return Stats.originalHealth;
+	}
 	public Transform GetTransform()
 	{
 		return this.GetComponent<Transform>();

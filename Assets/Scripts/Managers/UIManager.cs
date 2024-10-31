@@ -15,6 +15,9 @@ public class UIManager : MonoBehaviour
     public GameEventListener gameEventListener;
 
     public UnityEvent displayMoves;
+
+    IntGameEvent updateHealth;
+    IntListener listenForHealth;
 	/*
     The UI Manage is a manager made along with the GameManager. The UI will even begin at Title,
     working throughout the game in both the World and the Combat
@@ -43,21 +46,11 @@ public class UIManager : MonoBehaviour
     private bool playerGenerated = false;
     private bool enemyGenerated = false;
 
-	internal void CreateHealthBars(EntitySO entity)
+	internal void CreateHealthBars(CombatEntity entity)
 	{
-        if(entity != null)
-        {
-            if(entity.isPlayer)
-            {
-                playerHealth.text = entity.GetHealth().ToString();
-            } else
-            {
-                enemyHealth.text = entity.GetHealth().ToString();
-            }
-        }
-        /*entity.GetTransform();
-        Instantiate(healthBars[0]);
-        healthBars[]*/
+        entity.GetHealthBar().maxValue = entity.GetEntitySO().GetMaxHealth();
+        entity.GetHealthBar().value = entity.GetEntitySO().GetHealth();
+        //updateHealth.RegisterListener(listenForHealth);
 	}
 	public void DisplayMoves()
 	{
@@ -92,14 +85,18 @@ public class UIManager : MonoBehaviour
 	}
 	private void CreateMoves(CombatEntity playerTurn)
 	{
-		    for (int i = 0; i < playerTurn.GetEntitySO().GetAbilities().Count; i++)
-		    {
+        for (int i = 0; i < playerTurn.GetEntitySO().GetAbilities().Count; i++)
+        {
+            if(!playerTurn.movesCreated)
+            {
                 movesCreated = true;
-			    AbilityButton.GetComponent<AbilityButton>().UpdateAbility(playerTurn.GetEntitySO().GetAbilities()[i]);
-			    AbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = playerTurn.GetEntitySO().GetAbilities()[i].name;
-			    MoveListClick.Add(AbilityButton);
-			    Instantiate(AbilityButton.gameObject, playerTurn.GetMovesDisplay().transform);
-		    }
+                AbilityButton.GetComponent<AbilityButton>().UpdateAbility(playerTurn.GetEntitySO().GetAbilities()[i]);
+                AbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = playerTurn.GetEntitySO().GetAbilities()[i].name;
+                MoveListClick.Add(AbilityButton);
+                Instantiate(AbilityButton.gameObject, playerTurn.GetMovesDisplay().transform);
+            }
+        }
+        playerTurn.movesCreated = true;
 	}
 
 	void Awake()
@@ -147,21 +144,16 @@ public class UIManager : MonoBehaviour
 					    EntityButton.GetComponent<EntityButton>().UpdateEntity(players[i]);
 					    EntityButton.GetComponentInChildren<TextMeshProUGUI>().text = players[i].name;
 					    Instantiate(EntityButton.gameObject, playerTargetDisplay.transform);
+                        
 				    }
 			    }
             }
         }
 	}
 
-	internal void UpdateHealth(EntitySO entity)
+	internal void UpdateHealth(CombatEntity entity)
 	{
-		if(entity.isPlayer)
-        {
-            playerHealth.text = entity.GetHealth().ToString();
-        }
-        else
-        {
-            enemyHealth.text = entity.GetHealth().ToString();
-        }
+        //updateHealth.Raise();
+		entity.GetHealthBar().value = entity.GetEntitySO().GetHealth();
 	}
 }

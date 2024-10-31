@@ -12,6 +12,9 @@ public class EntityManager : MonoBehaviour
 	CombatEntity[] Players;
 	CombatEntity[] Enemies;
 
+	IntGameEvent updateHealth;
+	System.Random random = new System.Random();
+
 	public void CheckEntity(CombatEntity dequeue)
 	{
 		if(dequeue != null)
@@ -31,14 +34,22 @@ public class EntityManager : MonoBehaviour
         }
 	}
 
+	internal void GetPlayers(AbilitySO abilitySO, CombatEntity dequeue)
+	{
+		int chosenPlayer = random.Next(Players.Length);
+		Players[chosenPlayer].GetEntitySO().ChangeHealth(abilitySO.damage);
+
+		uiManager.UpdateHealth(Players[chosenPlayer]);
+	}
+
 	internal void GetTargets(AbilityButton button)
 	{
         uiManager.LetPlayerTarget(button, Enemies, Players);
 	}
 
-	internal void HandleAbility(AbilitySO chosenAbility, EntitySO entity)
+	internal void HandleAbility(AbilitySO chosenAbility, CombatEntity entity)
 	{
-        entity.ChangeHealth(chosenAbility.damage);
+        entity.GetEntitySO().ChangeHealth(chosenAbility.damage);
 		uiManager.UpdateHealth(entity);
 	}
 

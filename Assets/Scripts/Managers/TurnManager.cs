@@ -12,24 +12,27 @@ public class TurnManager : MonoBehaviour
 
     CombatEntity CurrentTurn;
 
-    UIManager uiManager;    
+    UIManager uiManager;
+    private bool gameIsOver = false;
 
-	// Start is called before the first frame update
-	void Awake()
+
+
+    // Start is called before the first frame update
+    void Awake()
     {
         entityManager = GetComponent<EntityManager>();
         uiManager = GetComponent<UIManager>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if(queue.Count > 0)
+        if (queue.Count > 0)
         {
-            if(CurrentTurn == null)
+            if (CurrentTurn == null || !gameIsOver)
             {
                 Debug.Log("Oho look whose turn it is " + queue.Peek());
-			    NextTurn((CombatEntity)queue.Dequeue());
+                NextTurn((CombatEntity)queue.Dequeue());
             }
         }
     }
@@ -51,16 +54,18 @@ public class TurnManager : MonoBehaviour
         entityManager.CheckEntity((CombatEntity)playerTurn);
     }
 
-    public void TurnEnd(CombatEntity playerTurn)
+    public void TurnEnd()
     {
-        if (playerTurn.GetEntitySO().isPlayer)
+        if (queue.Count <= 0 && !gameIsOver)
         {
-            playerTurn.GetMovesDisplay().SetActive(false);
+            queue = entityManager.ReqeueuEntities(queue);
         }
-		Debug.Log("Alright, turn is over for" + playerTurn);
-        Debug.Log("Here is your new health " + playerTurn + ": " + playerTurn.GetEntitySO().GetHealth());
+        else if (CurrentTurn == null || !gameIsOver)
+        {
+            Debug.Log("Oho look whose turn it is " + queue.Peek());
+            NextTurn((CombatEntity)queue.Dequeue());
+        }
 
-        queue = entityManager.ReqeueuEntities(queue);
     }
 
     void NextTurn(CombatEntity playerTurn)
@@ -115,7 +120,7 @@ public class TurnManager : MonoBehaviour
             {
                 Debug.Log("Well well, get QUEUED" + entity.name);
                 queue.Enqueue(entity);
-                //uiManager.CreateHealthBars(entity);
+                uiManager.CreateHealthBars(entity);
             }
         }
 	}

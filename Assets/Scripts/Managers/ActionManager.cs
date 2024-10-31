@@ -19,18 +19,16 @@ public class ActionManager : MonoBehaviour
 	//public event Action clicked;
 	internal void ResolveEnemy(CombatEntity dequeue)
 	{
-		//random.Next(1, 3);
-
 		PauseAMoment();
-		AbilitySO abilitySO = dequeue.GetEntitySO().getAbility(tempNum);
+		AbilitySO abilitySO = dequeue.GetEntitySO().getAbility(random.Next(0,1));
 		if (abilitySO != null)
 		{
-			ConfirmAbility(dequeue.GetEntitySO(), abilitySO);
+			ConfirmAbility(dequeue, abilitySO);
 		}
 		Debug.Log("Just a debug here teehee");
 	}
 
-	private void ConfirmAbility(EntitySO dequeue, AbilitySO abilitySO)
+	private void ConfirmAbility(CombatEntity dequeue, AbilitySO abilitySO)
 	{
 		PauseAMoment();
 		if (abilitySO.target == Targeting.Self)
@@ -40,10 +38,14 @@ public class ActionManager : MonoBehaviour
 				entityManager.HandleAbility(abilitySO, dequeue);
 			}
 		}
-		else
+		else if(abilitySO.target == Targeting.Single)
 		{
-			
+			if(abilitySO.AbilityEffectType == AbilityEffectType.Damage)
+			{
+				entityManager.GetPlayers(abilitySO, dequeue);
+			}
 		}
+		turnManager.TurnEnd();
 	}
 	public void ConfirmAbility(AbilityButton button)
 	{
@@ -58,7 +60,7 @@ public class ActionManager : MonoBehaviour
 
 	public void FinalizeAbility(EntityButton entity)
 	{
-		entityManager.HandleAbility(chosenAbility, entity.GetEntity().GetEntitySO());
+		entityManager.HandleAbility(chosenAbility, entity.GetEntity());
 		chosenMove = true;
 		ResolvePlayer(entity.GetEntity());
 	}

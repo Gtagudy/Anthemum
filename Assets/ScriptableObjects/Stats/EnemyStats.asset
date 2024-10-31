@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a63c86f9f0e4b040b7085338bfffc99, type: 3}
   m_Name: EnemyStats
   m_EditorClassIdentifier: 
-  health: 75
+  health: 72
+  originalHealth: 75
   attack: 5
   defense: 1
+  stamina: 3
   speed: 6

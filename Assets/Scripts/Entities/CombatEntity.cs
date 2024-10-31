@@ -20,6 +20,7 @@ public class CombatEntity : MonoBehaviour
 	[SerializeField] GameObject enemyTargetDisplay;
 	[SerializeField] GameObject playerTargetDisplay;
 	private bool isMyTurn = false;
+    public bool movesCreated = false;
 
 	// Start is called before the first frame update
 	void Awake()
@@ -40,6 +41,10 @@ public class CombatEntity : MonoBehaviour
         }
     }
 
+    internal Slider GetHealthBar()
+    {
+        return Health;
+    }
     internal GameObject GetMovesDisplay()
     {
         return MoveListDisplay;
