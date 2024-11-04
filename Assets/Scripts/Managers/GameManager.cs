@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -17,7 +18,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] CombatEntity[] Players;
     [SerializeField] CombatEntity[] Enemies;
 
+    [SerializeField] public Tuple<int, int> gridMap = new(5, 5);
+
     CombatManager combatManager;
+
+
 
     private bool startedCombat = false;
 
@@ -37,7 +42,7 @@ public class GameManager : MonoBehaviour
                 {
                     startedCombat = true;
                     Debug.Log("Combat!");
-                    combatManager.StartCombat(Players, Enemies);
+                    combatManager.StartCombat(Players, Enemies, gridMap);
                 }
                 break;
         }

@@ -8,17 +8,17 @@ public class CombatManager : MonoBehaviour
 
     TurnManager turnManager;
     EntityManager entityManager;
-	public void StartCombat(CombatEntity[] players, CombatEntity[] enemies)
+    GridManager gridManager;
+
+	public void StartCombat(CombatEntity[] players, CombatEntity[] enemies, Tuple<int, int> grid)
 	{
         Debug.Log("We now starting combat!");
 
+        gridManager.CreateGridMap(grid);
         entityManager.NotifyOfAll(players, enemies);
         turnManager.QueueEntities(players, enemies);
 
 	}
-
-    
-
 
 	// Start is called before the first frame update
 	void Awake()
@@ -26,6 +26,7 @@ public class CombatManager : MonoBehaviour
         turnManager = GetComponent<TurnManager>();
         //actionManager = GetComponent<ActionManager>();
         entityManager = GetComponent<EntityManager>();
+        gridManager = GetComponent<GridManager>();
     }
 
     // Update is called once per frame
