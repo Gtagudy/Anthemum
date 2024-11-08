@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -22,10 +23,12 @@ public class CombatEntity : MonoBehaviour
 	private bool isMyTurn = false;
     public bool movesCreated = false;
 
+    [SerializeField] int x;
+    [SerializeField] int y;
+
 	// Start is called before the first frame update
 	void Awake()
     {
-        //Health = entity.GetHealthBar();
 	}
 
     // Update is called once per frame
@@ -60,5 +63,23 @@ public class CombatEntity : MonoBehaviour
 	public EntitySO GetEntitySO()
     {
         return entity;
+    }
+
+	internal int GetGridPositionX()
+	{
+        return x;
+	}
+    internal int GetGridPositionY()
+	{
+        return y;
+	}
+
+	internal void UpdatePosition(Transform transform)
+	{
+		this.transform.position = transform.position + (transform.up / 2);
+	}
+    internal void UpdateGridPosition()
+    {
+
     }
 }

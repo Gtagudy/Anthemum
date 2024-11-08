@@ -10,14 +10,14 @@ public class CombatManager : MonoBehaviour
     EntityManager entityManager;
     GridManager gridManager;
 
-	public void StartCombat(CombatEntity[] players, CombatEntity[] enemies, Tuple<int, int> grid)
+	public void StartCombat(CombatEntity[] players, CombatEntity[] enemies, int[,] grid)
 	{
         Debug.Log("We now starting combat!");
 
         gridManager.CreateGridMap(grid);
         entityManager.NotifyOfAll(players, enemies);
         turnManager.QueueEntities(players, enemies);
-
+        gridManager.SetEntitiesToGrid(players, enemies);
 	}
 
 	// Start is called before the first frame update

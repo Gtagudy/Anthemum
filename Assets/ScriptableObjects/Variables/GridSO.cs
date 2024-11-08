@@ -6,12 +6,37 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class GridSO
+[CreateAssetMenu(fileName = "GridPoint", menuName = "ScriptableObject/GridPoint")]
+
+public class GridSO : IScriptableObject
 {
 	[SerializeField] EntitySO entityHere;
 	[SerializeField] bool obstructionHere;
 
 	[SerializeField] GameObject GameObject;
 
-	[SerializeField] Tuple<int, int> gridPosition;
+	[SerializeField] int[,] gridPosition;
+	[SerializeField] int gridX;
+	[SerializeField] int gridY;
+
+	void Start()
+	{
+	}
+
+	public void UpdatePosition(int x, int y)
+	{
+		int[,] newPoint = new int[x,y]; 
+
+		this.gridPosition = newPoint;
+
+		gridX = x;
+		gridY = y;
+
+		Debug.Log(gridPosition);
+	}
+
+	public void UpdateEntitySO(EntitySO SO)
+	{
+		entityHere = SO;
+	}
 }

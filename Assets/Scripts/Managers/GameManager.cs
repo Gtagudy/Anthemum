@@ -18,7 +18,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] CombatEntity[] Players;
     [SerializeField] CombatEntity[] Enemies;
 
-    [SerializeField] public Tuple<int, int> gridMap = new(5, 5);
+    public int[,] grid = new int[5,5];
+    CombatSceneSO gameScene;
 
     CombatManager combatManager;
 
@@ -42,7 +43,7 @@ public class GameManager : MonoBehaviour
                 {
                     startedCombat = true;
                     Debug.Log("Combat!");
-                    combatManager.StartCombat(Players, Enemies, gridMap);
+                    combatManager.StartCombat(Players, Enemies, grid);
                 }
                 break;
         }

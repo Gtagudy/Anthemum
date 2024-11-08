@@ -8,6 +8,7 @@ TagManager:
   - SmallPanel
   - Healthbar
   - MovePanel
+  - Grid
   layers:
   - Default
   - TransparentFX

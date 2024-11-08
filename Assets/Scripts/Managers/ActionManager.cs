@@ -15,6 +15,7 @@ public class ActionManager : MonoBehaviour
 
 	bool chosenMove = false;
 	AbilitySO chosenAbility;
+	Camera camera;
 
 	//public event Action clicked;
 	internal void ResolveEnemy(CombatEntity dequeue)
@@ -76,12 +77,31 @@ public class ActionManager : MonoBehaviour
 		Debug.Log("Its the players turn GRAAAAHG");*/
 	}
 
+	public void ReadyToMove(CombatEntity combatEntity)
+	{
+		bool hasMoved = false;
+
+		if(Input.GetMouseButtonDown(0))
+		{
+			Vector3 mousePos = Input.mousePosition;
+			Ray ray = camera.ScreenPointToRay(mousePos);
+
+			if(Physics.Raycast(ray, out RaycastHit hit))
+			{
+				combatEntity.UpdatePosition(hit.transform);
+					
+			}
+		}
+	}
+
 	// Start is called before the first frame update
 	void Awake()
     {
         uiManager = GetComponent<UIManager>();
 		turnManager = GetComponent<TurnManager>();
 		entityManager = GetComponent<EntityManager>();
+
+		camera = Camera.main;
     }
 
     // Update is called once per frame

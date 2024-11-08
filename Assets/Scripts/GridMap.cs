@@ -1,21 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
-public class GridMap : MonoBehaviour
+public class GridMapPoint : MonoBehaviour
 {
-	[SerializeField] GameObject gridSO;
-	internal void CreateGrid(int x, int y)
+	[SerializeField] public GridSO gridSO;
+	internal bool availablePoint;
+	internal float elevation;
+	private TextMeshProUGUI textMeshProUGUI;
+	int debugRotate = 1;
+
+	private void OnMouseDown()
 	{
-		for (int i = 0; i < x; i++)
-		{
-			for(int j = 0; j < y; j++)
-			{
-				Instantiate(gridSO, gridSO.transform);
-			}
-		}
+		GetComponent<Transform>().rotation = Quaternion.Euler(0, debugRotate, debugRotate);
+		debugRotate++;
+	}
+	private void Awake()
+	{
+
+		//this.textMeshProUGUI = GetComponentInChildren<TextMeshProUGUI>();
+	}
+
+	internal void UpdatePosition(int i, int j)
+	{
+		gridSO.UpdatePosition(i, j);
+		//textMeshProUGUI = Instantiate(textMeshProUGUI);
+	}
+
+	private GridSO GetGridSO()
+	{
+		return gridSO;
+	}
+
+	internal void AssignGridSO()
+	{
+		gridSO = ScriptableObject.CreateInstance<GridSO>();
+
+	}
+	public void UpdateEntitySO(EntitySO SO)
+	{
+		gridSO.UpdateEntitySO(SO);
 	}
 }

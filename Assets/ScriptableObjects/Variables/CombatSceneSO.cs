@@ -8,5 +8,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CombatScene", menuName = "ScriptableObject/CombatScene")]
 public class CombatSceneSO : ScriptableObject
 {
-	
+	[SerializeField] CombatEntity[] Players;
+	[SerializeField] CombatEntity[] Enemies;
+
+	[SerializeField] public int[][] grid;
 }
