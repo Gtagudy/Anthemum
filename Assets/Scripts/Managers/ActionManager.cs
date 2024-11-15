@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
+using static System.Collections.Specialized.BitVector32;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class ActionManager : MonoBehaviour
@@ -10,12 +12,60 @@ public class ActionManager : MonoBehaviour
     System.Random random = new System.Random();
 	int tempNum = 0;
 	UIManager uiManager;
-	TurnManager turnManager;
+	public TurnManager turnManager;
 	EntityManager entityManager;
+	GridManager gridManager;
 
-	bool chosenMove = false;
+	public UnityEvent endTurn;
+
+	[SerializeField] bool chosenMove = false;
+
+	bool isMoving = false;
+
 	AbilitySO chosenAbility;
 	Camera camera;
+
+	public ActionStateBase actionState;
+	public ChooseState chooseState = new();
+	public MoveState moveState = new();
+	public TargetState targetState = new();
+	public DecideState decideState = new();
+
+
+	public UnityAction action;
+
+	private void Start()
+	{
+		if(endTurn == null)
+		{
+			endTurn = new UnityEvent();	
+		}
+
+		actionState = decideState;
+
+		actionState.EnterState(this);
+	}
+	
+	public void ChangeState(ActionStateBase newState)
+	{
+		actionState = newState;
+
+		actionState.EnterState(this);
+	}
+    void Update()
+    {
+		actionState.UpdateState(this);
+    }
+
+	public void OnButtonPressed()
+	{
+		actionState.HandleButtonPress(this);
+	}
+
+	public void StepBack()
+	{
+		actionState.HandleStepBack(this);
+	}
 
 	//public event Action clicked;
 	internal void ResolveEnemy(CombatEntity dequeue)
@@ -24,6 +74,7 @@ public class ActionManager : MonoBehaviour
 		AbilitySO abilitySO = dequeue.GetEntitySO().getAbility(random.Next(0,1));
 		if (abilitySO != null)
 		{
+
 			ConfirmAbility(dequeue, abilitySO);
 		}
 		Debug.Log("Just a debug here teehee");
@@ -32,6 +83,10 @@ public class ActionManager : MonoBehaviour
 	private void ConfirmAbility(CombatEntity dequeue, AbilitySO abilitySO)
 	{
 		PauseAMoment();
+		Debug.Log("---------------");
+		Debug.Log("GRAAAAGH");
+		Debug.Log("---------------");
+
 		if (abilitySO.target == Targeting.Self)
 		{
 			if(abilitySO.AbilityEffectType == AbilityEffectType.Health)
@@ -46,7 +101,6 @@ public class ActionManager : MonoBehaviour
 				entityManager.GetPlayers(abilitySO, dequeue);
 			}
 		}
-		turnManager.TurnEnd();
 	}
 	public void ConfirmAbility(AbilityButton button)
 	{
@@ -79,19 +133,15 @@ public class ActionManager : MonoBehaviour
 
 	public void ReadyToMove(CombatEntity combatEntity)
 	{
-		bool hasMoved = false;
+		isMoving = !isMoving;
 
-		if(Input.GetMouseButtonDown(0))
+		if (isMoving && !combatEntity.hasMoved)
 		{
-			Vector3 mousePos = Input.mousePosition;
-			Ray ray = camera.ScreenPointToRay(mousePos);
-
-			if(Physics.Raycast(ray, out RaycastHit hit))
-			{
-				combatEntity.UpdatePosition(hit.transform);
-					
-			}
+			gridManager.MoveEntity(combatEntity, isMoving, camera);
+			isMoving = false;
+			combatEntity.hasMoved = true;
 		}
+
 	}
 
 	// Start is called before the first frame update
@@ -100,15 +150,12 @@ public class ActionManager : MonoBehaviour
         uiManager = GetComponent<UIManager>();
 		turnManager = GetComponent<TurnManager>();
 		entityManager = GetComponent<EntityManager>();
+		gridManager = GetComponent<GridManager>();
 
 		camera = Camera.main;
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
 	
 

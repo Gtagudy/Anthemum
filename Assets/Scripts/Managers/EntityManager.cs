@@ -67,7 +67,7 @@ public class EntityManager : MonoBehaviour
 		}*/
 	}
 
-	internal Queue ReqeueuEntities(Queue queue)
+	public Queue ReqeueuEntities(Queue queue)
 	{
 		CombatEntity[] tempOrder = new CombatEntity[Players.Length + Enemies.Length];
 

@@ -14,35 +14,46 @@ public class GameEnums
 
     public GameState gameState;*/
 }
-    public enum AbilityEffectType
-    {
-        Damage,
-        Health,
-        Buff,
-        Debuff,
-        Stun
-    }    
+public enum AbilityEffectType
+{
+    Damage,
+    Health,
+    Buff,
+    Debuff,
+    Stun
+}    
 
-    public enum Targeting
-    {
-        Single,
-        Multi,
-        Self,
-        AOE
-    }
+public enum Targeting
+{
+    Single,
+    Multi,
+    Self,
+    AOE
+}
 
-    public enum Turns
-    {
-        TurnStart,
-        PlayerTurn,
-        EnemyTurn,
-        TurnEnd
-    }
-    public enum GameState
-    {
-        Title,
-        World,
-        Cutscene,
-        Combat,
-        Pause
-    }
+public enum Turns
+{
+    Preturn,
+    TurnStart,
+    PlayerTurn,
+    EnemyTurn,
+    TurnEnd,
+    PostTurn
+}
+public enum GameState
+{
+    Title,
+    World,
+    Cutscene,
+    Combat,
+    Pause
+}
+
+public enum CombatState
+{
+    Choose,
+    Target,
+    Item,
+    Move,
+    Cutscene
+}

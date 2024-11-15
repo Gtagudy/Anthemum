@@ -11,13 +11,14 @@ using UnityEngine;
 public class GridSO : IScriptableObject
 {
 	[SerializeField] EntitySO entityHere;
-	[SerializeField] bool obstructionHere;
+	[SerializeField] bool obstructionHere = false;
 
 	[SerializeField] GameObject GameObject;
 
 	[SerializeField] int[,] gridPosition;
 	[SerializeField] int gridX;
 	[SerializeField] int gridY;
+
 
 	void Start()
 	{
@@ -31,12 +32,11 @@ public class GridSO : IScriptableObject
 
 		gridX = x;
 		gridY = y;
-
-		Debug.Log(gridPosition);
 	}
 
 	public void UpdateEntitySO(EntitySO SO)
 	{
 		entityHere = SO;
+		obstructionHere = true;
 	}
 }

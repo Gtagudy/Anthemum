@@ -15,22 +15,31 @@ public class GridManager : MonoBehaviour
     [SerializeField] GameObject gridPoint;
 
     [SerializeField] int offset;
-
-    int gridLength;
-
-    int gridWidth;
 	[SerializeField] float gridPointSize = 1.0f;
 
-	GridManager gridManager;
+    public int gridLength;
+    public int gridWidth;
+
+
+	CombatEntity combatEntity;
+	bool isMoving;
+	Camera camera;
+
+	public GridManager(int length, int width)
+	{
+		gridLength = length;
+		gridWidth = width;
+
+		gridPoints = new GridMapPoint[length, width];
+	}
 
 	private void Awake()
 	{
-		gridManager = GetComponent<GridManager>();
+
 	}
-
-
 	internal void CreateGridMap(int[,] grid)
 	{
+
         gridLength = grid.GetLength(0);
         gridWidth = grid.GetLength(1);
 
@@ -101,10 +110,20 @@ public class GridManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
+		if (Input.GetMouseButtonDown(0) && isMoving)
+		{
+			Vector3 mousePos = Input.mousePosition;
+			Ray ray = camera.ScreenPointToRay(mousePos);
+			
+			
 
-
+			if (Physics.Raycast(ray, out RaycastHit hit))
+			{
+				combatEntity.UpdatePosition(hit.transform);
+				isMoving = false;
+			}
+		}
+	}
 	internal void SetEntitiesToGrid(CombatEntity[] players, CombatEntity[] enemies)
 	{
 		for(int i = 0; i < players.Length; i++)
@@ -127,5 +146,12 @@ public class GridManager : MonoBehaviour
 	{
 		return gridPoints[(int)entities[i].GetGridPositionX(),
 						(int)entities[i].GetGridPositionY()];
+	}
+
+	internal void MoveEntity(CombatEntity combatEntity, bool isMoving, Camera camera)
+	{
+		this.combatEntity = combatEntity;
+		this.isMoving = isMoving;
+		this.camera = camera;
 	}
 }

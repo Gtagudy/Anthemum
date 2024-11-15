@@ -54,9 +54,7 @@ public class UIManager : MonoBehaviour
 	}
 	public void DisplayMoves()
 	{
-		combatEntity = turnManager.GetCombatEntity();
-        Debug.Log(combatEntity.GetEntitySO().name + " is the mf whos moves should show");
-		combatEntity.GetMovesDisplay().SetActive(true);
+		
         //dequeue.GetMovesDisplay().SetActive(true);
         //CommandPanel.SetActive(false);
 

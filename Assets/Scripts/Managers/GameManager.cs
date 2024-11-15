@@ -15,8 +15,7 @@ public class GameManager : MonoBehaviour
     */
     GameState gameState = GameState.Combat;
 
-    [SerializeField] CombatEntity[] Players;
-    [SerializeField] CombatEntity[] Enemies;
+    [SerializeField] CombatSceneSO[] CombatScenes;
 
     public int[,] grid = new int[5,5];
     CombatSceneSO gameScene;
@@ -43,7 +42,7 @@ public class GameManager : MonoBehaviour
                 {
                     startedCombat = true;
                     Debug.Log("Combat!");
-                    combatManager.StartCombat(Players, Enemies, grid);
+                    combatManager.StartCombat(CombatScenes[0]);
                 }
                 break;
         }

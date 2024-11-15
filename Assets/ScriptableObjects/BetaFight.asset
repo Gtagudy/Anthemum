@@ -12,5 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8845908a993d708478610689cd594248, type: 3}
   m_Name: BetaFight
   m_EditorClassIdentifier: 
-  Players: []
-  Enemies: []
+  Players:
+  - {fileID: 0}
+  Enemies:
+  - {fileID: 0}
+  rows: 10
+  columns: 10
+  turnCount: 0

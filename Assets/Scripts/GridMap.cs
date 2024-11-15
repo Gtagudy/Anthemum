@@ -4,12 +4,29 @@ using UnityEngine;
 
 public class GridMapPoint : MonoBehaviour
 {
+	public int pos_x;
+	public int pos_y;
+
+	public float gValue;
+	public float hValue;
+	public GridMapPoint previousNode;
 	[SerializeField] public GridSO gridSO;
 	internal bool availablePoint;
 	internal float elevation;
 	private TextMeshProUGUI textMeshProUGUI;
 	int debugRotate = 1;
 
+
+	public float fValue
+	{
+		get { return gValue + hValue; }
+	}
+
+	public GridMapPoint(int xPos, int yPos)
+	{
+		pos_x = xPos;
+		pos_y = yPos;
+	}
 	private void OnMouseDown()
 	{
 		GetComponent<Transform>().rotation = Quaternion.Euler(0, debugRotate, debugRotate);

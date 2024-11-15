@@ -23,12 +23,18 @@ public class CombatEntity : MonoBehaviour
 	private bool isMyTurn = false;
     public bool movesCreated = false;
 
+    public bool hasMoved = false;
+
+    public bool isPlayer = false;
+
     [SerializeField] int x;
     [SerializeField] int y;
+	[SerializeField] public float movementPoints;
 
 	// Start is called before the first frame update
 	void Awake()
     {
+        isPlayer = entity.isPlayer;
 	}
 
     // Update is called once per frame
