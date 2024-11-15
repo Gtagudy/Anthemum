@@ -12,17 +12,39 @@ public class DecideState : ActionStateBase
 
 	}
 
-	public override void HandleButtonPress(ActionManager actionManager)
+	public override void HandleButtonPress(ActionManager actionManager, AbilityButton buttonID)
 	{
-		CombatEntity combatEntity = actionManager.turnManager.GetCombatEntity();
-		Debug.Log(combatEntity.GetEntitySO().name + " is the mf whos moves should show");
-		combatEntity.GetMovesDisplay().SetActive(true);
-		actionManager.ChangeState(actionManager.chooseState);
+		throw new NotImplementedException();
 	}
 
-	public override void HandleStepBack(ActionManager actionManager)
+	public override void HandleButtonPress(ActionManager actionManager, string b)
 	{
-		actionManager.ChangeState(actionManager.moveState);
+		switch(b)
+		{
+			case "Move":
+
+				actionManager.ChangeState(actionManager.moveState);
+
+				break;
+
+			case "Choose":
+				CombatEntity combatEntity = actionManager.turnManager.GetCombatEntity();
+				Debug.Log(combatEntity.GetEntitySO().name + " is the mf whos moves should show");
+				combatEntity.GetMovesDisplay().SetActive(true);
+				actionManager.ChangeState(actionManager.chooseState);
+
+				break;
+			case "Skip":
+
+				actionManager.turnManager.ChangeState(actionManager.turnManager.EndTurnState);
+				break;
+		}
+
+	}
+
+	public override void HandleButtonPress(ActionManager actionManager, EntityButton buttonID)
+	{
+		throw new NotImplementedException();
 	}
 
 	public override void UpdateState(ActionManager actionManager)

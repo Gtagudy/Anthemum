@@ -10,7 +10,8 @@ public abstract class ActionStateBase
 
 	public abstract void UpdateState(ActionManager actionManager);
 
-	public abstract void HandleButtonPress(ActionManager actionManager);
+	public abstract void HandleButtonPress(ActionManager actionManager, string buttonID);
+	public abstract void HandleButtonPress(ActionManager actionManager, AbilityButton buttonID);
+	public abstract void HandleButtonPress(ActionManager actionManager, EntityButton buttonID);
 
-	public abstract void HandleStepBack(ActionManager actionManager);
 }

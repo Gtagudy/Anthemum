@@ -13,7 +13,7 @@ public class ActionManager : MonoBehaviour
 	int tempNum = 0;
 	UIManager uiManager;
 	public TurnManager turnManager;
-	EntityManager entityManager;
+	public EntityManager entityManager;
 	GridManager gridManager;
 
 	public UnityEvent endTurn;
@@ -22,7 +22,7 @@ public class ActionManager : MonoBehaviour
 
 	bool isMoving = false;
 
-	AbilitySO chosenAbility;
+	public AbilitySO chosenAbility;
 	Camera camera;
 
 	public ActionStateBase actionState;
@@ -48,6 +48,7 @@ public class ActionManager : MonoBehaviour
 	
 	public void ChangeState(ActionStateBase newState)
 	{
+		uiManager.ActionStateMachine.text = newState.ToString();
 		actionState = newState;
 
 		actionState.EnterState(this);
@@ -57,14 +58,17 @@ public class ActionManager : MonoBehaviour
 		actionState.UpdateState(this);
     }
 
-	public void OnButtonPressed()
+	public void OnButtonPressed(string ButtonID)
 	{
-		actionState.HandleButtonPress(this);
+		actionState.HandleButtonPress(this, ButtonID);
 	}
-
-	public void StepBack()
+	public void OnButtonEPressed(EntityButton button)
 	{
-		actionState.HandleStepBack(this);
+		actionState.HandleButtonPress(this, button);
+	}
+	public void OnButtonAPressed(AbilityButton button)
+	{
+		actionState.HandleButtonPress(this, button);
 	}
 
 	//public event Action clicked;

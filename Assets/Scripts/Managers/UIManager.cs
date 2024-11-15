@@ -31,7 +31,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] Button EndTurn;
 
 
-	[SerializeField] TextMeshProUGUI StateMachine;
+	[SerializeField] public TextMeshProUGUI TurnStateMachine;
+	[SerializeField] public TextMeshProUGUI ActionStateMachine;
     [SerializeField] TextMeshProUGUI EntityTurn;
     [SerializeField] Button AbilityButton;
     [SerializeField] Button EntityButton;
@@ -92,8 +93,26 @@ public class UIManager : MonoBehaviour
                 AbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = playerTurn.GetEntitySO().GetAbilities()[i].name;
                 MoveListClick.Add(AbilityButton);
                 Instantiate(AbilityButton.gameObject, playerTurn.GetMovesDisplay().transform);
-            }
-        }
+
+				/*
+                 *  Button button = Instantiate(ButtonWithID, playerTurn.GetMovesDisplay().transform);
+                GeneralSelectionButton GSB = button.GetComponent<GeneralSelectionButton>();
+
+                button.name = sO.name;
+                GSB.buttonID = sO.name;
+                button.GetComponentInChildren<TextMeshProUGUI>().text = sO.name;
+                movesCreated = true;
+                MoveListClick.Add(ButtonWithID);
+
+                string buttonName = button.name;
+                Debug.Log(buttonName);
+                button.onClick.AddListener(() =>
+                {
+                    actionManager.OnButtonPressed();
+                });
+                 */
+			}
+		}
         playerTurn.movesCreated = true;
 	}
 

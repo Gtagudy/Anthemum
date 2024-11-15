@@ -34,6 +34,8 @@ public class TurnManager : MonoBehaviour
 
     public UnityEvent endTurn;
 
+
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -52,7 +54,9 @@ public class TurnManager : MonoBehaviour
 	public void ChangeState(StateTurnBase newState)
     {
         stateTurn = newState;
-        newState.EnterState(this, gameScene);
+		uiManager.TurnStateMachine.text = newState.ToString();
+
+		newState.EnterState(this, gameScene);
     }
 
 

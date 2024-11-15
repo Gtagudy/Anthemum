@@ -12,12 +12,17 @@ public class MoveState : ActionStateBase
 
 	}
 
-	public override void HandleButtonPress(ActionManager actionManager)
+	public override void HandleButtonPress(ActionManager actionManager, AbilityButton buttonID)
 	{
 		throw new NotImplementedException();
 	}
 
-	public override void HandleStepBack(ActionManager actionManager)
+	public override void HandleButtonPress(ActionManager actionManager, string b)
+	{
+		throw new NotImplementedException();
+	}
+
+	public override void HandleButtonPress(ActionManager actionManager, EntityButton buttonID)
 	{
 		throw new NotImplementedException();
 	}
