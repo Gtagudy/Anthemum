@@ -9,11 +9,14 @@ TagManager:
   - Healthbar
   - MovePanel
   - Grid
+  - Good
+  - Targeting
+  - Bad
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Terrain
   - Water
   - UI
   - 

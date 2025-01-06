@@ -9,7 +9,7 @@ public class PlayerturnState : StateTurnBase
 {
 	public override void EnterState(TurnManager turnManager, CombatSceneSO combatSceneSO)
 	{
-
+		turnManager.GetCombatEntity().ToggleDecisions().gameObject.SetActive(true);
 
 	}
 

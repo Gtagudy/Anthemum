@@ -20,6 +20,7 @@ public class TargetState : ActionStateBase
 
 	public override void HandleButtonPress(ActionManager actionManager, string b)
 	{
+		actionManager.EmptyHighlightPoints(0);
 		actionManager.ChangeState(actionManager.decideState);
 
 	}
@@ -29,7 +30,9 @@ public class TargetState : ActionStateBase
 		actionManager.entityManager.HandleAbility(actionManager.chosenAbility,buttonID.GetEntity());
 		//chosenMove = true;
 		actionManager.ResolvePlayer(buttonID.GetEntity());
-		actionManager.ChangeState(actionManager.chooseState);
+		actionManager.EmptyHighlightPoints(1);
+		actionManager.ChangeState(actionManager.decideState);
+
 
 	}
 

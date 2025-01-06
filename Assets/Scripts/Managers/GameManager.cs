@@ -1,8 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using TMPro.EditorUtilities;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -13,23 +17,45 @@ public class GameManager : MonoBehaviour
     as well.
     
     */
-    GameState gameState = GameState.Combat;
+    public GameState gameState = GameState.Title;
 
     [SerializeField] CombatSceneSO[] CombatScenes;
+    [SerializeField] CombatSceneSO[] OriginalScenes;
 
     public int[,] grid = new int[5,5];
     CombatSceneSO gameScene;
 
     CombatManager combatManager;
+    UIManager uiManager;
+    ChangeScene change;
+
+    [SerializeField] public CombatEntity MainCharacter;
+    [SerializeField] public CombatEntity MainEnemy;
+
+	[SerializeField] public TextMeshProUGUI TitleText;
+	[SerializeField] public Button StartBTN;
+	[SerializeField] public Button QuitBTN;
+	[SerializeField] public Canvas TitleUI;
 
 
+	private bool startedCombat = false;
+    private bool inTitleScreen = false;
+    private bool inWorld = false;
 
-    private bool startedCombat = false;
+    float storedSpeed;
+    int runs = 0;
+
+    [SerializeField] public AudioClip[] clickSounds;
+    [SerializeField] public AudioSource chosenClick;
 
     // Start is called before the first frame update
     void Awake()
     {
         combatManager = GetComponent<CombatManager>();
+        uiManager = GetComponent<UIManager>();
+
+        CombatScenes = OriginalScenes;
+        change = GetComponent<ChangeScene>();
     }
 
     // Update is called once per frame
@@ -37,14 +63,99 @@ public class GameManager : MonoBehaviour
     {
         switch(gameState)
         {
+            case GameState.Title:
+                if(TitleText == null)
+                {
+                    gameState = GameState.Combat; break;
+                }
+
+                if(!inTitleScreen)
+                {
+                    inTitleScreen = true;
+                    if(MainCharacter.GetComponent<Character>() != null)
+                    {
+
+                        storedSpeed = MainCharacter.GetComponent<Character>().GetSpeed();
+					    MainCharacter.GetComponent<Character>().UpdateSpeed(0);
+                    }
+
+					MainCharacter.gameObject.SetActive(false);
+                    Debug.Log("Title");
+                    uiManager.PlayTitle(TitleText, StartBTN, QuitBTN);
+                }
+                break;
+
+            case GameState.World:
+                startedCombat = false;
+                if(runs >= 5)
+                {
+                    gameState = GameState.Title; break;
+                }
+                if (!inWorld)
+                {
+                    MainCharacter.GetComponent<Character>().UpdateSpeed(storedSpeed);
+                    inWorld = true;
+                    MainCharacter.gameObject.SetActive(true);
+                }
+
+                break;
+
+            case GameState.Pause:
+
             case GameState.Combat:
                 if (!startedCombat)
                 {
-                    startedCombat = true;
-                    Debug.Log("Combat!");
-                    combatManager.StartCombat(CombatScenes[0]);
+                    inWorld = false;
+                    runs++;
+                    int chosenLevel = UnityEngine.Random.Range(0, CombatScenes.Length - 1);
+
+					if (CombatScenes[chosenLevel] != null)
+                    {
+                        startedCombat = true;
+                        Debug.Log("Combat!");
+                        CombatSceneSO chosenScene = CombatScenes[chosenLevel];
+                        
+
+                        combatManager.StartCombat(chosenScene);
+                    } else
+                    {
+                        chosenLevel = UnityEngine.Random.Range(0, CombatScenes.Length - 1);
+                    }
                 }
                 break;
         }
+    }
+
+	public void MoveToWorld()
+	{
+        if(clickSounds.Length > 0)
+        {
+            chosenClick.clip = clickSounds[UnityEngine.Random.Range(0, clickSounds.Length - 1)];
+            chosenClick.Play();
+
+		    gameState = GameState.World;
+            TitleUI.gameObject.SetActive(false);
+
+        }
+        //TitleUI.GetComponent<TMP_EditorPanelUI>
+	}
+    public void Joever()
+    {
+        if (clickSounds.Length > 0)
+        {
+            chosenClick.clip = clickSounds[UnityEngine.Random.Range(0, clickSounds.Length)];
+            chosenClick.Play();
+
+            Application.Quit();
+        }
+    }
+    public AudioClip[] GetClickSounds()
+    {
+        return clickSounds;
+    }
+    public void StartCombat()
+    {
+        
+        gameState = GameState.Combat;
     }
 }

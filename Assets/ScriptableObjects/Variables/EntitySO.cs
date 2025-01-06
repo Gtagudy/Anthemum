@@ -19,6 +19,8 @@ public class EntitySO : IScriptableObject
 	//[SerializeField] Scrollbar Health;
 
 	public bool isPlayer = false;
+
+	public bool isAlive = true;
 	private void OnEnable()
 	{
 		
@@ -48,8 +50,9 @@ public class EntitySO : IScriptableObject
 	{
 		return this.GetComponent<Transform>();
 	}
-	public void ChangeHealth(int v)
+	public int ChangeHealth(int v)
 	{
 		Stats.health -= v;
+		return Stats.health;
 	}
 }

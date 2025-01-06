@@ -14,7 +14,7 @@ public class ActionManager : MonoBehaviour
 	UIManager uiManager;
 	public TurnManager turnManager;
 	public EntityManager entityManager;
-	GridManager gridManager;
+	public GridManager gridManager;
 
 	public UnityEvent endTurn;
 
@@ -23,7 +23,7 @@ public class ActionManager : MonoBehaviour
 	bool isMoving = false;
 
 	public AbilitySO chosenAbility;
-	Camera camera;
+	public Camera camera;
 
 	public ActionStateBase actionState;
 	public ChooseState chooseState = new();
@@ -33,6 +33,8 @@ public class ActionManager : MonoBehaviour
 
 
 	public UnityAction action;
+
+	public GridMapPoint[] gridPoints;
 
 	private void Start()
 	{
@@ -75,7 +77,7 @@ public class ActionManager : MonoBehaviour
 	internal void ResolveEnemy(CombatEntity dequeue)
 	{
 		PauseAMoment();
-		AbilitySO abilitySO = dequeue.GetEntitySO().getAbility(random.Next(0,1));
+		AbilitySO abilitySO = dequeue.entity.getAbility(random.Next(0,1));
 		if (abilitySO != null)
 		{
 
@@ -135,18 +137,7 @@ public class ActionManager : MonoBehaviour
 		Debug.Log("Its the players turn GRAAAAHG");*/
 	}
 
-	public void ReadyToMove(CombatEntity combatEntity)
-	{
-		isMoving = !isMoving;
-
-		if (isMoving && !combatEntity.hasMoved)
-		{
-			gridManager.MoveEntity(combatEntity, isMoving, camera);
-			isMoving = false;
-			combatEntity.hasMoved = true;
-		}
-
-	}
+	
 
 	// Start is called before the first frame update
 	void Awake()
@@ -166,5 +157,17 @@ public class ActionManager : MonoBehaviour
 	IEnumerator PauseAMoment()
 	{
 		yield return new WaitForSeconds(500);
+	}
+
+	internal void UpdateHighlightedPoints(GridMapPoint[] targetingPoints)
+	{
+		gridPoints = targetingPoints;
+	}
+	public void EmptyHighlightPoints(int p)
+	{
+		for(int i = 0; i < gridPoints.Length; i++)
+		{
+			gridPoints[i].transform.GetChild(p).gameObject.SetActive(true);
+		}
 	}
 }

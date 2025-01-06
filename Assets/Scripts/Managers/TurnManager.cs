@@ -15,6 +15,7 @@ public class TurnManager : MonoBehaviour
     public EntityManager entityManager;
     public UIManager uiManager;
     public ActionManager actionManager;
+    public GameManager gameManager;
 
     public bool gameIsOver = false;
 
@@ -48,13 +49,13 @@ public class TurnManager : MonoBehaviour
 	private void Start()
 	{
 		stateTurn = PreturnState;
-
+        gameManager = GetComponent<GameManager>();
 	}
 
 	public void ChangeState(StateTurnBase newState)
     {
         stateTurn = newState;
-		uiManager.TurnStateMachine.text = newState.ToString();
+		//uiManager.TurnStateMachine.text = newState.ToString();
 
 		newState.EnterState(this, gameScene);
     }

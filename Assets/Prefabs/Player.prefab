@@ -6166,7 +6166,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2.07, y: 1.29}
+  m_AnchoredPosition: {x: -2.07, y: 2.188}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &6377987556089187425
@@ -6356,9 +6356,9 @@ RectTransform:
   - {fileID: 2354435576672063421}
   m_Father: {fileID: 3949130705748765741}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -50}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2468129761680078181
@@ -6816,9 +6816,9 @@ RectTransform:
   - {fileID: 6278028521346465723}
   m_Father: {fileID: 3949130705748765741}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -110}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3553832438130249924
@@ -7473,7 +7473,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3949130705748765741
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7623,9 +7623,9 @@ Transform:
   m_GameObject: {fileID: 9046145149692921572}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.022583, y: 0.966, z: -3.1122675}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 31.325754, y: 1.3372555, z: 10.459367}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4702802485291854381}
   - {fileID: 8743965806605237173}
@@ -7704,6 +7704,7 @@ MonoBehaviour:
   entity: {fileID: 11400000, guid: 69092dd618de4cf4fb75af226f2a40a6, type: 2}
   Health: {fileID: 7496358357178583029}
   myTurn: {fileID: 1040161562995078981}
+  decisionsUI: {fileID: 0}
   MoveListDisplay: {fileID: 2976296977066476600}
   enemyTargetDisplay: {fileID: 8140206960563643208}
   playerTargetDisplay: {fileID: 3764512676795074926}
@@ -7712,6 +7713,7 @@ MonoBehaviour:
   isPlayer: 1
   x: 1
   y: 4
+  movementPoints: 3
 --- !u!95 &5253053406431719524
 Animator:
   serializedVersion: 7

@@ -29,7 +29,7 @@ public class DecideState : ActionStateBase
 
 			case "Choose":
 				CombatEntity combatEntity = actionManager.turnManager.GetCombatEntity();
-				Debug.Log(combatEntity.GetEntitySO().name + " is the mf whos moves should show");
+				Debug.Log(combatEntity.entity.name + " is the mf whos moves should show");
 				combatEntity.GetMovesDisplay().SetActive(true);
 				actionManager.ChangeState(actionManager.chooseState);
 
@@ -44,7 +44,7 @@ public class DecideState : ActionStateBase
 
 	public override void HandleButtonPress(ActionManager actionManager, EntityButton buttonID)
 	{
-		throw new NotImplementedException();
+		
 	}
 
 	public override void UpdateState(ActionManager actionManager)

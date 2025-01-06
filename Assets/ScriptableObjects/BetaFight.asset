@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: BetaFight
   m_EditorClassIdentifier: 
   Players:
-  - {fileID: 0}
+  - {fileID: 829805508222818946, guid: fdc1dd29d07ceea4d9446a7013400db7, type: 3}
   Enemies:
-  - {fileID: 0}
+  - {fileID: 4229608346860545990, guid: 2b8a7f26a7b9a2f45a8fbf322e0ca083, type: 3}
   rows: 10
   columns: 10
   turnCount: 0

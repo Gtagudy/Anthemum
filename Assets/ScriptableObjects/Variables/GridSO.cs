@@ -10,8 +10,9 @@ using UnityEngine;
 
 public class GridSO : IScriptableObject
 {
-	[SerializeField] EntitySO entityHere;
+	[SerializeField] public CombatEntity entityHere;
 	[SerializeField] bool obstructionHere = false;
+	[SerializeField] public bool IsEntityHere = false;
 
 	[SerializeField] GameObject GameObject;
 
@@ -34,9 +35,10 @@ public class GridSO : IScriptableObject
 		gridY = y;
 	}
 
-	public void UpdateEntitySO(EntitySO SO)
+	public void UpdateEntitySO(CombatEntity? SO)
 	{
 		entityHere = SO;
 		obstructionHere = true;
+		IsEntityHere = true;
 	}
 }

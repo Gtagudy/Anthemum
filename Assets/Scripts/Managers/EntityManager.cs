@@ -9,6 +9,9 @@ public class EntityManager : MonoBehaviour
 {
     ActionManager actionManager;
     UIManager uiManager;
+	GameManager gameManager;
+	TurnManager turnManager;
+
 	CombatEntity[] Players;
 	CombatEntity[] Enemies;
 
@@ -19,7 +22,7 @@ public class EntityManager : MonoBehaviour
 	{
 		if(dequeue != null)
         {
-            if (dequeue.GetEntitySO().isPlayer == true)
+            if (dequeue.entity.isPlayer == true)
             {
 
                 Debug.Log("Welcome player!");
@@ -37,7 +40,7 @@ public class EntityManager : MonoBehaviour
 	internal void GetPlayers(AbilitySO abilitySO, CombatEntity dequeue)
 	{
 		int chosenPlayer = random.Next(Players.Length);
-		Players[chosenPlayer].GetEntitySO().ChangeHealth(abilitySO.damage);
+		Players[chosenPlayer].entity.ChangeHealth(abilitySO.damage);
 
 		uiManager.UpdateHealth(Players[chosenPlayer]);
 	}
@@ -49,7 +52,8 @@ public class EntityManager : MonoBehaviour
 
 	internal void HandleAbility(AbilitySO chosenAbility, CombatEntity entity)
 	{
-        entity.GetEntitySO().ChangeHealth(chosenAbility.damage);
+        entity.entity.ChangeHealth(chosenAbility.damage);
+
 		uiManager.UpdateHealth(entity);
 	}
 
@@ -57,6 +61,8 @@ public class EntityManager : MonoBehaviour
 	{
         Players = players;
         Enemies = enemies;
+
+		
 		/*for (int i = 0; i < players.Length; i++) 
         {
             this.Players[i] = players[i];
@@ -96,7 +102,7 @@ public class EntityManager : MonoBehaviour
 		}
 		tempOrder = tempOrder.OrderByDescending(
 		(entity) =>
-		entity.GetEntitySO().GetSpeed())
+		entity.entity.GetSpeed())
 		.ToArray();
 		foreach (CombatEntity entity in tempOrder)
 		{
@@ -116,6 +122,7 @@ public class EntityManager : MonoBehaviour
     {
         actionManager = GetComponent<ActionManager>();
         uiManager = GetComponent<UIManager>();
+		turnManager = GetComponent<TurnManager>();
     }
 
     // Update is called once per frame
@@ -123,4 +130,21 @@ public class EntityManager : MonoBehaviour
     {
         
     }
+
+	internal void GetTargets(AbilityButton button, GridMapPoint[] targetingPoints)
+	{
+		if(button.name == "NUUUKE")
+		{
+			uiManager.LetPlayerTarget(button, Enemies, Players);
+		}
+		GridMapPoint occupiedSpace;
+		for(int i = 0; i < targetingPoints.Length; i++)
+		{
+			if (targetingPoints[i] != null && targetingPoints[i].gridSO.IsEntityHere)
+			{
+				occupiedSpace = targetingPoints[i];
+				uiManager.LetPlayerTarget(button, occupiedSpace);
+			}
+		}
+	}
 }

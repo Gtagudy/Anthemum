@@ -20,3 +20,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1974c4c79492af148a0821bed2f4869a, type: 2}
   Stats: {fileID: 11400000, guid: 48038e606a6583149b513ce5311e9508, type: 2}
   isPlayer: 0
+  isAlive: 1

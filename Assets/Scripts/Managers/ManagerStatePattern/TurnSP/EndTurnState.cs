@@ -8,6 +8,12 @@ public class EndturnState : StateTurnBase
 {
 	public override void EnterState(TurnManager turnManager, CombatSceneSO combatSceneSO)
 	{
+		
+		if (turnManager.EntitiesTurn.isPlayer)
+		{
+			turnManager.EntitiesTurn.GetMovesDisplay().SetActive(false);
+			turnManager.EntitiesTurn.ToggleDecisions().SetActive(false);
+		}
 		if(turnManager.queue.Count > 0 )
 		{
 			turnManager.ChangeState(turnManager.StartTurnState);

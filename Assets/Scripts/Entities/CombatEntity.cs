@@ -12,11 +12,12 @@ public class CombatEntity : MonoBehaviour
 {
     public IntGameEvent healthChange;
 
-    [SerializeField] EntitySO entity;
+    [SerializeField] public EntitySO entity;
 	
     [SerializeField] Slider Health;
     
     [SerializeField] GameObject myTurn;
+    [SerializeField] GameObject decisionsUI;
 	[SerializeField] GameObject MoveListDisplay;
 	[SerializeField] GameObject enemyTargetDisplay;
 	[SerializeField] GameObject playerTargetDisplay;
@@ -29,7 +30,7 @@ public class CombatEntity : MonoBehaviour
 
     [SerializeField] int x;
     [SerializeField] int y;
-	[SerializeField] public float movementPoints;
+	[SerializeField] public int movementPoints;
 
 	// Start is called before the first frame update
 	void Awake()
@@ -54,6 +55,10 @@ public class CombatEntity : MonoBehaviour
     {
         return Health;
     }
+    internal GameObject ToggleDecisions()
+    {
+        return decisionsUI;
+    }
     internal GameObject GetMovesDisplay()
     {
         return MoveListDisplay;
@@ -66,7 +71,7 @@ public class CombatEntity : MonoBehaviour
 	{
 		return playerTargetDisplay;
 	}
-	public EntitySO GetEntitySO()
+	public EntitySO w()
     {
         return entity;
     }
@@ -84,8 +89,9 @@ public class CombatEntity : MonoBehaviour
 	{
 		this.transform.position = transform.position + (transform.up / 2);
 	}
-    internal void UpdateGridPosition()
+    internal void UpdateGridPosition(int x, int y)
     {
-
+        this.x = x;
+        this.y = y;
     }
 }

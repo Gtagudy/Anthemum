@@ -9,10 +9,21 @@ public class CombatManager : MonoBehaviour
     TurnManager turnManager;
     EntityManager entityManager;
     GridManager gridManager;
+    GameManager gameManager;
 
 	public void StartCombat(CombatSceneSO combatSceneSO)
 	{
+        if(gameManager.gameState != GameState.Combat)
+        {
+            gameManager.gameState = GameState.Combat;
+        }
         Debug.Log("We now starting combat!");
+
+        combatSceneSO.Players[0] = gameManager.MainCharacter;
+        
+
+        combatSceneSO.Enemies[0] = gameManager.MainEnemy;
+
 
         gridManager.CreateGridMap(combatSceneSO.GetGrid());
         entityManager.NotifyOfAll(combatSceneSO.GetPlayers(), combatSceneSO.GetEnemies());
@@ -27,6 +38,7 @@ public class CombatManager : MonoBehaviour
         //actionManager = GetComponent<ActionManager>();
         entityManager = GetComponent<EntityManager>();
         gridManager = GetComponent<GridManager>();
+        gameManager = GetComponent<GameManager>();
     }
 
     // Update is called once per frame

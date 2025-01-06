@@ -20,6 +20,11 @@ public class Character : MonoBehaviour
 
     bool faceRight = true;
 
+	[SerializeField] public AudioClip[] footSteps;
+    [SerializeField] AudioSource footStep;
+	public float stepTiming = 0.5f;
+	public float stepTimer = 0;
+
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
@@ -45,7 +50,19 @@ public class Character : MonoBehaviour
         float y = Input.GetAxis("Vertical");
         Vector3 moveDir = new Vector3(x, 0, y);
         rb.velocity = moveDir * speed;
-
+        if (rb.velocity.x > 0 || rb.velocity.y > 0)
+        {
+            stepTimer += Time.deltaTime;
+            if (stepTimer >= stepTiming) 
+            { 
+                if (footSteps.Length > 0)
+                {
+                    footStep.clip = footSteps[UnityEngine.Random.Range(0, footSteps.Length)];
+                    footStep.Play();
+                    stepTimer = 0;
+                }
+            }
+        }
         if (moveDir.x > 0 && !faceRight) Flip();
         if (moveDir.x < 0 && faceRight) Flip();
 
@@ -59,5 +76,16 @@ public class Character : MonoBehaviour
         faceRight = !faceRight;
         spriteRenderer.flipX = !faceRight;
     }
+
+    public float GetSpeed()
+    {
+        return speed;
+    }
+    public void UpdateSpeed(float Speed)
+    {
+        speed = Speed;
+    }
+
+
 }
 
