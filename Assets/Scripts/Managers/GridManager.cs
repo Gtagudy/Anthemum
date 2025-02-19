@@ -61,6 +61,10 @@ public class GridManager : MonoBehaviour
 				gridPoints[i, j] = newGridSpot.AddComponent<GridMapPoint>();
 				gridPoints[i, j].GetComponent<GridMapPoint>().name = $"X: {i}, Y: {j}";
 				gridPoints[i, j].AssignGridSO();
+				gridPoints[i, j].availablePoint = true;
+
+
+
 
 				gridPoints[i, j].UpdatePosition(i, j);
 
@@ -159,6 +163,7 @@ public class GridManager : MonoBehaviour
 			
 			filledMapPoint.UpdateEntitySO(players[i]);
 			players[i].UpdatePosition(filledMapPoint.GetComponent<Transform>().transform);
+			filledMapPoint.availablePoint = false;
 		}
 		for (int i = 0; i < enemies.Length; i++)
 		{
@@ -166,6 +171,8 @@ public class GridManager : MonoBehaviour
 
 			filledMapPoint.UpdateEntitySO(enemies[i]);
 			enemies[i].UpdatePosition(filledMapPoint.GetComponent<Transform>().transform);
+			filledMapPoint.availablePoint = false;
+
 		}
 	}
 
@@ -188,13 +195,13 @@ public class GridManager : MonoBehaviour
 	internal void MoveEntity(CombatEntity combatEntity, bool isMoving, Camera camera)
 	{
 		this.combatEntity = combatEntity;
-		this.camera = camera;
+		//this.camera = camera;
 	}
 
 	public void UpdateGridPoint(int x, int y, CombatEntity combatEntity)
 	{
-
 		gridPoints[combatEntity.GetGridPositionX(), combatEntity.GetGridPositionY()].gridSO.UpdateEntitySO(null);
+		gridPoints[combatEntity.GetGridPositionX(), combatEntity.GetGridPositionY()].availablePoint = true;
 
 		gridPoints[x, y].gridSO.UpdateEntitySO(combatEntity);
 	}

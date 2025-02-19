@@ -8,7 +8,7 @@ public class EndturnState : StateTurnBase
 {
 	public override void EnterState(TurnManager turnManager, CombatSceneSO combatSceneSO)
 	{
-		
+		turnManager.uiManager.PopTurnOrderUI();
 		if (turnManager.EntitiesTurn.isPlayer)
 		{
 			turnManager.EntitiesTurn.GetMovesDisplay().SetActive(false);

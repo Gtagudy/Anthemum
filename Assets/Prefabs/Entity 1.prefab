@@ -694,7 +694,7 @@ RectTransform:
   m_Father: {fileID: 8482472605235786325}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.7, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -998,9 +998,9 @@ RectTransform:
   - {fileID: 8486536513700514611}
   m_Father: {fileID: 6910855066103511116}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -50}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8191875244035494212
@@ -7053,7 +7053,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5239734775469038221
 Transform:
   m_ObjectHideFlags: 0
@@ -7063,7 +7063,7 @@ Transform:
   m_GameObject: {fileID: 8083589832471764869}
   serializedVersion: 2
   m_LocalRotation: {x: 0.68436366, y: -0, z: -0, w: 0.72914094}
-  m_LocalPosition: {x: -0.023, y: -0.694, z: 0.671}
+  m_LocalPosition: {x: -0.023, y: 0.061, z: 0.623}
   m_LocalScale: {x: 1, y: 1, z: 0.04321977}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7141,7 +7141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1052697804317620838
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7260,8 +7260,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6791710823141273131}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.7, y: 0}
+  m_AnchorMax: {x: 0.7, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7553,10 +7553,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff106986c4970d4ba7d32d11bd07f3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   healthChange: {fileID: 11400000, guid: df6b9efec697b7042b6fc7ec32d87649, type: 2}
   entity: {fileID: 11400000, guid: 69092dd618de4cf4fb75af226f2a40a6, type: 2}
   Health: {fileID: 7706253693835450422}
   myTurn: {fileID: 7717072628748555795}
+  decisionsUI: {fileID: 0}
   MoveListDisplay: {fileID: 385664086409493070}
   enemyTargetDisplay: {fileID: 5512068088189833554}
   playerTargetDisplay: {fileID: 6680890082134431816}
@@ -7565,6 +7567,9 @@ MonoBehaviour:
   isPlayer: 1
   x: 0
   y: 0
+  movementPoints: 0
+  actionPoints: 0
+  sprite: {fileID: 0}
 --- !u!95 &8007567844434250642
 Animator:
   serializedVersion: 7

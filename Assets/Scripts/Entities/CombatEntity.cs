@@ -10,6 +10,9 @@ using UnityEngine.UI;
 
 public class CombatEntity : MonoBehaviour
 {
+
+    [SerializeField] string Name;
+
     public IntGameEvent healthChange;
 
     [SerializeField] public EntitySO entity;
@@ -31,11 +34,15 @@ public class CombatEntity : MonoBehaviour
     [SerializeField] int x;
     [SerializeField] int y;
 	[SerializeField] public int movementPoints;
+	[SerializeField] public int actionPoints;
+
+    [SerializeField] public Sprite sprite;
 
 	// Start is called before the first frame update
 	void Awake()
     {
         isPlayer = entity.isPlayer;
+        sprite = GetComponent<SpriteRenderer>().sprite;
 	}
 
     // Update is called once per frame
@@ -71,11 +78,15 @@ public class CombatEntity : MonoBehaviour
 	{
 		return playerTargetDisplay;
 	}
-	public EntitySO w()
+	public EntitySO GetEntitySO()
     {
         return entity;
     }
-
+    
+    public Sprite GetSprite()
+    {
+        return sprite;
+    }
 	internal int GetGridPositionX()
 	{
         return x;
@@ -87,7 +98,7 @@ public class CombatEntity : MonoBehaviour
 
 	internal void UpdatePosition(Transform transform)
 	{
-		this.transform.position = transform.position + (transform.up / 2);
+        this.transform.position = transform.position;// + (transform.up / 2);
 	}
     internal void UpdateGridPosition(int x, int y)
     {

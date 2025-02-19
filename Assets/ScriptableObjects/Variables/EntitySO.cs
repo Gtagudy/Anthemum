@@ -53,6 +53,10 @@ public class EntitySO : IScriptableObject
 	public int ChangeHealth(int v)
 	{
 		Stats.health -= v;
+		if(GetHealth() > GetMaxHealth())
+		{
+			Stats.health = GetHealth();
+		}
 		return Stats.health;
 	}
 }

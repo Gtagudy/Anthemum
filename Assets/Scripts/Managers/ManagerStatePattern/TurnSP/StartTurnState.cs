@@ -20,10 +20,12 @@ public class StartTurnState : StateTurnBase
 		Debug.Log("Now, it seems it is " + EntitiesTurn.name + " turn");
 		Debug.Log("Heres your health" + EntitiesTurn.entity.GetHealth());
 		EntitiesTurn.hasMoved = false;
-		turnManager.camera.m_LookAt = EntitiesTurn.transform;
-		turnManager.camera.m_Follow = EntitiesTurn.transform;
+		//turnManager.camera.m_LookAt = EntitiesTurn.transform;
+		//turnManager.camera.m_Follow = EntitiesTurn.transform;
 		turnManager.uiManager.WhoseTurn(EntitiesTurn);
 		//turnManager.entityManager.CheckEntity((CombatEntity)EntitiesTurn);
+
+		turnManager.uiManager.ChangeEntityPanel(EntitiesTurn);
 
 		if(EntitiesTurn.isPlayer)
 		{

@@ -18,6 +18,8 @@ public class MoveState : ActionStateBase
 	int x;
 	int y;
 
+	Ray ray;
+
 	GridMapPoint[] targetingPoints;
 
 	public override void EnterState(ActionManager actionManager)
@@ -73,17 +75,19 @@ public class MoveState : ActionStateBase
 		if (Input.GetMouseButtonDown(0) && isMoving)
 		{
 			Vector3 mousePos = Input.mousePosition;
-			Ray ray = actionManager.camera.ScreenPointToRay(mousePos);
+			ray = actionManager.camera.ScreenPointToRay(mousePos);
 
 
 
-			if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.gameObject.tag == "Grid")
+			if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.gameObject.tag == "Grid" && hit.collider.gameObject.GetComponent<GridMapPoint>().availablePoint == true)
 			{
+
 				CombatEntity thisEntity = actionManager.turnManager.GetCombatEntity();
-				
+
+
 				Vector3 hitSpot = hit.point;
-				int gridx = Mathf.FloorToInt((hitSpot.x - actionManager.gridManager.gridStart.x) / actionManager.gridManager.gridPointSize);
-				int gridy = Mathf.FloorToInt((hitSpot.y - actionManager.gridManager.gridStart.y) / actionManager.gridManager.gridPointSize) + 1;
+				int gridx = Mathf.RoundToInt(Mathf.FloorToInt((hitSpot.x - actionManager.gridManager.gridStart.x)) / actionManager.gridManager.gridPointSize);
+				int gridy = Mathf.RoundToInt(Mathf.FloorToInt((hitSpot.z - actionManager.gridManager.gridStart.z)) / actionManager.gridManager.gridPointSize);
 
 				List<GridMapPoint> path = actionManager.gridManager.StartPath.FindPath(thisEntity.GetGridPositionX(), thisEntity.GetGridPositionY(), gridx, gridy);
 
@@ -117,7 +121,7 @@ public class MoveState : ActionStateBase
 
 		if (isMoving && !combatEntity.hasMoved)
 		{
-			actionManager.gridManager.MoveEntity(combatEntity,isMoving ,actionManager.camera);
+			//actionManager.gridManager.MoveEntity(combatEntity,isMoving,actionManager.camera);
 			isMoving = false;
 			combatEntity.hasMoved = true;
 		}
@@ -133,5 +137,10 @@ public class MoveState : ActionStateBase
 		{
 			pathVectorList.RemoveAt(0);
 		}
+	}
+
+	public void OnDrawGizmos()
+	{
+		Gizmos.DrawRay(ray);
 	}
 }

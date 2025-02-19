@@ -6356,9 +6356,9 @@ RectTransform:
   - {fileID: 2354435576672063421}
   m_Father: {fileID: 3949130705748765741}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2468129761680078181
@@ -6444,15 +6444,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: DisplayMoves
-        m_Mode: 1
+        m_TargetAssemblyTypeName: ActionManager, Assembly-CSharp
+        m_MethodName: OnButtonPressed
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Choose
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &2976296977066476600
@@ -6490,7 +6490,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 240.2, y: 89.6}
+  m_AnchoredPosition: {x: 240.20001, y: 89.600006}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5636341605021151016
@@ -6816,9 +6816,9 @@ RectTransform:
   - {fileID: 6278028521346465723}
   m_Father: {fileID: 3949130705748765741}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -110}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3553832438130249924
@@ -6905,14 +6905,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ActionManager, Assembly-CSharp
-        m_MethodName: ReadyToMove
-        m_Mode: 2
+        m_MethodName: OnButtonPressed
+        m_Mode: 5
         m_Arguments:
-          m_ObjectArgument: {fileID: 829805508222818946}
-          m_ObjectArgumentAssemblyTypeName: CombatEntity, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Move
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &4039323928837163928
@@ -7084,16 +7084,16 @@ RectTransform:
   m_GameObject: {fileID: 5699423096264905646}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.6359, y: 0.20065, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.63, y: 0.1264095, z: 0.63}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6577490308302148046}
   m_Father: {fileID: 6310470950114487127}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 43.15, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3602001230586892
 CanvasRenderer:
@@ -7607,6 +7607,8 @@ GameObject:
   - component: {fileID: 8967881366265302810}
   - component: {fileID: 829805508222818946}
   - component: {fileID: 5253053406431719524}
+  - component: {fileID: 8271999180852822724}
+  - component: {fileID: 9206123313073828053}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -7622,7 +7624,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9046145149692921572}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 31.325754, y: 1.3372555, z: 10.459367}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
@@ -7700,20 +7702,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff106986c4970d4ba7d32d11bd07f3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: Mercy
   healthChange: {fileID: 11400000, guid: df6b9efec697b7042b6fc7ec32d87649, type: 2}
   entity: {fileID: 11400000, guid: 69092dd618de4cf4fb75af226f2a40a6, type: 2}
   Health: {fileID: 7496358357178583029}
   myTurn: {fileID: 1040161562995078981}
-  decisionsUI: {fileID: 0}
+  decisionsUI: {fileID: 8449039388661792586}
   MoveListDisplay: {fileID: 2976296977066476600}
   enemyTargetDisplay: {fileID: 8140206960563643208}
   playerTargetDisplay: {fileID: 3764512676795074926}
-  movesCreated: 1
+  movesCreated: 0
   hasMoved: 0
   isPlayer: 1
   x: 1
   y: 4
   movementPoints: 3
+  actionPoints: 2
+  sprite: {fileID: 0}
 --- !u!95 &5253053406431719524
 Animator:
   serializedVersion: 7
@@ -7736,3 +7741,56 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8271999180852822724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9046145149692921572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f37becf2c5a4868409abfcedc5dc4af9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 5253053406431719524}
+  spriteRenderer: {fileID: 8967881366265302810}
+  speed: 0
+  groundDist: 0
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  rb: {fileID: 9206123313073828053}
+  sr: 0
+  movementPoints: 50
+  footSteps: []
+  footStep: {fileID: 0}
+  stepTiming: 0.5
+  stepTimer: 0
+--- !u!54 &9206123313073828053
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9046145149692921572}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 4
+  m_CollisionDetection: 0

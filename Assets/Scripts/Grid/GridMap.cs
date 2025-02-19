@@ -13,7 +13,7 @@ public class GridMapPoint : MonoBehaviour
 
 	public GridMapPoint previousNode;
 	[SerializeField] public GridSO gridSO;
-	public bool availablePoint;
+	public bool availablePoint = true;
 	internal float elevation;
 	private TextMeshProUGUI textMeshProUGUI;
 	int debugRotate = 1;
@@ -38,7 +38,6 @@ public class GridMapPoint : MonoBehaviour
 	{
 		pos_x = xPos;
 		pos_y = yPos;
-		availablePoint = true;
 	}
 	private void OnMouseDown()
 	{
@@ -53,6 +52,7 @@ public class GridMapPoint : MonoBehaviour
 
 	internal void UpdatePosition(int i, int j)
 	{
+		
 		pos_x = i;
 		pos_y = j;
 		gridSO.UpdatePosition(i, j);

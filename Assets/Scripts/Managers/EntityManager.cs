@@ -39,6 +39,7 @@ public class EntityManager : MonoBehaviour
 
 	internal void GetPlayers(AbilitySO abilitySO, CombatEntity dequeue)
 	{
+		uiManager.AddToHistory(abilitySO, dequeue);
 		int chosenPlayer = random.Next(Players.Length);
 		Players[chosenPlayer].entity.ChangeHealth(abilitySO.damage);
 
@@ -52,6 +53,7 @@ public class EntityManager : MonoBehaviour
 
 	internal void HandleAbility(AbilitySO chosenAbility, CombatEntity entity)
 	{
+		uiManager.AddToHistory(chosenAbility, entity);
         entity.entity.ChangeHealth(chosenAbility.damage);
 
 		uiManager.UpdateHealth(entity);

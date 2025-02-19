@@ -13,6 +13,8 @@ public class PreturnState : StateTurnBase
 	{
 		//turnManager.EntitiesTurn.EvaluateStatus();
 		turnManager.entityManager.ReqeueuEntities(turnManager.queue);
+		
+		turnManager.uiManager.CreateTurnOrder(turnManager.queue);
 
 		Queue queue = turnManager.queue;
 		if (queue.Count > 0)

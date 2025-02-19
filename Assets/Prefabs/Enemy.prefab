@@ -694,7 +694,7 @@ RectTransform:
   m_Father: {fileID: 8482472605235786325}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7055,7 +7055,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1052697804317620838
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7086,7 +7086,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8114322538495669940}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
@@ -7174,8 +7174,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6791710823141273131}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7470,6 +7470,7 @@ MonoBehaviour:
   entity: {fileID: 11400000, guid: 0d8c34a5a67864a489977d201a3e2657, type: 2}
   Health: {fileID: 7706253693835450422}
   myTurn: {fileID: 7717072628748555795}
+  decisionsUI: {fileID: 0}
   MoveListDisplay: {fileID: 385664086409493070}
   enemyTargetDisplay: {fileID: 5512068088189833554}
   playerTargetDisplay: {fileID: 6680890082134431816}
@@ -7479,6 +7480,7 @@ MonoBehaviour:
   x: 3
   y: 3
   movementPoints: 2
+  sprite: {fileID: 0}
 --- !u!95 &8007567844434250642
 Animator:
   serializedVersion: 7

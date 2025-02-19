@@ -9,27 +9,35 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Managers")]
     TurnManager turnManager;
+    [Header("Listeners/Events")]
     public IntGameEvent changeHealth;
 	public UnityAction<int> intReact;
     public GameEventListener gameEventListener;
-
     public UnityEvent displayMoves;
-
     IntGameEvent updateHealth;
     IntListener listenForHealth;
-	/*
+    /*
     The UI Manage is a manager made along with the GameManager. The UI will even begin at Title,
     working throughout the game in both the World and the Combat
      */
 
+    public Queue turnOrderUI = new Queue();
+    public Queue historyUI = new Queue();
+
+    [Header("UI Elements")]
 	[SerializeField] GameObject GamePanel;
     [SerializeField] GameObject CommandPanel;
     [SerializeField] GameObject MoveListDisplay;
 	[SerializeField] GameObject enemyTargetDisplay;
 	[SerializeField] GameObject playerTargetDisplay;
-    [SerializeField] Button EndTurn;
+	[SerializeField] GameObject turnOrderDisplay;
+	[SerializeField] GameObject uiIcon;
+	[SerializeField] GameObject GameHistoryDisplay;
+	[SerializeField] Button EndTurn;
 
+    [SerializeField] GameObject historySegment;
 
 	[SerializeField] public TextMeshProUGUI TurnStateMachine;
 	[SerializeField] public TextMeshProUGUI ActionStateMachine;
@@ -42,19 +50,42 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI playerHealth;
     [SerializeField] TextMeshProUGUI enemyHealth;
 
+    [SerializeField] Image CurrentTurn;
+
+    [Header("Entities Panel")]
+    [SerializeField] Image CurrentESprite;
+    [SerializeField] TextMeshProUGUI CurrentEName;
+    [SerializeField] Slider CurrentEHealth;
+    [SerializeField] Slider CurrentEActionPoints;
+    [SerializeField] Slider CurrentEMovement;
+
+
     CombatEntity combatEntity;
-    private bool movesCreated = false;
+    private bool movesShown = false;
     private bool playerGenerated = false;
     private bool enemyGenerated = false;
 
 	internal void CreateHealthBars(CombatEntity entity)
 	{
-        entity.GetHealthBar().maxValue = entity.entity.GetMaxHealth();
-        entity.GetHealthBar().value = entity.entity.GetHealth();
+
+
+
+        //entity.GetHealthBar().maxValue = entity.entity.GetMaxHealth();
+        //entity.GetHealthBar().value = entity.entity.GetHealth();
         //updateHealth.RegisterListener(listenForHealth);
 	}
 	public void DisplayMoves()
 	{
+        if(!movesShown)
+        {
+            MoveListDisplay.SetActive(true);
+            movesShown = true;
+        } 
+        else
+        {
+            MoveListDisplay.SetActive(false);
+            movesShown = false;
+        }
 		
         //dequeue.GetMovesDisplay().SetActive(true);
         //CommandPanel.SetActive(false);
@@ -69,13 +100,14 @@ public class UIManager : MonoBehaviour
     {
 		combatEntity = turnManager.GetCombatEntity();
 
-		combatEntity.GetMovesDisplay().SetActive(true);
+		//combatEntity.GetMovesDisplay().SetActive(true);
 		//MoveListDisplay.SetActive(false);
 		//CommandPanel.SetActive(true);
 	}
 
 	internal void WhoseTurn(CombatEntity playerTurn)
 	{
+        CurrentTurn.sprite = playerTurn.sprite;
         //EntityTurn.text = playerTurn.GetEntitySO().entityName;
         if(playerTurn.entity.isPlayer)
         {
@@ -88,11 +120,14 @@ public class UIManager : MonoBehaviour
         {
             if(!playerTurn.movesCreated)
             {
-                movesCreated = true;
+                //movesCreated = true;
                 AbilityButton.GetComponent<AbilityButton>().UpdateAbility(playerTurn.entity.GetAbilities()[i]);
                 AbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = playerTurn.entity.GetAbilities()[i].name;
                 MoveListClick.Add(AbilityButton);
-                Instantiate(AbilityButton.gameObject, playerTurn.GetMovesDisplay().transform);
+
+                Instantiate(AbilityButton.gameObject, MoveListDisplay.transform);
+
+                //Instantiate(AbilityButton.gameObject, playerTurn.GetMovesDisplay().transform);
 
 				/*
                  *  Button button = Instantiate(ButtonWithID, playerTurn.GetMovesDisplay().transform);
@@ -208,5 +243,62 @@ public class UIManager : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	internal void CreateTurnOrder(Queue queue)
+	{
+        GameObject newTurnIcon;
+
+        if(queue != null)
+        {
+            foreach (CombatEntity item in queue)
+            {
+				newTurnIcon = Instantiate(uiIcon, turnOrderDisplay.transform);
+                newTurnIcon.GetComponent<Image>().sprite = item.sprite;
+                newTurnIcon.transform.localScale = Vector3.one;
+                turnOrderUI.Enqueue(newTurnIcon);
+            }
+        }
+	}
+    internal void PopTurnOrderUI()
+    {
+        GameObject oldIcon = (GameObject)turnOrderUI.Dequeue();
+        Destroy(oldIcon);
+    }
+
+	internal void AddToHistory(AbilitySO chosenAbility, CombatEntity entity)
+	{
+        GameObject historyText;
+
+        historyText = Instantiate(historySegment, GameHistoryDisplay.transform);
+
+        historyText.GetComponent<TextMeshProUGUI>().text = entity.name + " performed " + chosenAbility.name + " for " + chosenAbility.damage + " damage!";
+        historyText.transform.localScale = Vector3.one;
+        historyUI.Enqueue(historyText);
+	}
+	internal void AddToHistory(string chosenAbility, CombatEntity entity)
+	{
+		GameObject historyText;
+
+		historyText = Instantiate(historySegment, GameHistoryDisplay.transform);
+
+		historyText.GetComponent<TextMeshProUGUI>().text = entity.name + " performed " + chosenAbility;
+		historyText.transform.localScale = Vector3.one;
+		historyUI.Enqueue(historyText);
+	}
+
+	internal void ChangeEntityPanel(CombatEntity entitiesTurn)
+	{
+        CurrentESprite.sprite = entitiesTurn.sprite;
+        CurrentEName.text = entitiesTurn.name;
+        CurrentEHealth.minValue = 0;
+        CurrentEHealth.value = entitiesTurn.entity.GetHealth();
+        CurrentEHealth.maxValue = entitiesTurn.entity.GetMaxHealth();
+
+        CurrentEActionPoints.value = entitiesTurn.actionPoints;
+        CurrentEActionPoints.maxValue = entitiesTurn.actionPoints;
+
+        CurrentEMovement.value = entitiesTurn.movementPoints;
+        CurrentEMovement.maxValue = entitiesTurn.movementPoints;
 	}
 }
