@@ -5,13 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class ChangeScene : MonoBehaviour
 {
-    public void GoToCombat()
-    {
-        SceneManager.LoadScene(1);
-    }
+    public Animator animator;
 
-    public void ReturnToWorld()
-    {
-        SceneManager.LoadScene(0);
-    }
+	private bool readyToMove = false;
+
+	public void FadeToMainWorld()
+	{
+		animator.SetTrigger("FadeOut");
+	}	
+
+	public void OnFadeComplete()
+	{
+		SceneManager.LoadScene(0);
+	}
 }

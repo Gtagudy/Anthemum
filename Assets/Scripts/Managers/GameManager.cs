@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] public Button QuitBTN;
 	[SerializeField] public Canvas TitleUI;
 
+    [SerializeField] private Image BlackScreen;
 
 	private bool startedCombat = false;
     private bool inTitleScreen = false;
@@ -64,24 +65,11 @@ public class GameManager : MonoBehaviour
         switch(gameState)
         {
             case GameState.Title:
-                if(TitleText == null)
-                {
-                    gameState = GameState.Combat; break;
-                }
-
                 if(!inTitleScreen)
                 {
                     inTitleScreen = true;
-                    if(MainCharacter.GetComponent<Character>() != null)
-                    {
-
-                        storedSpeed = MainCharacter.GetComponent<Character>().GetSpeed();
-					    MainCharacter.GetComponent<Character>().UpdateSpeed(0);
-                    }
-
-					MainCharacter.gameObject.SetActive(false);
                     Debug.Log("Title");
-                    uiManager.PlayTitle(TitleText, StartBTN, QuitBTN);
+                    //uiManager.PlayTitle(TitleText, StartBTN, QuitBTN);
                 }
                 break;
 
@@ -129,17 +117,17 @@ public class GameManager : MonoBehaviour
 	public void MoveToWorld()
 	{
         if(clickSounds.Length > 0)
-        {
-            chosenClick.clip = clickSounds[UnityEngine.Random.Range(0, clickSounds.Length - 1)];
-            chosenClick.Play();
+		{
+			chosenClick.clip = clickSounds[UnityEngine.Random.Range(0, clickSounds.Length - 1)];
+			chosenClick.Play();
+			gameState = GameState.World;
+			TitleUI.gameObject.SetActive(false);
 
-		    gameState = GameState.World;
-            TitleUI.gameObject.SetActive(false);
-
-        }
-        //TitleUI.GetComponent<TMP_EditorPanelUI>
+		}
+		//TitleUI.GetComponent<TMP_EditorPanelUI>
 	}
-    public void Joever()
+
+	public void Joever()
     {
         if (clickSounds.Length > 0)
         {
