@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Fight2 2
   m_EditorClassIdentifier: 
   Players:
-  - {fileID: 0}
+  - {fileID: 16060414578191711, guid: 90014c892c16f5442b4b6dbfcfdc3531, type: 3}
+  - {fileID: 7505502730274710633, guid: 7035e545c43b8284aab6307edf794f1a, type: 3}
   Enemies:
-  - {fileID: 0}
-  rows: 15
-  columns: 15
+  - {fileID: 3573720407386370148, guid: dce82c5afbc88424faad204fb9c7b117, type: 3}
+  - {fileID: 3573720407386370148, guid: e06b3575f16a5ec42a1266abcb02df16, type: 3}
+  rows: 5
+  columns: 5
   turnCount: 0

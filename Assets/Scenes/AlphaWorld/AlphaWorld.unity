@@ -2395,6 +2395,7 @@ MonoBehaviour:
   StartBTN: {fileID: 0}
   QuitBTN: {fileID: 0}
   TitleUI: {fileID: 0}
+  BlackScreen: {fileID: 0}
   clickSounds: []
   chosenClick: {fileID: 0}
 --- !u!114 &477471894

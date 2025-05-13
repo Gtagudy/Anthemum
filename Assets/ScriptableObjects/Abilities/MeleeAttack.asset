@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14e9ce772506bad41b0dcce401ca0802, type: 3}
   m_Name: MeleeAttack
   m_EditorClassIdentifier: 
-  name: Punch
+  AbilityName: Jab
   description: A solid jab
   icon: {fileID: 0}
   actionPoints: 1
@@ -21,3 +21,6 @@ MonoBehaviour:
   AOE: 1
   target: 0
   AbilityEffectType: 0
+  buff: 0
+  debuff: 0
+  statusEffectCount: 0

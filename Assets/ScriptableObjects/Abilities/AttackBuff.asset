@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14e9ce772506bad41b0dcce401ca0802, type: 3}
   m_Name: AttackBuff
   m_EditorClassIdentifier: 
-  name: Enrage
+  AbilityName: Enrage
   description: Get a smidgen mad
   icon: {fileID: 0}
   actionPoints: 1
@@ -21,3 +21,6 @@ MonoBehaviour:
   AOE: 0
   target: 2
   AbilityEffectType: 2
+  buff: 2
+  debuff: 0
+  statusEffectCount: 4

@@ -6318,7 +6318,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 0.562
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7625,7 +7625,7 @@ Transform:
   m_GameObject: {fileID: 9046145149692921572}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 31.325754, y: 1.3372555, z: 10.459367}
+  m_LocalPosition: {x: 31.325754, y: 0.8372555, z: 10.459367}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -7711,7 +7711,7 @@ MonoBehaviour:
   MoveListDisplay: {fileID: 2976296977066476600}
   enemyTargetDisplay: {fileID: 8140206960563643208}
   playerTargetDisplay: {fileID: 3764512676795074926}
-  movesCreated: 0
+  movesCreated: 1
   hasMoved: 0
   isPlayer: 1
   x: 1

@@ -2936,7 +2936,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1848969938}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2142340507}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ExitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1848969938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3117,6 +3129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2142340506}
   - component: {fileID: 2142340507}
+  - component: {fileID: 2142340508}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -3154,15 +3167,28 @@ MonoBehaviour:
   gameState: 0
   CombatScenes: []
   OriginalScenes: []
+  currentCombatScene: {fileID: 0}
   MainCharacter: {fileID: 0}
   MainEnemy: {fileID: 0}
-  TitleText: {fileID: 208597843}
-  StartBTN: {fileID: 1285115594}
-  QuitBTN: {fileID: 1848969937}
-  TitleUI: {fileID: 0}
   BlackScreen: {fileID: 0}
   clickSounds: []
   chosenClick: {fileID: 0}
+--- !u!114 &2142340508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2142340505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb5ebb0efd8c157448f9316919515b67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TitleText: {fileID: 208597843}
+  StartBTN: {fileID: 1285115594}
+  QuitBTN: {fileID: 1848969937}
+  TitleUI: {fileID: 354568745}
 --- !u!1001 &59454337975620393
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3265,7 +3291,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4591741280633423192, guid: 12b5a9eb75ec67d4583f0bbc1e8c7e61, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -32
       objectReference: {fileID: 0}
     - target: {fileID: 4591741280633423192, guid: 12b5a9eb75ec67d4583f0bbc1e8c7e61, type: 3}
       propertyPath: m_AnchoredPosition.y

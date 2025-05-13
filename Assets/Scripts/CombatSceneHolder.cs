@@ -14,7 +14,7 @@ public class CombatScene : MonoBehaviour
 
 	private void Start()
 	{
-		CombatSceneSO.Players = Players;
-		CombatSceneSO.Enemies = Enemies;
+		//CombatSceneSO.Players = Players;
+		//CombatSceneSO.Enemies = Enemies;
 	}
 }

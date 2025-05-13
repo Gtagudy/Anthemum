@@ -8,8 +8,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CombatScene", menuName = "ScriptableObject/CombatScene")]
 public class CombatSceneSO : ScriptableObject
 {
-	[SerializeField] public CombatEntity[] Players;
-	[SerializeField] public CombatEntity[] Enemies;
+	[SerializeField] public GameObject[] Players;
+	[SerializeField] public GameObject[] Enemies;
 
 	[SerializeField] int rows = 0;
 	[SerializeField] int columns = 0;
@@ -18,12 +18,12 @@ public class CombatSceneSO : ScriptableObject
 
 	public int turnCount;
 
-	public CombatEntity[] GetPlayers()
+	public GameObject[] GetPlayers()
 	{
 		return Players;
 	}
 
-	public CombatEntity[] GetEnemies()
+	public GameObject[] GetEnemies()
 	{
 		return Enemies;
 	}

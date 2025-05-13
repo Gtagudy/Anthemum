@@ -8,7 +8,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Ability", menuName = "ScriptableObject/Abilities")]
 public class AbilitySO : ScriptableObject
 {
-	public string name;
+	public string AbilityName;
 
 	public string description;
 
@@ -25,4 +25,10 @@ public class AbilitySO : ScriptableObject
 	public Targeting target;
 
 	public AbilityEffectType AbilityEffectType;
+
+	public Buff buff;
+
+	public Debuff debuff;
+
+	public int statusEffectCount;
 }

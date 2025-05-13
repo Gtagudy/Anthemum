@@ -12,7 +12,7 @@ public class EndturnState : StateTurnBase
 		if (turnManager.EntitiesTurn.isPlayer)
 		{
 			turnManager.EntitiesTurn.GetMovesDisplay().SetActive(false);
-			turnManager.EntitiesTurn.ToggleDecisions().SetActive(false);
+			//turnManager.EntitiesTurn.ToggleDecisions().SetActive(false);
 		}
 		if(turnManager.queue.Count > 0 )
 		{

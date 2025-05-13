@@ -50,7 +50,7 @@ public class ActionManager : MonoBehaviour
 	
 	public void ChangeState(ActionStateBase newState)
 	{
-		uiManager.ActionStateMachine.text = newState.ToString();
+		//uiManager.ActionStateMachine.text = newState.ToString();
 		actionState = newState;
 
 		actionState.EnterState(this);
@@ -77,7 +77,7 @@ public class ActionManager : MonoBehaviour
 	internal void ResolveEnemy(CombatEntity dequeue)
 	{
 		PauseAMoment();
-		AbilitySO abilitySO = dequeue.entity.getAbility(random.Next(0,1));
+		AbilitySO abilitySO = dequeue.Entity.getAbility(random.Next(0,dequeue.Entity.GetAbilities().Count));
 		if (abilitySO != null)
 		{
 
@@ -99,12 +99,21 @@ public class ActionManager : MonoBehaviour
 			{
 				entityManager.HandleAbility(abilitySO, dequeue);
 			}
+			else if(abilitySO.AbilityEffectType == AbilityEffectType.Buff || abilitySO.AbilityEffectType == AbilityEffectType.Debuff)
+			{
+				entityManager.HandleAbilityStatus(abilitySO, dequeue);
+			}
 		}
 		else if(abilitySO.target == Targeting.Single)
 		{
 			if(abilitySO.AbilityEffectType == AbilityEffectType.Damage)
 			{
 				entityManager.GetPlayers(abilitySO, dequeue);
+			} 
+			else if(abilitySO.AbilityEffectType == AbilityEffectType.DamageDebuff)
+			{
+				entityManager.HandleAbility(abilitySO, dequeue);
+				entityManager.HandleAbilityStatus(abilitySO, turnManager.EntitiesTurn);
 			}
 		}
 	}

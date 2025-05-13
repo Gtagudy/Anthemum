@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14e9ce772506bad41b0dcce401ca0802, type: 3}
   m_Name: Skip
   m_EditorClassIdentifier: 
-  name: Skip Turn
+  AbilityName: Heal
   description: When this entity can perform no other actions, their turn is forfeit
   icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   actionPoints: 0
@@ -21,3 +21,6 @@ MonoBehaviour:
   AOE: 0
   target: 2
   AbilityEffectType: 1
+  buff: 0
+  debuff: 0
+  statusEffectCount: 0

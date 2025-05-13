@@ -10,6 +10,8 @@ using UnityEngine;
 public class MoveState : ActionStateBase
 {
 	bool isMoving = false;
+	
+	private List<GridMapPoint> debugPath;
 
 	private List<Vector3> pathVectorList;
 	private int currentNode;
@@ -31,28 +33,40 @@ public class MoveState : ActionStateBase
 		isMoving = true;
 
 		HighlightAllMovables(actionManager.turnManager.EntitiesTurn.movementPoints);
-
-		this.actionManager = actionManager;
 	}
 
 	private void HighlightAllMovables(int movementPoints)
 	{
-		x = actionManager.turnManager.EntitiesTurn.GetGridPositionX();
-		y = actionManager.turnManager.EntitiesTurn.GetGridPositionY();
-		targetingPoints = new GridMapPoint[4];
+		
+		var start = actionManager.gridManager.GetCurrentEntityCoords(actionManager.turnManager.EntitiesTurn);
+		var visited = new HashSet<GridMapPoint>{ start };
+		var frontier = new Queue<(GridMapPoint cell, int dist)>();
+		frontier.Enqueue((start, 0));
 
-		GridMapPoint home = actionManager.gridManager.gridPoints[x, y];
-
-		targetingPoints[0] = home.Up;
-		targetingPoints[1] = home.Right;
-		targetingPoints[2] = home.Down;
-		targetingPoints[3] = home.Left;
-
-		for (int i = 0; i < 4; i++)
+		while (frontier.Count > 0)
 		{
-			targetingPoints[i].transform.GetChild(0).gameObject.SetActive(true);
-		}
+			var (cell, dist) = frontier.Dequeue();
+			// highlight if not the origin
+			if (dist > 0)
+			{ 
+				var highlight = cell.transform.GetChild(0).gameObject;
+				highlight.SetActive(true);
+			}
+			
 
+			if (dist == movementPoints) 
+				continue;  // don’t go beyond your movement budget
+
+			// enqueue each neighbor
+			foreach (var neigh in new[]{cell.Up, cell.Right, cell.Down, cell.Left})
+			{
+				if (neigh != null && neigh.availablePoint && !visited.Contains(neigh))
+				{
+					visited.Add(neigh);
+					frontier.Enqueue((neigh, dist + 1));
+				}
+			}
+		}
 	}
 
 	public override void HandleButtonPress(ActionManager actionManager, AbilityButton buttonID)
@@ -74,46 +88,56 @@ public class MoveState : ActionStateBase
 	{
 		if (Input.GetMouseButtonDown(0) && isMoving)
 		{
-			Vector3 mousePos = Input.mousePosition;
-			ray = actionManager.camera.ScreenPointToRay(mousePos);
-
-
-
-			if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.gameObject.tag == "Grid" && hit.collider.gameObject.GetComponent<GridMapPoint>().availablePoint == true)
+			var ray = actionManager.camera.ScreenPointToRay(Input.mousePosition);
+			if (Physics.Raycast(ray, out var hit) &&
+			    hit.collider.CompareTag("Grid") &&
+			    hit.collider.GetComponent<GridMapPoint>().availablePoint)
 			{
+				// Draw the ray & point
+				Debug.DrawLine(ray.origin, hit.point, Color.red, 1f);
+				Debug.DrawRay(hit.point, Vector3.up * 0.5f, Color.green, 1f);
 
-				CombatEntity thisEntity = actionManager.turnManager.GetCombatEntity();
+				// Convert to local grid coords using RoundToInt
+				GridManager gm = actionManager.gridManager;
+				float rawX = (hit.point.x - gm.gridStart.x) / gm.gridPointSize;
+				float rawY = (hit.point.z - gm.gridStart.z) / gm.gridPointSize;
+				int cellX = Mathf.RoundToInt(rawX);
+				int cellY = Mathf.RoundToInt(rawY);
+				
+				Vector3 destination = gm.GetWorldPosition(cellX, cellY, true);
+				Transform destin = actionManager.gridManager.gridPoints[cellX, cellY].transform;
+				
+				Debug.Log($"Click→raw({rawX:F2},{rawY:F2})→cell({cellX},{cellY})");
 
-
-				Vector3 hitSpot = hit.point;
-				int gridx = Mathf.RoundToInt(Mathf.FloorToInt((hitSpot.x - actionManager.gridManager.gridStart.x)) / actionManager.gridManager.gridPointSize);
-				int gridy = Mathf.RoundToInt(Mathf.FloorToInt((hitSpot.z - actionManager.gridManager.gridStart.z)) / actionManager.gridManager.gridPointSize);
-
-				List<GridMapPoint> path = actionManager.gridManager.StartPath.FindPath(thisEntity.GetGridPositionX(), thisEntity.GetGridPositionY(), gridx, gridy);
-
-				if(path != null)
+				// Run A* and draw its world-space path
+				CombatEntity entity = actionManager.turnManager.GetCombatEntity();
+				
+				var path = gm.StartPath.FindPath(
+					entity.GetGridPositionX(),
+					entity.GetGridPositionY(),
+					cellX, cellY
+				);
+				if (path != null)
 				{
-					for(int i = 0; i < path.Count - 1; i++)
+					for (int i = 0; i < path.Count - 1; i++)
 					{
-						Debug.DrawLine(new Vector3(path[i].pos_x, path[i].pos_y) * 10f + Vector3.one * 5f, new Vector3(path[i + 1].pos_x, path[i + 1].pos_y), Color.red);
+						var a = gm.GetWorldPosition(path[i].pos_x, path[i].pos_y, true);
+						var b = gm.GetWorldPosition(path[i+1].pos_x, path[i+1].pos_y, true);
+						Debug.DrawLine(a, b, Color.black, 1f);
 					}
 				}
+				
+				debugPath = path;
+				
+				// Finally update the grid and entity
+				gm.UpdateGridPoint(cellX, cellY, entity);
+				entity.UpdateGridPosition(cellX, cellY);
+				entity.UpdatePosition(destin);
 
-				Debug.Log("--------------");
-				Debug.Log(thisEntity.GetGridPositionX() + " " + thisEntity.GetGridPositionY());
-
-				Debug.Log("--------------");
-
-				Debug.Log(gridx + " " + gridy);
-				Debug.Log("--------------");
-
-				actionManager.gridManager.UpdateGridPoint(gridx, gridy, actionManager.turnManager.EntitiesTurn);
-
-				thisEntity.UpdatePosition(hit.transform);
-				thisEntity.UpdateGridPosition(gridx, gridy);
 				isMoving = false;
 			}
 		}
+
 	}
 	public void ReadyToMove(ActionManager actionManager, CombatEntity combatEntity)
 	{
@@ -139,8 +163,24 @@ public class MoveState : ActionStateBase
 		}
 	}
 
-	public void OnDrawGizmos()
+	private void OnDrawGizmosSelected()
 	{
-		Gizmos.DrawRay(ray);
+		if (debugPath == null) return;
+		var gm = actionManager?.gridManager;
+		if (gm == null) return;
+
+		Gizmos.color = Color.yellow;
+		for (int i = 0; i < debugPath.Count; i++)
+		{
+			var p = debugPath[i];
+			var pos = gm.GetWorldPosition(p.pos_x, p.pos_y, true);
+			Gizmos.DrawSphere(pos, gm.gridPointSize * 0.2f);
+			if (i > 0)
+			{
+				var prev = debugPath[i-1];
+				var pPos = gm.GetWorldPosition(prev.pos_x, prev.pos_y, true);
+				Gizmos.DrawLine(pPos, pos);
+			}
+		}
 	}
 }

@@ -27,13 +27,13 @@ public class TargetState : ActionStateBase
 
 	public override void HandleButtonPress(ActionManager actionManager, EntityButton buttonID)
 	{
-		actionManager.entityManager.HandleAbility(actionManager.chosenAbility,buttonID.GetEntity());
+		actionManager.entityManager.HandleAbility(actionManager.chosenAbility, buttonID.GetEntity());
 		//chosenMove = true;
-		actionManager.ResolvePlayer(buttonID.GetEntity());
+		//actionManager.ResolvePlayer(buttonID.GetEntity());
 		actionManager.EmptyHighlightPoints(1);
+		actionManager.turnManager.uiManager.DisplayMoves();
+
 		actionManager.ChangeState(actionManager.decideState);
-
-
 	}
 
 	public override void UpdateState(ActionManager actionManager)

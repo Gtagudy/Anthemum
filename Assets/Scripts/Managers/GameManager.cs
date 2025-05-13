@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using TMPro;
 using TMPro.EditorUtilities;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 
 public class GameManager : MonoBehaviour
 {
-
     /*
         The point of the GameManager here is to, of course, control the game. We will use this class to handle
     how the world will work, including handing things over to the CombatManager. We will be communicating with the UI Manager here
@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] CombatSceneSO[] CombatScenes;
     [SerializeField] CombatSceneSO[] OriginalScenes;
 
+    [SerializeField] CombatSceneSO currentCombatScene;
+
     public int[,] grid = new int[5,5];
     CombatSceneSO gameScene;
 
@@ -32,10 +34,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public CombatEntity MainCharacter;
     [SerializeField] public CombatEntity MainEnemy;
 
-	[SerializeField] public TextMeshProUGUI TitleText;
-	[SerializeField] public Button StartBTN;
-	[SerializeField] public Button QuitBTN;
-	[SerializeField] public Canvas TitleUI;
+    //[SerializeField]
 
     [SerializeField] private Image BlackScreen;
 
@@ -43,7 +42,7 @@ public class GameManager : MonoBehaviour
     private bool inTitleScreen = false;
     private bool inWorld = false;
 
-    float storedSpeed;
+    //float storedSpeed;
     int runs = 0;
 
     [SerializeField] public AudioClip[] clickSounds;
@@ -74,14 +73,12 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.World:
-                startedCombat = false;
-                if(runs >= 5)
-                {
-                    gameState = GameState.Title; break;
-                }
+				MainCharacter.GetComponent<Character>().UpdateSpeed(10);
+
+				startedCombat = false;
                 if (!inWorld)
                 {
-                    MainCharacter.GetComponent<Character>().UpdateSpeed(storedSpeed);
+                    //MainCharacter.GetComponent<Character>().UpdateSpeed(storedSpeed);
                     inWorld = true;
                     MainCharacter.gameObject.SetActive(true);
                 }
@@ -89,17 +86,24 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.Pause:
+				MainCharacter.GetComponent<Character>().UpdateSpeed(0);
+                break;
 
-            case GameState.Combat:
-                if (!startedCombat)
+			case GameState.Combat:
+
+				if (!startedCombat)
                 {
+				    MainCharacter.GetComponent<Character>().UpdateSpeed(0);
                     inWorld = false;
                     runs++;
-                    int chosenLevel = UnityEngine.Random.Range(0, CombatScenes.Length - 1);
+
+                    startedCombat = true;
+                    combatManager.StartCombat(currentCombatScene);
+
+                    /*int chosenLevel = UnityEngine.Random.Range(0, CombatScenes.Length - 1);
 
 					if (CombatScenes[chosenLevel] != null)
                     {
-                        startedCombat = true;
                         Debug.Log("Combat!");
                         CombatSceneSO chosenScene = CombatScenes[chosenLevel];
                         
@@ -108,32 +112,26 @@ public class GameManager : MonoBehaviour
                     } else
                     {
                         chosenLevel = UnityEngine.Random.Range(0, CombatScenes.Length - 1);
-                    }
+                    }*/
                 }
                 break;
         }
     }
 
-	public void MoveToWorld()
-	{
-        if(clickSounds.Length > 0)
-		{
-			chosenClick.clip = clickSounds[UnityEngine.Random.Range(0, clickSounds.Length - 1)];
-			chosenClick.Play();
-			gameState = GameState.World;
-			TitleUI.gameObject.SetActive(false);
-
-		}
-		//TitleUI.GetComponent<TMP_EditorPanelUI>
-	}
-
-	public void Joever()
+    public void PauseGame()
     {
-        if (clickSounds.Length > 0)
-        {
-            chosenClick.clip = clickSounds[UnityEngine.Random.Range(0, clickSounds.Length)];
-            chosenClick.Play();
 
+    }
+
+
+	public void ExitGame()
+    {
+        if(Application.isEditor)
+        {
+            EditorApplication.ExitPlaymode();
+        }
+        else
+        {
             Application.Quit();
         }
     }
@@ -141,9 +139,10 @@ public class GameManager : MonoBehaviour
     {
         return clickSounds;
     }
-    public void StartCombat()
+    public void StartCombat(CombatSceneSO combatSceneSO)
     {
-        
+        currentCombatScene = combatSceneSO;
+
         gameState = GameState.Combat;
     }
 }

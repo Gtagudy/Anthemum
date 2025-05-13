@@ -16,10 +16,10 @@ public class PreturnState : StateTurnBase
 		
 		turnManager.uiManager.CreateTurnOrder(turnManager.queue);
 
-		Queue queue = turnManager.queue;
+		List<CombatEntity> queue = turnManager.queue;
 		if (queue.Count > 0)
 		{
-			Debug.Log("Oho look whose turn it is " + queue.Peek());
+			Debug.Log("Oho look whose turn it is " + queue.First());
 			turnManager.ChangeState(turnManager.StartTurnState);
 		}
 	}

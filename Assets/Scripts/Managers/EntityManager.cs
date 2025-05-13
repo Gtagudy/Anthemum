@@ -12,8 +12,8 @@ public class EntityManager : MonoBehaviour
 	GameManager gameManager;
 	TurnManager turnManager;
 
-	CombatEntity[] Players;
-	CombatEntity[] Enemies;
+	public List<CombatEntity> Players;
+	public List<CombatEntity> Enemies;
 
 	IntGameEvent updateHealth;
 	System.Random random = new System.Random();
@@ -22,7 +22,7 @@ public class EntityManager : MonoBehaviour
 	{
 		if(dequeue != null)
         {
-            if (dequeue.entity.isPlayer == true)
+            if (dequeue.Entity.isPlayer == true)
             {
 
                 Debug.Log("Welcome player!");
@@ -39,11 +39,23 @@ public class EntityManager : MonoBehaviour
 
 	internal void GetPlayers(AbilitySO abilitySO, CombatEntity dequeue)
 	{
-		uiManager.AddToHistory(abilitySO, dequeue);
-		int chosenPlayer = random.Next(Players.Length);
-		Players[chosenPlayer].entity.ChangeHealth(abilitySO.damage);
-
+		int chosenPlayer = random.Next(Players.Count);
+		uiManager.AddToHistory(abilitySO, dequeue, Players[chosenPlayer]);
+		Players[chosenPlayer].Entity.ChangeHealth(abilitySO.damage);
 		uiManager.UpdateHealth(Players[chosenPlayer]);
+		CheckForDeath(Players[chosenPlayer]);
+
+	}
+
+	private void CheckForDeath(CombatEntity dequeue)
+	{
+		if(dequeue.isPlayer && dequeue.Entity.GetHealth() <= 0)
+		{			
+			turnManager.DropEntity(dequeue);
+		} else if (dequeue.Entity.GetHealth() <= 0)
+		{
+			turnManager.DropEntity(dequeue);
+		}
 	}
 
 	internal void GetTargets(AbilityButton button)
@@ -53,18 +65,60 @@ public class EntityManager : MonoBehaviour
 
 	internal void HandleAbility(AbilitySO chosenAbility, CombatEntity entity)
 	{
-		uiManager.AddToHistory(chosenAbility, entity);
-        entity.entity.ChangeHealth(chosenAbility.damage);
-
+		entity.Entity.ChangeHealth(chosenAbility.damage
+			+ turnManager.EntitiesTurn.Entity.Stats.attack
+			- entity.Entity.Stats.defense);
 		uiManager.UpdateHealth(entity);
+
+		if(chosenAbility.AbilityEffectType == AbilityEffectType.Damage)
+		{
+			uiManager.AddToHistory(chosenAbility, turnManager.EntitiesTurn, entity);
+			CheckForDeath(entity);
+		}
+		else
+		{
+			HandleAbilityStatus(chosenAbility, entity);
+		}
+	}
+	internal void HandleAbilityStatus(AbilitySO abilitySO, CombatEntity dequeue)
+	{
+		uiManager.AddToHistory(abilitySO, turnManager.EntitiesTurn, dequeue);
+
+		if (abilitySO.AbilityEffectType == AbilityEffectType.Buff 
+			|| abilitySO.AbilityEffectType == AbilityEffectType.DamageBuff)
+		{
+			dequeue.AddBuff(abilitySO.buff, 1, abilitySO.statusEffectCount);
+		} 
+		else if(abilitySO.AbilityEffectType == AbilityEffectType.Debuff
+			|| abilitySO.AbilityEffectType == AbilityEffectType.DamageDebuff) 
+		{
+			dequeue.AddDebuff(abilitySO.debuff, 1, abilitySO.statusEffectCount);
+		} else if(abilitySO.AbilityEffectType == AbilityEffectType.DamageSyphon)
+		{
+			turnManager.EntitiesTurn.AddBuff(abilitySO.buff, 1, abilitySO.statusEffectCount);
+			turnManager.EntitiesTurn.AddDebuff(abilitySO.debuff, 1, abilitySO.statusEffectCount);
+		}
 	}
 
-	internal void NotifyOfAll(CombatEntity[] players, CombatEntity[] enemies)
+	internal void NotifyOfAll(List<CombatEntity> players, List<CombatEntity> enemies)
 	{
-        Players = players;
-        Enemies = enemies;
+		Players = new List<CombatEntity>(players.Count);
+		Enemies = new List<CombatEntity>(enemies.Count);
 
-		
+		for(int i = 0; i < players.Count; i++)
+		{
+			//Players[i] = players[i];
+			Players.Add(players[i]);
+		}
+
+		for (int i = 0; i < enemies.Count; i++)
+		{
+			//Enemies[i] = enemies[i];
+
+			Enemies.Add(enemies[i]);
+
+		}
+
 		/*for (int i = 0; i < players.Length; i++) 
         {
             this.Players[i] = players[i];
@@ -75,9 +129,9 @@ public class EntityManager : MonoBehaviour
 		}*/
 	}
 
-	public Queue ReqeueuEntities(Queue queue)
+	public List<CombatEntity> ReqeueuEntities(List<CombatEntity> queue)
 	{
-		CombatEntity[] tempOrder = new CombatEntity[Players.Length + Enemies.Length];
+		CombatEntity[] tempOrder = new CombatEntity[Players.Count + Enemies.Count];
 
 		Debug.Log("The game is " + tempOrder.Length + " entities long");
 
@@ -104,14 +158,14 @@ public class EntityManager : MonoBehaviour
 		}
 		tempOrder = tempOrder.OrderByDescending(
 		(entity) =>
-		entity.entity.GetSpeed())
+		entity.Entity.GetSpeed())
 		.ToArray();
 		foreach (CombatEntity entity in tempOrder)
 		{
 			if (entity != null)
 			{
 				Debug.Log("Well well, get QUEUED" + entity.name);
-				queue.Enqueue(entity);
+				queue.Add(entity);
 			}
 		}
 		return queue;
@@ -149,4 +203,5 @@ public class EntityManager : MonoBehaviour
 			}
 		}
 	}
+
 }

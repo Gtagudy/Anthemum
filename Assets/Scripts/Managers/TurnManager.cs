@@ -1,4 +1,5 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using UnityEngine.Events;
 
 public class TurnManager : MonoBehaviour
 {
-    public Queue queue = new Queue();
+    public List<CombatEntity> queue = new List<CombatEntity>();
     CombatEntity[] tempOrder;
 
     public CombatEntity EntitiesTurn;
@@ -16,6 +17,7 @@ public class TurnManager : MonoBehaviour
     public UIManager uiManager;
     public ActionManager actionManager;
     public GameManager gameManager;
+    public CombatManager combatManger;
 
     public bool gameIsOver = false;
 
@@ -35,14 +37,13 @@ public class TurnManager : MonoBehaviour
 
     public UnityEvent endTurn;
 
-
-
     // Start is called before the first frame update
     void Awake()
     {
         entityManager = GetComponent<EntityManager>();
         uiManager = GetComponent<UIManager>();
         actionManager = GetComponent<ActionManager>();
+        combatManger = GetComponent<CombatManager>();
         camera = CinemachineVirtualCamera.FindFirstObjectByType<CinemachineVirtualCamera>();
     }
 
@@ -160,6 +161,26 @@ public class TurnManager : MonoBehaviour
                 uiManager.CreateHealthBars(entity);
             }
         }*/
-		stateTurn.EnterState(this, gameScene);
+        
+        gameIsOver = false;
+        gameScene = combatSceneSO;
+        ChangeState(PreturnState);
+        //stateTurn.EnterState(this, gameScene);
+	}
+
+	internal void EmptyEntities()
+	{
+        queue.Clear();
+	}
+
+	internal void DropEntity(CombatEntity dequeue)
+	{
+        queue.Remove(dequeue);
+        combatManger.RemoveFromCombat(dequeue);
+        if(dequeue.isPlayer && combatManger.players.Count < 1 || !dequeue.isPlayer && combatManger.enemies.Count < 1)
+        {
+            combatManger.EndCombat(!dequeue.isPlayer);
+            gameIsOver = true;
+        }
 	}
 }

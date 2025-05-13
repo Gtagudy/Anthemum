@@ -24,7 +24,7 @@ public class ChooseState : ActionStateBase
 
 			x = actionManager.turnManager.EntitiesTurn.GetGridPositionX();
 			y = actionManager.turnManager.EntitiesTurn.GetGridPositionY();
-			targetingPoints = new GridMapPoint[4];
+			/*targetingPoints = new GridMapPoint[4];
 
 			GridMapPoint Here = actionManager.gridManager.gridPoints[x, y];
 			targetingPoints[0] = Here.Up;
@@ -35,12 +35,12 @@ public class ChooseState : ActionStateBase
 			for (int i = 0; i < 4; i++)
 			{
 				targetingPoints[i].transform.GetChild(1).gameObject.SetActive(true);
-			}
+			}*/
 			//Debug.Log(button.GetComponent<AbilityButton>().GetTargeting().ToString());
 			actionManager.chosenAbility = button.GetAbility();
-			//actionManager.entityManager.GetTargets(button);
-			actionManager.entityManager.GetTargets(button, targetingPoints);
-			actionManager.UpdateHighlightedPoints(targetingPoints);
+			actionManager.entityManager.GetTargets(button);
+			//actionManager.entityManager.GetTargets(button, targetingPoints);
+			//actionManager.UpdateHighlightedPoints(targetingPoints);
 			actionManager.ChangeState(actionManager.targetState);
 			//}
 		}
@@ -51,8 +51,10 @@ public class ChooseState : ActionStateBase
 
 		switch(b)
 		{
-			case "Punch":
-				
+			case "Choose":
+				actionManager.turnManager.uiManager.DisplayMoves();
+				actionManager.ChangeState(actionManager.decideState);
+
 				break;
 			case "Rest":
 

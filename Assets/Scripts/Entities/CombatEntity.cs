@@ -10,52 +10,90 @@ using UnityEngine.UI;
 
 public class CombatEntity : MonoBehaviour
 {
+	[Header("Data Template (assigned at spawn)")]
+	[SerializeField] private string entityName;
+	[SerializeField] private EntitySO entity;        // your ScriptableObject template
+	[SerializeField] private Slider healthSlider;     // UI slider for health
 
-    [SerializeField] string Name;
+	[Header("Runtime State")]
+	private int currentHealth;
+	public int movementPoints;
+	public int actionPoints;
+	public bool hasMoved;
+	
+	private Dictionary<Buff, StatusEffectBase> buffs = new();
+	private Dictionary<Debuff, StatusEffectBase> debuffs = new();
+
+	public string EntityName => entityName;
+	public EntitySO Entity => entity;
+	[SerializeField] public Sprite Sprite;
 
     public IntGameEvent healthChange;
-
-    [SerializeField] public EntitySO entity;
 	
     [SerializeField] Slider Health;
-    
-    [SerializeField] GameObject myTurn;
+
+	[SerializeField] public Dictionary<Buff, StatusEffectBase> Buffs = new Dictionary<Buff, StatusEffectBase>();
+	[SerializeField] public Dictionary<Debuff, StatusEffectBase> Debuffs = new Dictionary<Debuff, StatusEffectBase>();
+
+	[SerializeField] GameObject myTurn;
     [SerializeField] GameObject decisionsUI;
 	[SerializeField] GameObject MoveListDisplay;
 	[SerializeField] GameObject enemyTargetDisplay;
 	[SerializeField] GameObject playerTargetDisplay;
+	[SerializeField] public GameObject effectCollection;
 	private bool isMyTurn = false;
     public bool movesCreated = false;
-
-    public bool hasMoved = false;
 
     public bool isPlayer = false;
 
     [SerializeField] int x;
     [SerializeField] int y;
-	[SerializeField] public int movementPoints;
-	[SerializeField] public int actionPoints;
 
-    [SerializeField] public Sprite sprite;
 
 	// Start is called before the first frame update
 	void Awake()
     {
         isPlayer = entity.isPlayer;
-        sprite = GetComponent<SpriteRenderer>().sprite;
+        Sprite = GetComponent<SpriteRenderer>().sprite;
 	}
 
+	public void InitializeFromData(EntitySO entitySO)
+	{
+			// Copy name
+			entityName = entity.entityName;
+
+			// Health
+			currentHealth = entity.GetMaxHealth();
+			if (healthSlider != null)
+			{
+				healthSlider.maxValue   = entity.GetMaxHealth();
+				healthSlider.value      = currentHealth;
+			}
+
+			// Movement & action
+			movementPoints = entity.Stats.originalMovementPoints;;
+			actionPoints   = entity.Stats.originalStamina;
+
+			// Reset turn flags
+			hasMoved = false;
+
+			// Load sprite if you store one on the SO
+			var sr = GetComponent<SpriteRenderer>();
+			if (sr != null && Sprite != null)
+				sr.sprite = Sprite;
+	}
+	
     // Update is called once per frame
     void Update()
     {
-        if(isMyTurn)
+       /* if(isMyTurn)
         {
             myTurn.SetActive(true);
         }
         else
         {
             myTurn.SetActive(false);
-        }
+        }*/
     }
 
     internal Slider GetHealthBar()
@@ -85,7 +123,7 @@ public class CombatEntity : MonoBehaviour
     
     public Sprite GetSprite()
     {
-        return sprite;
+        return Sprite;
     }
 	internal int GetGridPositionX()
 	{
@@ -105,4 +143,34 @@ public class CombatEntity : MonoBehaviour
         this.x = x;
         this.y = y;
     }
+
+    public void AddBuff(Buff type, int stacks, int baseValue)
+    {
+	    AddOrStackStatusEffect(type, stacks, baseValue, buffs, StatusEffectFactory.CreateBuff);
+	    buffs[type].OnActive(this);
+	    Debug.Log($"Applied {type} with effective value: {buffs[type].FinalValue()}");
+    }
+
+    public void AddDebuff(Debuff type, int stacks, int baseValue)
+    {
+	    AddOrStackStatusEffect(type, stacks, baseValue, debuffs, StatusEffectFactory.CreateDebuff);
+	    // debuffs[type].OnActive(this);
+	    Debug.Log($"Applied {type} with effective value: {debuffs[type].FinalValue()}");
+    }
+    private delegate StatusEffectBase StatusEffectFactoryDelegate<T>(T type, int stacks, int baseValue);
+
+    private void AddOrStackStatusEffect<T>(T type, int stacks, int baseValue, Dictionary<T, StatusEffectBase> collection,
+	    StatusEffectFactoryDelegate<T> createStatusEffect) where T : Enum
+    {
+	    if (collection.TryGetValue(type, out var existingEffect))
+	    {
+		    existingEffect.AddStacks(stacks);
+	    }
+	    else
+	    {
+		    var newEffect = createStatusEffect(type, stacks, baseValue);
+		    collection.Add(type, newEffect);
+	    }
+    }
+
 }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Pathfinding : MonoBehaviour 
@@ -12,7 +8,7 @@ public class Pathfinding : MonoBehaviour
 
 	private const int moveForward = 10;
 	private const int moveDiagonal = 14;
-
+	public List<GridMapPoint> currentPath;
 	private List<GridMapPoint> openList;
 	private List<GridMapPoint> closeList;
 
@@ -25,9 +21,8 @@ public class Pathfinding : MonoBehaviour
 		gridManager = GetComponent<GridManager>();
 	}
 
-	public Pathfinding(GridMapPoint[,] gridPoints)
+	public Pathfinding(GridMapPoint[,] points)
 	{
-		gridPoints = gridManager.gridPoints;
 		pathfinding = this;
 	}
 
@@ -93,36 +88,23 @@ public class Pathfinding : MonoBehaviour
 		return null;
 	}
 
-	private List<GridMapPoint> GetNeigbourList(GridMapPoint startNode)
+	private List<GridMapPoint> GetNeigbourList(GridMapPoint node)
 	{
-		List<GridMapPoint> neighbors = new List<GridMapPoint>();
-
-		if(startNode.pos_x - 1 >= 0)
+		List<GridMapPoint> list = new List<GridMapPoint>();
+		
+		foreach (GridMapPoint n in new[]
+		         {node.Up,node.UpRight,node.Right,node.DownRight,
+			         node.Down,node.DownLeft,node.Left,node.UpLeft}) 
 		{
-			neighbors.Add(gridManager.GetPointUsingCoords(startNode.pos_x - 1, startNode.pos_y));
-
-			if(startNode.pos_y - 1 >= 0) neighbors.Add(gridManager.GetPointUsingCoords(startNode.pos_x - 1, startNode.pos_y - 1));
-
-			if(startNode.pos_y + 1 < gridManager.gridWidth) neighbors.Add(gridManager.GetPointUsingCoords(startNode.pos_x + 1, startNode.pos_y + 1));
+			if (n != null && n.availablePoint)
+				list.Add(n);
 		}
-		if (startNode.pos_x + 1 < gridManager.gridLength)
-		{
-			neighbors.Add(gridManager.GetPointUsingCoords(startNode.pos_x + 1, startNode.pos_y));
-
-			if (startNode.pos_y - 1 >= 0) neighbors.Add(gridManager.GetPointUsingCoords(startNode.pos_x + 1, startNode.pos_y - 1));
-
-			if (startNode.pos_y + 1 < gridManager.gridLength) neighbors.Add(gridManager.GetPointUsingCoords(startNode.pos_x + 1, startNode.pos_y + 1));
-		}
-		if(startNode.pos_y - 1 >= 0) neighbors.Add(gridManager.GetPointUsingCoords(startNode.pos_x, startNode.pos_y - 1));
-
-		if(startNode.pos_y + 1 < gridManager.gridWidth) neighbors.Add(gridManager.GetPointUsingCoords(startNode.pos_x, startNode.pos_y + 1));
-
-		return neighbors;
+		return list;
 	}
 
 	private List<GridMapPoint> CalculatePath(GridMapPoint endNode)
 	{
-		List<GridMapPoint > path = new List<GridMapPoint>();
+		List<GridMapPoint> path = new List<GridMapPoint>();
 		path.Add(endNode);
 		GridMapPoint currentNode = endNode;
 		while (currentNode != null)
@@ -132,6 +114,14 @@ public class Pathfinding : MonoBehaviour
 		}
 		path.Reverse();
 
+		int maxSteps = gridManager.turnManager.GetCombatEntity().movementPoints;
+
+		if (path.Count - 1 > maxSteps)
+		{
+			// Trim off any nodes beyond your movement budget
+			path = path.GetRange(0, maxSteps + 1);
+		}
+		
 		return path;
 	}
 
@@ -172,8 +162,24 @@ public class Pathfinding : MonoBehaviour
 			{
 				pathVectorList.Add(new Vector3(p.pos_x, p.pos_y) * gridManager.gridPointSize + Vector3.one * gridManager.gridPointSize * 0.5f);
 			}
+			Debug.Log("A* path: " + string.Join(" → ",
+				path.Select(p => $"({p.pos_x},{p.pos_y})")));
 			return pathVectorList;
 		}
+		
 	}
-
+	private void OnDrawGizmosSelected() {
+		if (currentPath == null) return;
+		Gizmos.color = Color.yellow;
+		for (int i = 0; i < currentPath.Count; i++) {
+			var p = currentPath[i];
+			Vector3 w = gridManager.GetWorldPosition(p.pos_x, p.pos_y, true);
+			Gizmos.DrawSphere(w, gridManager.gridPointSize * 0.25f);
+			if (i > 0) {
+				var prev = currentPath[i-1];
+				Vector3 wp = gridManager.GetWorldPosition(prev.pos_x, prev.pos_y, true);
+				Gizmos.DrawLine(wp, w);
+			}
+		}
+	}
 }

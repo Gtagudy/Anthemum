@@ -9,7 +9,7 @@ public class GridManager : MonoBehaviour
 {
     [SerializeField] public GridMapPoint[,] gridPoints;
 
-    [SerializeField] public GameObject gridMap;
+    //[SerializeField] public GameObject gridMap;
     [SerializeField] public GameObject gridParent;
 
     [SerializeField] GameObject gridPoint;
@@ -39,7 +39,7 @@ public class GridManager : MonoBehaviour
 
 	private void Awake()
 	{
-
+		turnManager = GetComponent<TurnManager>();
 	}
 	internal void CreateGridMap(int[,] grid)
 	{
@@ -56,7 +56,7 @@ public class GridManager : MonoBehaviour
 				Vector3 pos = new Vector3(i * gridPointSize, 0, j * gridPointSize);
 
 
-				GameObject newGridSpot = Instantiate(gridMap, gridParent.transform.position + pos, Quaternion.identity, gridParent.transform);
+				GameObject newGridSpot = Instantiate(gridPoint, gridParent.transform.position + pos, Quaternion.identity, gridParent.transform);
 				newGridSpot.name = $"X: {i}, Y: {j}";
 				gridPoints[i, j] = newGridSpot.AddComponent<GridMapPoint>();
 				gridPoints[i, j].GetComponent<GridMapPoint>().name = $"X: {i}, Y: {j}";
@@ -108,30 +108,21 @@ public class GridManager : MonoBehaviour
 		}
 	}
 
-	private void OnDrawGizmos()
-	{
-		if (gridPoints == null)
-		{
-			for (int y = 0; y < gridLength; y++)
-			{
-				for (int x = 0; x < gridWidth; x++)
-				{
-					Vector3 pos = GetWorldPosition(x, y);
-					Gizmos.DrawCube(pos, Vector3.one / 4);
-				}
-			}
+	private void OnDrawGizmos() {
+		if (gridPoints == null) return;
+		for (int x = 0; x < gridLength; x++) {
+			for (int y = 0; y < gridWidth; y++) {
+				var cell = gridPoints[x,y];
+				Vector3 c = GetWorldPosition(x,y, true);
+				Gizmos.color = cell.availablePoint ? Color.white : Color.red;
+				Gizmos.DrawWireCube(c, Vector3.one * (gridPointSize * 0.9f));
 
-		}
-		else
-		{
-			for (int y = 0; y < gridWidth; y++)
-			{
-				for (int x = 0; x < gridLength; x++)
-				{
-					Vector3 pos = GetWorldPosition(x, y, true);
-					Gizmos.color = gridPoints[x, y].availablePoint ? Color.white : Color.red;
-					Gizmos.DrawCube(pos, Vector3.one / 4);
-				}
+				// Neighborhood stuff
+				/*Gizmos.color = Color.cyan;
+				foreach (var n in new[]{cell.Up, cell.UpRight, cell.Right, cell.DownRight,
+					         cell.Down, cell.DownLeft, cell.Left, cell.UpLeft})
+					if (n != null)
+						Gizmos.DrawLine(c, GetWorldPosition(n.pos_x, n.pos_y, true));*/
 			}
 		}
 	}
@@ -155,17 +146,21 @@ public class GridManager : MonoBehaviour
     {
 		
 	}
-	internal void SetEntitiesToGrid(CombatEntity[] players, CombatEntity[] enemies)
+	internal void SetEntitiesToGrid(List<CombatEntity> players, List<CombatEntity> enemies)
 	{
-		for(int i = 0; i < players.Length; i++)
+		for(int i = 0; i < players.Count; i++)
 		{
 			GridMapPoint filledMapPoint = UseEntityCoords(players, i);
 			
+			//GameObject makePlayer = Instantiate(players[i].gameObject, gridParent.transform.position + new Vector3(filledMapPoint.pos_x, 0, filledMapPoint.pos_y), Quaternion.identity, gridParent.transform);
+			
 			filledMapPoint.UpdateEntitySO(players[i]);
 			players[i].UpdatePosition(filledMapPoint.GetComponent<Transform>().transform);
+			//players[i].UpdatePosition();
+			players[i].transform.SetParent(filledMapPoint.GetComponent<Transform>());
 			filledMapPoint.availablePoint = false;
 		}
-		for (int i = 0; i < enemies.Length; i++)
+		for (int i = 0; i < enemies.Count; i++)
 		{
 			GridMapPoint filledMapPoint = UseEntityCoords(enemies, i);
 
@@ -176,7 +171,7 @@ public class GridManager : MonoBehaviour
 		}
 	}
 
-	private GridMapPoint UseEntityCoords(CombatEntity[] entities, int i)
+	private GridMapPoint UseEntityCoords(List<CombatEntity> entities, int i)
 	{
 		return gridPoints[(int)entities[i].GetGridPositionX(),
 						(int)entities[i].GetGridPositionY()];
@@ -204,5 +199,57 @@ public class GridManager : MonoBehaviour
 		gridPoints[combatEntity.GetGridPositionX(), combatEntity.GetGridPositionY()].availablePoint = true;
 
 		gridPoints[x, y].gridSO.UpdateEntitySO(combatEntity);
+		gridPoints[x, y].availablePoint = false;
 	}
+
+	internal void DestroyGrid()
+	{
+
+		for (int i = 0; i < gridLength - 1; i++)
+		{
+			for (int j = 0; j < gridWidth - 1; j++)
+			{
+				GridMapPoint thisGrid = gridPoints[i, j];
+				if (thisGrid != null)
+				{
+					if (i < gridLength)
+						thisGrid.Up = null; ;
+
+					if (i < gridLength && j < gridWidth)
+						thisGrid.UpRight = null;
+
+					if (j < gridWidth)
+						thisGrid.Right = null;
+
+					if (i > 0 && j < gridWidth)
+						thisGrid.DownRight = null;
+
+					if (i > 0)
+						thisGrid.Down = null;
+
+					if (i > 0 && j > 0)
+						thisGrid.DownLeft = null;
+
+					if (j > 0)
+						thisGrid.Left = null;
+
+					if (j > 0 && i < gridLength)
+						thisGrid.UpLeft = null;
+				}
+			}
+		}
+		for (int i = 0; i < gridLength; i++)
+		{
+			for (int j = 0; j < gridWidth; j++)
+			{
+				gridPoints[i, j].GetComponent<GridMapPoint>().gridSO = null;
+				Destroy(gridPoints[i, j].GetComponent<GridMapPoint>().gridSO);
+
+				Destroy(gridPoints[i, j].gameObject);
+			}
+		}
+
+		Array.Clear(gridPoints, 0, gridPoints.Length);
+	}
+	
 }

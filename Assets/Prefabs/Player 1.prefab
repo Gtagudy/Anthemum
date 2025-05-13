@@ -843,7 +843,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 0.562
+  m_Value: 30
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7298,7 +7298,7 @@ Transform:
   m_GameObject: {fileID: 7505502730274710633}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.022583, y: 0.08, z: -3.1122675}
+  m_LocalPosition: {x: 31.325754, y: 0.8372555, z: 10.459367}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -7375,23 +7375,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff106986c4970d4ba7d32d11bd07f3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Mercy
+  EntityName: Donny
   healthChange: {fileID: 11400000, guid: df6b9efec697b7042b6fc7ec32d87649, type: 2}
-  entity: {fileID: 11400000, guid: 69092dd618de4cf4fb75af226f2a40a6, type: 2}
+  entity: {fileID: 11400000, guid: 50da35802bc97ed488164ff9400598b8, type: 2}
   Health: {fileID: 2097882833149208184}
   myTurn: {fileID: 7201454352523578223}
   decisionsUI: {fileID: 6649244313891824070}
   MoveListDisplay: {fileID: 1953064196476693323}
   enemyTargetDisplay: {fileID: 7627442036634614543}
   playerTargetDisplay: {fileID: 1053516543477250748}
-  movesCreated: 0
+  movesCreated: 1
   hasMoved: 0
   isPlayer: 1
   x: 1
   y: 4
   movementPoints: 3
   actionPoints: 2
-  sprite: {fileID: 0}
+  sprite: {fileID: -2064615359, guid: 0cbaf885789cb704f9ce45c5f1a8f934, type: 3}
 --- !u!95 &8017485057635184093
 Animator:
   serializedVersion: 7

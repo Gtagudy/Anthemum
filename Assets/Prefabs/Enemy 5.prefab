@@ -209,7 +209,7 @@ Transform:
   m_GameObject: {fileID: 2103270895561962719}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.7069645, y: 1.06, z: -3.7709227}
+  m_LocalPosition: {x: 37.325752, y: 0.8372555, z: 8.459367}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -285,9 +285,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff106986c4970d4ba7d32d11bd07f3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Dale
+  EntityName: Timmy
   healthChange: {fileID: 11400000, guid: df6b9efec697b7042b6fc7ec32d87649, type: 2}
-  entity: {fileID: 11400000, guid: 0d8c34a5a67864a489977d201a3e2657, type: 2}
+  entity: {fileID: 11400000, guid: 6d6c37bc233081748828c4a14b6691b0, type: 2}
   Health: {fileID: 8142386259800953822}
   myTurn: {fileID: 7624131376203621611}
   decisionsUI: {fileID: 0}

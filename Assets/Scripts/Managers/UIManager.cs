@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,6 +10,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] GameObject entireUI;
+    [SerializeField] bool entireUIOn = false;
     [Header("Managers")]
     TurnManager turnManager;
     [Header("Listeners/Events")]
@@ -24,11 +27,13 @@ public class UIManager : MonoBehaviour
      */
 
     public Queue turnOrderUI = new Queue();
-    public Queue historyUI = new Queue();
+   // public Queue historyUI = new Queue();
+
+    public LinkedList<GameObject> historyUI = new LinkedList<GameObject>();
 
     [Header("UI Elements")]
-	[SerializeField] GameObject GamePanel;
-    [SerializeField] GameObject CommandPanel;
+	//[SerializeField] GameObject GamePanel;
+    //[SerializeField] GameObject CommandPanel;
     [SerializeField] GameObject MoveListDisplay;
 	[SerializeField] GameObject enemyTargetDisplay;
 	[SerializeField] GameObject playerTargetDisplay;
@@ -37,14 +42,17 @@ public class UIManager : MonoBehaviour
 	[SerializeField] GameObject GameHistoryDisplay;
 	[SerializeField] Button EndTurn;
 
-    [SerializeField] GameObject historySegment;
+    GameObject oldIcon;
+
+	[SerializeField] GameObject historySegment;
 
 	[SerializeField] public TextMeshProUGUI TurnStateMachine;
 	[SerializeField] public TextMeshProUGUI ActionStateMachine;
     [SerializeField] TextMeshProUGUI EntityTurn;
     [SerializeField] Button AbilityButton;
     [SerializeField] Button EntityButton;
-    [SerializeField] List<Button> MoveListClick;
+    [SerializeField] List<GameObject> MoveListClick;
+    [SerializeField] List<GameObject> enemyPlayerTarget;
 
     //[SerializeField] Scrollbar[] healthBars;
     [SerializeField] TextMeshProUGUI playerHealth;
@@ -59,11 +67,27 @@ public class UIManager : MonoBehaviour
     [SerializeField] Slider CurrentEActionPoints;
     [SerializeField] Slider CurrentEMovement;
 
+    [SerializeField] private CinemachineVirtualCamera camera;
+    
+    private bool MovesCreated = false;
 
     CombatEntity combatEntity;
     private bool movesShown = false;
     private bool playerGenerated = false;
     private bool enemyGenerated = false;
+
+	int historyNum = 0;
+
+	private void Start()
+	{
+		
+	}
+
+	public void UpdateCamera()
+	{
+		camera.Follow = turnManager.GetCombatEntity().transform;
+		camera.LookAt = turnManager.GetCombatEntity().transform;
+	}
 
 	internal void CreateHealthBars(CombatEntity entity)
 	{
@@ -107,26 +131,28 @@ public class UIManager : MonoBehaviour
 
 	internal void WhoseTurn(CombatEntity playerTurn)
 	{
-        CurrentTurn.sprite = playerTurn.sprite;
+        ShowCombatUI();
+        CurrentTurn.sprite = playerTurn.Sprite;;
         //EntityTurn.text = playerTurn.GetEntitySO().entityName;
-        if(playerTurn.entity.isPlayer)
+        if(playerTurn.Entity.isPlayer)
         {
             CreateMoves(playerTurn);
         }
 	}
 	private void CreateMoves(CombatEntity playerTurn)
 	{
-        for (int i = 0; i < playerTurn.entity.GetAbilities().Count; i++)
+        ClearMoveList();
+        for (int i = 0; i < playerTurn.Entity.GetAbilities().Count; i++)
         {
-            if(!playerTurn.movesCreated)
-            {
+            //if(!playerTurn.movesCreated)
+            //{
                 //movesCreated = true;
-                AbilityButton.GetComponent<AbilityButton>().UpdateAbility(playerTurn.entity.GetAbilities()[i]);
-                AbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = playerTurn.entity.GetAbilities()[i].name;
-                MoveListClick.Add(AbilityButton);
+                AbilityButton.GetComponent<AbilityButton>().UpdateAbility(playerTurn.Entity.GetAbilities()[i]);
+                AbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = playerTurn.Entity.GetAbilities()[i].name;
 
-                Instantiate(AbilityButton.gameObject, MoveListDisplay.transform);
+                GameObject newButton = Instantiate(AbilityButton.gameObject, MoveListDisplay.transform);
 
+                MoveListClick.Add(newButton);
                 //Instantiate(AbilityButton.gameObject, playerTurn.GetMovesDisplay().transform);
 
 				/*
@@ -146,7 +172,7 @@ public class UIManager : MonoBehaviour
                     actionManager.OnButtonPressed();
                 });
                  */
-			}
+			//}
 		}
         playerTurn.movesCreated = true;
 	}
@@ -164,7 +190,7 @@ public class UIManager : MonoBehaviour
         
     }
 
-	internal void LetPlayerTarget(AbilityButton button, CombatEntity[] enemies, CombatEntity[] players)
+	internal void LetPlayerTarget(AbilityButton button, List<CombatEntity> enemies, List<CombatEntity> players)
 	{
         
         if(button.GetAbility().AbilityEffectType == AbilityEffectType.Damage)
@@ -174,11 +200,12 @@ public class UIManager : MonoBehaviour
             if(!enemyGenerated)
             {
                 enemyGenerated = true;
-		        for (int i = 0; i < enemies.Length; i++)
+		        for (int i = 0; i < enemies.Count; i++)
 		        {
                     EntityButton.GetComponent<EntityButton>().UpdateEntity(enemies[i]);
-                    EntityButton.GetComponentInChildren<TextMeshProUGUI>().text = enemies[i].name;
-			        Instantiate(EntityButton.gameObject, enemyTargetDisplay.transform);
+                    EntityButton.GetComponentInChildren<TextMeshProUGUI>().text = enemies[i].EntityName;
+			        GameObject target = Instantiate(EntityButton.gameObject, enemyTargetDisplay.transform);
+                    enemyPlayerTarget.Add(target);
 		        }
             }
         }
@@ -191,29 +218,49 @@ public class UIManager : MonoBehaviour
                 playerGenerated = true;
                 if(button.GetAbility().target == Targeting.Self)
                 {
-				    for (int i = 0; i < enemies.Length; i++)
+				    for (int i = 0; i < players.Count; i++)
 				    {
 					    EntityButton.GetComponent<EntityButton>().UpdateEntity(players[i]);
-					    EntityButton.GetComponentInChildren<TextMeshProUGUI>().text = players[i].name;
-					    Instantiate(EntityButton.gameObject, playerTargetDisplay.transform);
-                        
-				    }
-			    }
+					    EntityButton.GetComponentInChildren<TextMeshProUGUI>().text = players[i].EntityName;
+						GameObject target = Instantiate(EntityButton.gameObject, playerTargetDisplay.transform);
+						enemyPlayerTarget.Add(target);
+					}
+				}
             }
+        }
+        else if(button.GetAbility().AbilityEffectType == AbilityEffectType.Buff)
+        {
+            if (!playerGenerated)
+            {
+                playerTargetDisplay.SetActive(true);
+                enemyTargetDisplay.SetActive(false);
+                if (button.GetAbility().target == Targeting.Self)
+                {
+                    EntityButton.GetComponent<EntityButton>().UpdateEntity(turnManager.EntitiesTurn);
+                    EntityButton.GetComponentInChildren<TextMeshProUGUI>().text = turnManager.EntitiesTurn.EntityName;
+					GameObject target = Instantiate(EntityButton.gameObject, playerTargetDisplay.transform);
+					enemyPlayerTarget.Add(target);
+
+				}
+			}
         }
 	}
 
 	internal void UpdateHealth(CombatEntity entity)
 	{
         //updateHealth.Raise();
-		entity.GetHealthBar().value = entity.entity.GetHealth();
+		entity.GetHealthBar().value = entity.Entity.GetHealth();
+        if(entity.isPlayer)
+        {
+            CurrentEHealth.value = entity.Entity.GetHealth();
+        }
 	}
 
 	internal void PlayTitle(TextMeshProUGUI titleText, Button start, Button quit)
 	{
         titleText.CrossFadeAlpha(100, 5, true);
 	}
-
+    //deprecated
 	internal void LetPlayerTarget(AbilityButton button, GridMapPoint occupiedSpace)
 	{
 		if (button.GetAbility().AbilityEffectType == AbilityEffectType.Damage)
@@ -245,7 +292,7 @@ public class UIManager : MonoBehaviour
 		}
 	}
 
-	internal void CreateTurnOrder(Queue queue)
+	internal void CreateTurnOrder(List<CombatEntity> queue)
 	{
         GameObject newTurnIcon;
 
@@ -254,7 +301,7 @@ public class UIManager : MonoBehaviour
             foreach (CombatEntity item in queue)
             {
 				newTurnIcon = Instantiate(uiIcon, turnOrderDisplay.transform);
-                newTurnIcon.GetComponent<Image>().sprite = item.sprite;
+                newTurnIcon.GetComponent<Image>().sprite = item.Sprite;
                 newTurnIcon.transform.localScale = Vector3.one;
                 turnOrderUI.Enqueue(newTurnIcon);
             }
@@ -266,39 +313,141 @@ public class UIManager : MonoBehaviour
         Destroy(oldIcon);
     }
 
-	internal void AddToHistory(AbilitySO chosenAbility, CombatEntity entity)
+	internal void AddToHistory(AbilitySO chosenAbility, CombatEntity CurrentTurn, CombatEntity Target)
 	{
+        
+        if(historyNum >= 6)
+        {
+			GameObject oldIcon = (GameObject)historyUI.First.Value;
+			Destroy(oldIcon);
+            historyUI.RemoveFirst();
+		}
+
         GameObject historyText;
 
         historyText = Instantiate(historySegment, GameHistoryDisplay.transform);
 
-        historyText.GetComponent<TextMeshProUGUI>().text = entity.name + " performed " + chosenAbility.name + " for " + chosenAbility.damage + " damage!";
+        if(chosenAbility.AbilityEffectType == AbilityEffectType.Damage)
+        {
+            historyText.GetComponent<TextMeshProUGUI>().text = CurrentTurn.EntityName + " performed " + chosenAbility.AbilityName
+                + " for " + (chosenAbility.damage + CurrentTurn.Entity.Stats.attack - Target.Entity.Stats.defense) + "(" + 
+                chosenAbility.damage + ")+(" + CurrentTurn.Entity.Stats.attack + ")-(" + Target.Entity.Stats.defense + ") damage to " + Target.EntityName;
+        }
+        else if(chosenAbility.AbilityEffectType == AbilityEffectType.Health)
+        {
+			historyText.GetComponent<TextMeshProUGUI>().text = CurrentTurn.EntityName + " used " + chosenAbility.AbilityName
+                + " and healed themselves for " + chosenAbility.damage;
+		}
+		else if (chosenAbility.AbilityEffectType == AbilityEffectType.Buff)
+        {
+            historyText.GetComponent<TextMeshProUGUI>().text = CurrentTurn.EntityName + " performed " + chosenAbility.AbilityName
+                + " and buffed " + chosenAbility.buff + " for " + chosenAbility.statusEffectCount + " points!";
+        }
         historyText.transform.localScale = Vector3.one;
-        historyUI.Enqueue(historyText);
+        historyUI.AddLast(historyText);
+        historyNum = historyUI.Count;
 	}
 	internal void AddToHistory(string chosenAbility, CombatEntity entity)
-	{
+    {
+		if (historyNum >= 6)
+		{
+			GameObject oldIcon = (GameObject)historyUI.First.Value;
+			Destroy(oldIcon);
+			historyUI.RemoveFirst();
+		}
+
 		GameObject historyText;
 
 		historyText = Instantiate(historySegment, GameHistoryDisplay.transform);
 
 		historyText.GetComponent<TextMeshProUGUI>().text = entity.name + " performed " + chosenAbility;
 		historyText.transform.localScale = Vector3.one;
-		historyUI.Enqueue(historyText);
+		historyUI.AddLast(historyText);
+		historyNum = historyUI.Count;
+
 	}
 
 	internal void ChangeEntityPanel(CombatEntity entitiesTurn)
 	{
-        CurrentESprite.sprite = entitiesTurn.sprite;
-        CurrentEName.text = entitiesTurn.name;
+        CurrentESprite.sprite = entitiesTurn.Sprite;
+        CurrentEName.text = entitiesTurn.EntityName;
         CurrentEHealth.minValue = 0;
-        CurrentEHealth.value = entitiesTurn.entity.GetHealth();
-        CurrentEHealth.maxValue = entitiesTurn.entity.GetMaxHealth();
+        CurrentEHealth.value = entitiesTurn.Entity.GetHealth();
+        CurrentEHealth.maxValue = entitiesTurn.Entity.GetMaxHealth();
 
-        CurrentEActionPoints.value = entitiesTurn.actionPoints;
+        CurrentEActionPoints.value = entitiesTurn.actionPoints;;
         CurrentEActionPoints.maxValue = entitiesTurn.actionPoints;
 
         CurrentEMovement.value = entitiesTurn.movementPoints;
         CurrentEMovement.maxValue = entitiesTurn.movementPoints;
+	}
+
+    internal void ShowCombatUI()
+    {
+        entireUI.SetActive(true);
+    }
+
+    internal void HideCombatUI()
+    {
+        entireUI.SetActive(false);
+    }
+
+	internal void ClearHistory()
+	{
+        historyNum = 0;
+
+        int historyCount = historyUI.Count;
+		for(int i =  0; i < historyCount; i++)
+        {
+			GameObject oldIcon = (GameObject)historyUI.Last.Value;
+			Destroy(oldIcon);
+		}
+	}
+
+	internal void ClearQueue()
+	{
+		for (int i = 0; i < turnOrderUI.Count; i++)
+		{
+			GameObject oldIcon = (GameObject)turnOrderUI.Dequeue();
+			Destroy(oldIcon);
+		}
+        playerGenerated = false;
+        enemyGenerated = false;
+	}
+
+    internal void ClearMoveList()
+    {
+
+		int moveCount = MoveListClick.Count;
+		for (int i = moveCount - 1; i >= 0; i--)
+		{
+			Destroy(MoveListClick[i]);
+			//MoveListClick[i].SetActive(false);
+            MoveListClick.RemoveAt(i);
+		}
+	}
+	internal void ClearTargeting()
+	{
+
+		int moveCount = enemyPlayerTarget.Count;
+		for (int i = moveCount - 1; i >= 0; i--)
+		{
+            //GameObject oldIcon = enemyPlayerTarget[i];
+            //Destroy(oldIcon);
+            //oldIcon.SetActive(false);
+            Destroy(enemyPlayerTarget[i]);
+			enemyPlayerTarget.RemoveAt(i);
+		}
+	}
+
+	internal void StartTurnEffects(CombatEntity player)
+	{
+		for(int i = 0; i > player.Buffs.Count; i++)
+        {
+            /*GameObject effect = Instantiate(StatusEffectF)
+
+								newTurnIcon = Instantiate(uiIcon, turnOrderDisplay.transform);*/
+
+		}
 	}
 }

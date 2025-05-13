@@ -29,7 +29,7 @@ public class DecideState : ActionStateBase
 
 			case "Choose":
 				CombatEntity combatEntity = actionManager.turnManager.GetCombatEntity();
-				Debug.Log(combatEntity.entity.name + " is the mf whos moves should show");
+				Debug.Log(combatEntity.Entity.name + " is the mf whos moves should show");
 				actionManager.turnManager.uiManager.DisplayMoves();
 				//combatEntity.GetMovesDisplay().SetActive(true);
 				actionManager.ChangeState(actionManager.chooseState);
@@ -37,6 +37,9 @@ public class DecideState : ActionStateBase
 				break;
 			case "Skip":
 				actionManager.turnManager.uiManager.AddToHistory("Skipped turn", actionManager.turnManager.GetCombatEntity());
+				actionManager.turnManager.ChangeState(actionManager.turnManager.EndTurnState);
+				break;
+			case "End":
 				actionManager.turnManager.ChangeState(actionManager.turnManager.EndTurnState);
 				break;
 		}

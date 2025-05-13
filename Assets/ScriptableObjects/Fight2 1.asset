@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Fight2 1
   m_EditorClassIdentifier: 
   Players:
-  - {fileID: 0}
+  - {fileID: 16060414578191711, guid: 90014c892c16f5442b4b6dbfcfdc3531, type: 3}
   Enemies:
-  - {fileID: 0}
+  - {fileID: 3573720407386370148, guid: 5d0fc3173661c3946a1ba8d97639204f, type: 3}
   rows: 5
   columns: 5
   turnCount: 0

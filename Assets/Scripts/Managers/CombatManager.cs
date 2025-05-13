@@ -10,6 +10,10 @@ public class CombatManager : MonoBehaviour
     EntityManager entityManager;
     GridManager gridManager;
     GameManager gameManager;
+    UIManager uiManager;
+
+    public List<CombatEntity> players;
+    public List<CombatEntity> enemies;
 
 	public void StartCombat(CombatSceneSO combatSceneSO)
 	{
@@ -18,18 +22,43 @@ public class CombatManager : MonoBehaviour
             gameManager.gameState = GameState.Combat;
         }
         Debug.Log("We now starting combat!");
-
-        combatSceneSO.Players[0] = gameManager.MainCharacter;
         
+        players = new List<CombatEntity>();
+        enemies = new List<CombatEntity>();
 
-        combatSceneSO.Enemies[0] = gameManager.MainEnemy;
-
+        for(int i = 0; i < combatSceneSO.GetPlayers().Length; i++)
+        {
+				//players.Add(combatSceneSO.GetPlayers()[i].GetComponent<CombatEntity>());
+		        CombatEntity player = combatSceneSO.GetPlayers()[i].GetComponent<CombatEntity>();
+                Instantiate(player);
+                players.Add(player);
+            
+        }
+        for(int i = 0; i < combatSceneSO.GetEnemies().Length; i++)
+        {
+            CombatEntity enemy = combatSceneSO.GetEnemies()[i].GetComponent<CombatEntity>();
+            Instantiate(enemy);
+            players.Add(enemy);
+        }
 
         gridManager.CreateGridMap(combatSceneSO.GetGrid());
-        entityManager.NotifyOfAll(combatSceneSO.GetPlayers(), combatSceneSO.GetEnemies());
+        entityManager.NotifyOfAll(players, enemies);
         turnManager.QueueEntities(combatSceneSO);
-        gridManager.SetEntitiesToGrid(combatSceneSO.GetPlayers(), combatSceneSO.GetEnemies());
+        gridManager.SetEntitiesToGrid(players, enemies);
 	}
+
+    public void EndCombat(bool hasWon)
+    {
+        uiManager.ClearHistory();
+        uiManager.ClearQueue();
+        uiManager.ClearMoveList();
+        uiManager.ClearTargeting();
+        turnManager.EmptyEntities();
+        gridManager.DestroyGrid();
+        uiManager.HideCombatUI();
+
+        gameManager.gameState = GameState.World;
+    }
 
 	// Start is called before the first frame update
 	void Awake()
@@ -39,11 +68,25 @@ public class CombatManager : MonoBehaviour
         entityManager = GetComponent<EntityManager>();
         gridManager = GetComponent<GridManager>();
         gameManager = GetComponent<GameManager>();
+        uiManager = GetComponent<UIManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void RemoveFromCombat(CombatEntity dead)
+    {
+        if(dead.isPlayer)
+        {
+            players.Remove(dead);
+            entityManager.Players.Remove(dead);
+        } else
+        {
+            enemies.Remove(dead);
+            entityManager.Enemies.Remove(dead);
+        }
     }
 }

@@ -20,7 +20,10 @@ public enum AbilityEffectType
     Health,
     Buff,
     Debuff,
-    Stun
+    DamageBuff,
+    DamageDebuff,
+    HealBuff,
+    DamageSyphon
 }    
 
 public enum Targeting
@@ -53,6 +56,7 @@ public enum CombatState
 {
     Choose,
     Target,
+    Decide,
     Item,
     Move,
     Cutscene

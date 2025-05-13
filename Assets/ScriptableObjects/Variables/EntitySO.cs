@@ -15,7 +15,13 @@ public class EntitySO : IScriptableObject
 {
 	[SerializeField] List<AbilitySO> Ability;
 
-	[SerializeField] StatSO Stats;
+	//[SerializeField] List<AbilitySO> Buff;
+
+	//[SerializeField] List<AbilitySO> Debuff;
+
+	
+
+	[SerializeField] public StatSO Stats;
 	//[SerializeField] Scrollbar Health;
 
 	public bool isPlayer = false;
@@ -23,7 +29,10 @@ public class EntitySO : IScriptableObject
 	public bool isAlive = true;
 	private void OnEnable()
 	{
-		
+		Stats.health = Stats.originalHealth;
+		Stats.attack = Stats.originalAttack;
+		Stats.defense = Stats.originalDefense;
+		isAlive = true;
 	}
 
 	public int GetSpeed()
@@ -57,6 +66,13 @@ public class EntitySO : IScriptableObject
 		{
 			Stats.health = GetHealth();
 		}
+		if(Stats.health <= 0)
+		{
+			isAlive = false;
+
+			return 0;
+		}
 		return Stats.health;
 	}
+
 }
