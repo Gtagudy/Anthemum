@@ -14,6 +14,7 @@ public class EndturnState : StateTurnBase
 			turnManager.EntitiesTurn.GetMovesDisplay().SetActive(false);
 			//turnManager.EntitiesTurn.ToggleDecisions().SetActive(false);
 		}
+		turnManager.EntitiesTurn.EndTurnTick();
 		if(turnManager.queue.Count > 0 )
 		{
 			turnManager.ChangeState(turnManager.StartTurnState);

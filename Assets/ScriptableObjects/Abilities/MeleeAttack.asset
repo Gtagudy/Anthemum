@@ -13,13 +13,17 @@ MonoBehaviour:
   m_Name: MeleeAttack
   m_EditorClassIdentifier: 
   AbilityName: Jab
+  icon: {fileID: -359367694, guid: 0cbaf885789cb704f9ce45c5f1a8f934, type: 3}
   description: A solid jab
-  icon: {fileID: 0}
-  actionPoints: 1
-  cooldown: 0
+  stamina: 1
+  mana: 0
+  turnCooldown: 0
   damage: 20
+  knockback: 1
   AOE: 1
   target: 0
+  range: 1
+  size: {x: 1, y: 1}
   AbilityEffectType: 0
   buff: 0
   debuff: 0

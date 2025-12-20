@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62acf95fb1bf94b4585f09f568993886, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  entityName: Thats youuuuuu
+  entityName: Mercy
   entityDescription: Kinda the goat, especially if your new to the game
   Ability:
   - {fileID: 11400000, guid: 807f82ce30a186b4590706bd4f0391b9, type: 2}

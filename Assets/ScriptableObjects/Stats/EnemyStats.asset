@@ -12,9 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a63c86f9f0e4b040b7085338bfffc99, type: 3}
   m_Name: EnemyStats
   m_EditorClassIdentifier: 
-  health: -15
+  health: 45
   originalHealth: 75
-  attack: 5
-  defense: 1
+  attack: 4
+  originalAttack: 4
+  magic: 0
+  originalMagic: 0
+  defense: 0
+  originalDefense: 2
   stamina: 3
+  originalStamina: 3
+  movementPoints: 2
+  originalMovementPoints: 2
+  experience: 0
+  level: 0
+  experienceToNextLevel: 0
+  gold: 0
+  mana: 0
+  originalMana: 0
   speed: 6

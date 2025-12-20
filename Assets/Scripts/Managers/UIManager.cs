@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] bool entireUIOn = false;
     [Header("Managers")]
     TurnManager turnManager;
+    [SerializeField] AbilityUIManager abilityUIManager;
     [Header("Listeners/Events")]
     public IntGameEvent changeHealth;
 	public UnityAction<int> intReact;
@@ -141,39 +142,7 @@ public class UIManager : MonoBehaviour
 	}
 	private void CreateMoves(CombatEntity playerTurn)
 	{
-        ClearMoveList();
-        for (int i = 0; i < playerTurn.Entity.GetAbilities().Count; i++)
-        {
-            //if(!playerTurn.movesCreated)
-            //{
-                //movesCreated = true;
-                AbilityButton.GetComponent<AbilityButton>().UpdateAbility(playerTurn.Entity.GetAbilities()[i]);
-                AbilityButton.GetComponentInChildren<TextMeshProUGUI>().text = playerTurn.Entity.GetAbilities()[i].name;
-
-                GameObject newButton = Instantiate(AbilityButton.gameObject, MoveListDisplay.transform);
-
-                MoveListClick.Add(newButton);
-                //Instantiate(AbilityButton.gameObject, playerTurn.GetMovesDisplay().transform);
-
-				/*
-                 *  Button button = Instantiate(ButtonWithID, playerTurn.GetMovesDisplay().transform);
-                GeneralSelectionButton GSB = button.GetComponent<GeneralSelectionButton>();
-
-                button.name = sO.name;
-                GSB.buttonID = sO.name;
-                button.GetComponentInChildren<TextMeshProUGUI>().text = sO.name;
-                movesCreated = true;
-                MoveListClick.Add(ButtonWithID);
-
-                string buttonName = button.name;
-                Debug.Log(buttonName);
-                button.onClick.AddListener(() =>
-                {
-                    actionManager.OnButtonPressed();
-                });
-                 */
-			//}
-		}
+        abilityUIManager.CreateMoves(playerTurn, playerTurn.Entity.GetAbilities());
         playerTurn.movesCreated = true;
 	}
 
@@ -182,6 +151,7 @@ public class UIManager : MonoBehaviour
         //MoveListDisplay.RegisterListener(gameEventListener);
         //displayMoves.AddListener(DisplayMoves());
         turnManager = GetComponent<TurnManager>();
+        //abilityUIManager = GetComponent<AbilityUIManager>();
     }
 
     // Update is called once per frame
@@ -375,11 +345,11 @@ public class UIManager : MonoBehaviour
         CurrentEHealth.value = entitiesTurn.Entity.GetHealth();
         CurrentEHealth.maxValue = entitiesTurn.Entity.GetMaxHealth();
 
-        CurrentEActionPoints.value = entitiesTurn.actionPoints;;
-        CurrentEActionPoints.maxValue = entitiesTurn.actionPoints;
+        CurrentEActionPoints.value = entitiesTurn.GetCurrentStamina();;
+        CurrentEActionPoints.maxValue = entitiesTurn.GetCurrentStamina();
 
-        CurrentEMovement.value = entitiesTurn.movementPoints;
-        CurrentEMovement.maxValue = entitiesTurn.movementPoints;
+        CurrentEMovement.value = entitiesTurn.GetMovementPoints();
+        CurrentEMovement.maxValue = entitiesTurn.GetMovementPoints();
 	}
 
     internal void ShowCombatUI()

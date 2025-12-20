@@ -38,6 +38,9 @@ public class TurnManager : MonoBehaviour
     public UnityEvent endTurn;
 
     // Start is called before the first frame update
+    /// <summary>
+    /// Sets up the turn manager
+    /// </summary>
     void Awake()
     {
         entityManager = GetComponent<EntityManager>();
@@ -53,6 +56,10 @@ public class TurnManager : MonoBehaviour
         gameManager = GetComponent<GameManager>();
 	}
 
+	/// <summary>
+	/// Changes the state of the turn manager
+	/// </summary>
+	/// <param name="newState"></param>
 	public void ChangeState(StateTurnBase newState)
     {
         stateTurn = newState;
@@ -118,7 +125,7 @@ public class TurnManager : MonoBehaviour
 		
 	}*/
 
-	public void QueueEntities(CombatSceneSO combatSceneSO)
+	public void ShareCombatScene(CombatSceneSO combatSceneSO)
 	{
         /*gameScene = combatSceneSO;
 

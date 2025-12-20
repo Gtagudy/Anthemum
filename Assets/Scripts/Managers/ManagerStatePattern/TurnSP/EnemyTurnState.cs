@@ -9,9 +9,12 @@ public class EnemyTurnState : StateTurnBase
 {
 	public override void EnterState(TurnManager turnManager, CombatSceneSO combatSceneSO)
 	{
-		turnManager.actionManager.ResolveEnemy(turnManager.EntitiesTurn);
+		//turnManager.actionManager.ResolveEnemy(turnManager.EntitiesTurn);
 
-		turnManager.ChangeState(turnManager.EndTurnState);
+		turnManager.actionManager
+			.StartCoroutine(
+				turnManager.actionManager.EnemyTurnRoutine(turnManager.EntitiesTurn)
+			);
 	}
 
 	public override void UpdateState(TurnManager turnManager)

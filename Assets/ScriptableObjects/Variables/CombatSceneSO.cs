@@ -17,7 +17,17 @@ public class CombatSceneSO : ScriptableObject
 	[SerializeField] public int[,] grid;
 
 	public int turnCount;
+	
+	[Header("Scene Objects")]
+	public GridObjectSpawn[] objectsToSpawn;
 
+	[System.Serializable]
+	public struct GridObjectSpawn {
+		public GridObjectSO so;
+		public int x, y;
+	}
+	
+	
 	public GameObject[] GetPlayers()
 	{
 		return Players;

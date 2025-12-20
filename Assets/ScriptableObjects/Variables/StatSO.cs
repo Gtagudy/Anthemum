@@ -9,6 +9,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Stats", menuName = "ScriptableObject/Stats")]
 public class StatSO : ScriptableObject
 {
+	[Header("Stats")]
 	public int health;
 	public int originalHealth;
 
@@ -27,15 +28,16 @@ public class StatSO : ScriptableObject
 	public int movementPoints;
 	public int originalMovementPoints;
 	
+	public int mana;
+	public int originalMana;
+	
 	public int experience;
 	public int level;
 	public int experienceToNextLevel;
 	public int gold;
-	
-	public int mana;
-	public int originalMana;
-	
-	
+
+	public int manaRegen;
+	public int staminaRegen;
 
 	[SerializeField] public int speed;
 }

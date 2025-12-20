@@ -12,13 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14e9ce772506bad41b0dcce401ca0802, type: 3}
   m_Name: PowerUpPunch
   m_EditorClassIdentifier: 
-  name: PowerUp Punch
-  description: 
-  icon: {fileID: 0}
-  actionPoints: 1
-  cooldown: 3
+  AbilityName: Power Up Punch
+  icon: {fileID: -1160430131, guid: 132358e9bf26b60458b731bf001e31db, type: 3}
+  description: A punch made to sharpen your skills
+  stamina: 1
+  mana: 2
+  turnCooldown: 1
   damage: 10
-  AOE: 0
+  knockback: 2
+  AOE: 1
   target: 0
   AbilityEffectType: 4
   buff: 2

@@ -16,7 +16,20 @@ MonoBehaviour:
   originalHealth: 100
   attack: 5
   originalAttack: 5
+  magic: 2
+  originalMagic: 2
   defense: 7
   originalDefense: 7
   stamina: 2
+  originalStamina: 2
+  movementPoints: 0
+  originalMovementPoints: 3
+  mana: 0
+  originalMana: 10
+  experience: 0
+  level: 0
+  experienceToNextLevel: 0
+  gold: 0
+  manaRegen: 2
+  staminaRegen: 2
   speed: 3

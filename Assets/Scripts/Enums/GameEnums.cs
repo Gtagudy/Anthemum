@@ -31,7 +31,9 @@ public enum Targeting
     Single,
     Multi,
     Self,
-    AOE
+    AOE,
+    Cone,
+    Line
 }
 
 public enum Turns

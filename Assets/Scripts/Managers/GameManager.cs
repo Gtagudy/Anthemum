@@ -73,7 +73,6 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.World:
-				MainCharacter.GetComponent<Character>().UpdateSpeed(10);
 
 				startedCombat = false;
                 if (!inWorld)

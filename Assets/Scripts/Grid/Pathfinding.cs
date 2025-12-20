@@ -114,7 +114,7 @@ public class Pathfinding : MonoBehaviour
 		}
 		path.Reverse();
 
-		int maxSteps = gridManager.turnManager.GetCombatEntity().movementPoints;
+		int maxSteps = gridManager.turnManager.GetCombatEntity().GetCurrentStamina();
 
 		if (path.Count - 1 > maxSteps)
 		{

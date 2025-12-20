@@ -13,6 +13,11 @@ public class GridMapPoint : MonoBehaviour
 
 	public GridMapPoint previousNode;
 	[SerializeField] public GridSO gridSO;
+	/// <summary>
+	/// If a scene object (crate, barrel, trap) occupies this tile, here is its MonoBehaviour.
+	/// </summary>
+	[SerializeField] public GridObject gridObject;
+	
 	public bool availablePoint = true;
 	internal float elevation;
 	private TextMeshProUGUI textMeshProUGUI;
@@ -20,6 +25,7 @@ public class GridMapPoint : MonoBehaviour
 
 	[SerializeField] public GameObject Targeting;
 	[SerializeField] public GameObject Dangerous;
+	//[SerializeField] private GameObject highlightOverlay;
 
 	[SerializeField] public GridMapPoint Up;
 	[SerializeField] public GridMapPoint UpRight;
@@ -38,6 +44,12 @@ public class GridMapPoint : MonoBehaviour
 	{
 		pos_x = xPos;
 		pos_y = yPos;
+	}
+
+	public void ShowTargetHighlight(bool on)
+	{
+		if (Targeting != null)
+			Targeting.SetActive(on);
 	}
 	private void OnMouseDown()
 	{

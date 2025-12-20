@@ -31,8 +31,8 @@ Transform:
   m_GameObject: {fileID: 16060414578191711}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.1, y: 0.53048, z: -0.3}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalPosition: {x: 12, y: 0, z: 12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5579024344035581972}
@@ -113,7 +113,7 @@ MonoBehaviour:
   healthSlider: {fileID: 0}
   movementPoints: 3
   actionPoints: 2
-  hasMoved: 1
+  hasMoved: 0
   Sprite: {fileID: -721359090, guid: 2161d4775e2ccc0428293ae97d5093a5, type: 3}
   healthChange: {fileID: 11400000, guid: df6b9efec697b7042b6fc7ec32d87649, type: 2}
   Health: {fileID: 4921770246558818734}
@@ -125,8 +125,8 @@ MonoBehaviour:
   effectCollection: {fileID: 0}
   movesCreated: 1
   isPlayer: 1
-  x: 1
-  y: 0
+  x: 3
+  y: 3
 --- !u!95 &8119440528618982094
 Animator:
   serializedVersion: 7

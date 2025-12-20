@@ -12,12 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14e9ce772506bad41b0dcce401ca0802, type: 3}
   m_Name: NUKE
   m_EditorClassIdentifier: 
-  name: NUUUUKE
-  description: 
+  AbilityName: NUKE
   icon: {fileID: 0}
-  actionPoints: 0
-  cooldown: 0
+  description: 
+  stamina: 1
+  mana: 1
+  turnCooldown: 5
   damage: 100000
+  knockback: 0
   AOE: 0
   target: 0
   AbilityEffectType: 0
+  buff: 0
+  debuff: 0
+  statusEffectCount: 0

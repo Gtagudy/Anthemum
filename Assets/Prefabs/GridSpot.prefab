@@ -1249,6 +1249,7 @@ GameObject:
   - component: {fileID: 5651299025836311137}
   - component: {fileID: 6364110472231086226}
   - component: {fileID: 3274638479448124061}
+  - component: {fileID: 5454580152137022291}
   m_Layer: 0
   m_Name: GridSpot
   m_TagString: Grid
@@ -1347,6 +1348,36 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5454580152137022291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3379061359945753765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92ac5534b492ac943895fbc9ffb6ff0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pos_x: 0
+  pos_y: 0
+  gValue: 0
+  hValue: 0
+  fValue: 0
+  previousNode: {fileID: 0}
+  gridSO: {fileID: 0}
+  availablePoint: 0
+  Targeting: {fileID: 8766176300756212145}
+  Dangerous: {fileID: 0}
+  Up: {fileID: 0}
+  UpRight: {fileID: 0}
+  Right: {fileID: 0}
+  DownRight: {fileID: 0}
+  Down: {fileID: 0}
+  DownLeft: {fileID: 0}
+  Left: {fileID: 0}
+  UpLeft: {fileID: 0}
 --- !u!1 &3796727102722344401
 GameObject:
   m_ObjectHideFlags: 0

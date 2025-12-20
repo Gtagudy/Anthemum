@@ -49,8 +49,8 @@ public class Character : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         Vector3 moveDir = new Vector3(x, 0, y);
-        rb.velocity = moveDir * speed;
-        if (rb.velocity.x > 0 || rb.velocity.y > 0)
+        rb.linearVelocity = moveDir * speed;
+        if (rb.linearVelocity.x > 0 || rb.linearVelocity.y > 0)
         {
             stepTimer += Time.deltaTime;
             if (stepTimer >= stepTiming) 

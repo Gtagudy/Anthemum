@@ -9,20 +9,27 @@ using UnityEngine;
 public class AbilitySO : ScriptableObject
 {
 	public string AbilityName;
-
+	public Sprite icon;
 	public string description;
 
-	public Sprite icon;
+	[Header("resource")]
+	public int stamina;
+	public int mana;
 
-	public int actionPoints;
+	[Header("Cooldown")]
+	public int turnCooldown;
 
-	public int cooldown;
-
+	[Header("Ability Stats")]
 	public int damage;
+
+	public int knockback;
 
 	public int AOE;
 
+	[Header("Targeting")]
 	public Targeting target;
+	public int range;
+	public Vector2Int size = Vector2Int.zero;
 
 	public AbilityEffectType AbilityEffectType;
 
@@ -31,4 +38,9 @@ public class AbilitySO : ScriptableObject
 	public Debuff debuff;
 
 	public int statusEffectCount;
+	
+	[Header("QTE")]
+	public float qteStartDelay        = 0.5f;
+	public float qteWindow            = 1.0f;
+	public float qteSuccessMultiplier = 1.5f;   
 }

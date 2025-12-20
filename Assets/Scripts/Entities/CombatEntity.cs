@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
@@ -13,19 +14,27 @@ public class CombatEntity : MonoBehaviour
 	[Header("Data Template (assigned at spawn)")]
 	[SerializeField] private string entityName;
 	[SerializeField] private EntitySO entity;        // your ScriptableObject template
+	private StatSO stats;
+	
 	[SerializeField] private Slider healthSlider;     // UI slider for health
 
 	[Header("Runtime State")]
 	private int currentHealth;
-	public int movementPoints;
-	public int actionPoints;
+	private int movementPoints;
+	private int currentStamina;
+	private int currentMana;
 	public bool hasMoved;
 	
 	private Dictionary<Buff, StatusEffectBase> buffs = new();
 	private Dictionary<Debuff, StatusEffectBase> debuffs = new();
 
 	public string EntityName => entityName;
-	public EntitySO Entity => entity;
+	public EntitySO Entity
+	{
+		get => entity;
+		set => entity = value;
+	}
+
 	[SerializeField] public Sprite Sprite;
 
     public IntGameEvent healthChange;
@@ -49,39 +58,86 @@ public class CombatEntity : MonoBehaviour
     [SerializeField] int x;
     [SerializeField] int y;
 
-
+    public CombatManager combatManager;
+    
+// maps each AbilitySO to its remaining cooldown _in turns_
+    private Dictionary<AbilitySO,int> cooldowns = new();
+    
+    public GridMapPoint GetCurrentGridCell()
+    {
+	    return combatManager.gridManager.GetPointUsingCoords(x, y);
+    }
+    
 	// Start is called before the first frame update
 	void Awake()
     {
         isPlayer = entity.isPlayer;
         Sprite = GetComponent<SpriteRenderer>().sprite;
+        combatManager = FindFirstObjectByType<CombatManager>();
 	}
-
-	public void InitializeFromData(EntitySO entitySO)
+	/// <summary>
+	/// Initialize from data grabs everything from the entity and sets it up with 'this' monobehavior
+	/// </summary>
+	public void InitializeFromData()
 	{
-			// Copy name
-			entityName = entity.entityName;
+		stats = entity.Stats;
+		
+		entityName = entity.entityName;
 
-			// Health
-			currentHealth = entity.GetMaxHealth();
-			if (healthSlider != null)
-			{
-				healthSlider.maxValue   = entity.GetMaxHealth();
-				healthSlider.value      = currentHealth;
-			}
+		currentHealth = entity.GetMaxHealth();
+		if (healthSlider != null)
+		{
+			healthSlider.maxValue   = entity.GetMaxHealth();
+			healthSlider.value      = currentHealth;
+		}
 
-			// Movement & action
-			movementPoints = entity.Stats.originalMovementPoints;;
-			actionPoints   = entity.Stats.originalStamina;
+		movementPoints = entity.Stats.originalMovementPoints;;
+		currentStamina   = entity.Stats.originalStamina;
 
-			// Reset turn flags
-			hasMoved = false;
+		hasMoved = false;
 
-			// Load sprite if you store one on the SO
-			var sr = GetComponent<SpriteRenderer>();
-			if (sr != null && Sprite != null)
-				sr.sprite = Sprite;
+		SpriteRenderer sr = GetComponent<SpriteRenderer>();
+		if (sr != null && Sprite != null)
+			sr.sprite = Sprite;
 	}
+
+    /// <summary>
+    /// Can we afford the ability and is it off cooldown?
+    /// Takes in AbilitySO
+    /// </summary>
+    public bool CanUse(AbilitySO abi)
+    {
+	    bool hasMana    = currentMana    >= abi.mana;
+	    bool hasStamina = currentStamina >= abi.stamina;
+	    bool offCd      = !cooldowns.ContainsKey(abi) || cooldowns[abi] == 0;
+	    return hasMana && hasStamina && offCd;
+    }
+
+    /// <summary>
+    /// Deducts cost & starts the turn‐based cooldown.
+    /// </summary>
+    public bool StartAbilityUse(AbilitySO abi)
+    {
+	    if (!CanUse(abi)) return false;
+	    currentMana    -= abi.mana;
+	    currentStamina -= abi.mana;
+	    cooldowns[abi]  = abi.turnCooldown;
+	    return true;
+    }
+    /// <summary>
+    /// Ticks down the cooldowns and regens resources. Called every 'Start Turn'
+    /// </summary>
+    public void EndTurnTick()
+    {
+	    // Tick cooldowns
+	    var keys = cooldowns.Keys.ToList();
+	    foreach (var a in keys)
+		    if (cooldowns[a] > 0) cooldowns[a]--;
+
+	    // Regen both resources
+	    currentMana    = Mathf.Min(stats.mana,    currentMana   + stats.manaRegen);
+	    currentStamina = Mathf.Min(stats.stamina, currentStamina + stats.staminaRegen);
+    }
 	
     // Update is called once per frame
     void Update()
@@ -144,6 +200,21 @@ public class CombatEntity : MonoBehaviour
         this.y = y;
     }
 
+    public bool TryGetCooldown(AbilitySO ability, out int cooldown)
+    {
+	    return cooldowns.TryGetValue(ability, out cooldown);
+    }
+
+    public int GetCurrentStamina()
+    {
+	    return currentStamina;
+    }
+
+    public int GetMovementPoints()
+    {
+	    return movementPoints;
+    }
+    
     public void AddBuff(Buff type, int stacks, int baseValue)
     {
 	    AddOrStackStatusEffect(type, stacks, baseValue, buffs, StatusEffectFactory.CreateBuff);

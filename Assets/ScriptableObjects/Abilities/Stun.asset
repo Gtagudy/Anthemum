@@ -12,12 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14e9ce772506bad41b0dcce401ca0802, type: 3}
   m_Name: Stun
   m_EditorClassIdentifier: 
-  name: Stun
-  description: 
-  icon: {fileID: 0}
-  actionPoints: 2
-  cooldown: 5
-  damage: 0
+  AbilityName: Stun
+  icon: {fileID: 21300000, guid: 5889f3968634a8542a9d9b69ab53de31, type: 3}
+  description: A basic attack focused on stunning your opponent
+  stamina: 2
+  mana: 0
+  turnCooldown: 2
+  damage: 5
+  knockback: 0
   AOE: 0
   target: 0
-  AbilityEffectType: 4
+  AbilityEffectType: 5
+  buff: 0
+  debuff: 8
+  statusEffectCount: 1

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6696e80875c8b0f4ab02364406cf51d1, type: 3}
+  m_Name: Tree_Trunk
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  chipThreshold: 5
+  isPushable: 0
+  isBreakable: 1
+  prefab: {fileID: 9033031699745211484, guid: 670fbf6a2774f1d41ba4242c4cea9c4b, type: 3}
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onBreak:
+    m_PersistentCalls:
+      m_Calls: []

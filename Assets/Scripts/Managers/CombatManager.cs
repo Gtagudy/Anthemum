@@ -8,13 +8,15 @@ public class CombatManager : MonoBehaviour
 
     TurnManager turnManager;
     EntityManager entityManager;
-    GridManager gridManager;
+    public GridManager gridManager;
     GameManager gameManager;
     UIManager uiManager;
 
     public List<CombatEntity> players;
     public List<CombatEntity> enemies;
 
+    [SerializeField] public GameObject combatRoot;
+    
 	public void StartCombat(CombatSceneSO combatSceneSO)
 	{
         if(gameManager.gameState != GameState.Combat)
@@ -26,24 +28,34 @@ public class CombatManager : MonoBehaviour
         players = new List<CombatEntity>();
         enemies = new List<CombatEntity>();
 
-        for(int i = 0; i < combatSceneSO.GetPlayers().Length; i++)
+        foreach (GameObject playerPrefab in combatSceneSO.GetPlayers())
         {
-				//players.Add(combatSceneSO.GetPlayers()[i].GetComponent<CombatEntity>());
-		        CombatEntity player = combatSceneSO.GetPlayers()[i].GetComponent<CombatEntity>();
-                Instantiate(player);
-                players.Add(player);
-            
+            // 1) Instantiate the prefab itself (creates the visible GameObject)
+            GameObject go = Instantiate(playerPrefab, combatRoot.transform);
+
+            // 2) Grab the CombatEntity component from *that* instance
+            CombatEntity inst = go.GetComponent<CombatEntity>();
+
+            // 3) (Re)initialize its data if needed
+            inst.InitializeFromData();
+
+            // 4) Add the *instance* to your list
+            players.Add(inst);
         }
-        for(int i = 0; i < combatSceneSO.GetEnemies().Length; i++)
+
+        // Spawn enemies (same as above)
+        foreach (var enemyPrefab in combatSceneSO.GetEnemies())
         {
-            CombatEntity enemy = combatSceneSO.GetEnemies()[i].GetComponent<CombatEntity>();
-            Instantiate(enemy);
-            players.Add(enemy);
+            GameObject go = Instantiate(enemyPrefab, combatRoot.transform);
+            CombatEntity inst = go.GetComponent<CombatEntity>();
+            inst.InitializeFromData();
+            enemies.Add(inst);
         }
 
         gridManager.CreateGridMap(combatSceneSO.GetGrid());
+        gridManager.SpawnSceneObjects(combatSceneSO.objectsToSpawn);
         entityManager.NotifyOfAll(players, enemies);
-        turnManager.QueueEntities(combatSceneSO);
+        turnManager.ShareCombatScene(combatSceneSO);
         gridManager.SetEntitiesToGrid(players, enemies);
 	}
 

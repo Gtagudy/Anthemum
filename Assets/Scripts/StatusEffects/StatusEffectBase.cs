@@ -12,7 +12,8 @@ public enum Debuff
 	MaxHealthDown,
 	DotBleed,
 	DotBurn,
-	Curse
+	Curse,
+	Stun
 }
 public enum Buff
 {
